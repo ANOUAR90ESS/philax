@@ -1,4 +1,6 @@
-import type { Db } from '@philax/database';
+import { loadSeed, readSeedData, SEEDS_DIR, type Db } from '@philax/database';
 
-/** Loads the production seed into the test database (filled in once seeds exist). */
-export async function seedTestDatabase(_db: Db): Promise<void> {}
+/** Loads the real curated seed into the test database. */
+export async function seedTestDatabase(db: Db): Promise<void> {
+  await loadSeed(db, await readSeedData(SEEDS_DIR));
+}
