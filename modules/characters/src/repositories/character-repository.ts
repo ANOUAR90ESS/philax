@@ -16,6 +16,7 @@ export interface CharacterCandidate {
   displayName: string;
   representation: 'historical' | 'contemporary';
   deathYear: number | null;
+  worldviewSummary: string;
   domains: string[];
   concepts: string[];
   perspectives: { slug: string; strength: number }[];
@@ -33,7 +34,7 @@ export class CharacterRepository {
 
   async listCandidates(): Promise<CharacterCandidate[]> {
     const { rows } = await this.db.query<CharacterCandidate>(
-      `SELECT c.id, c.slug, c.display_name AS "displayName", c.representation, c.death_year AS "deathYear", c.domains,
+      `SELECT c.id, c.slug, c.display_name AS "displayName", c.representation, c.death_year AS "deathYear", c.worldview_summary AS "worldviewSummary", c.domains,
         COALESCE((SELECT array_agg(cc.concept ORDER BY cc.concept) FROM character_concepts cc WHERE cc.character_id = c.id), '{}') AS concepts,
         COALESCE((SELECT json_agg(json_build_object('slug', p.slug, 'strength', cp.strength) ORDER BY cp.strength DESC, p.slug)
           FROM character_perspectives cp JOIN perspectives p ON p.id = cp.perspective_id WHERE cp.character_id = c.id), '[]') AS perspectives,
