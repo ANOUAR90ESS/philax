@@ -1,0 +1,27 @@
+{
+  "name": "@philax/debates",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@philax/database": "workspace:*",
+    "@philax/types": "workspace:*",
+    "@philax/ai": "workspace:*",
+    "@philax/prompts": "workspace:*",
+    "@philax/knowledge": "workspace:*",
+    "@philax/topics": "workspace:*",
+    "@philax/perspectives": "workspace:*",
+    "@philax/characters": "workspace:*",
+    "@philax/arguments": "workspace:*",
+    "@philax/sources": "workspace:*",
+    "@philax/billing": "workspace:*",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {}
+}

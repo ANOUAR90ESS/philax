@@ -118,6 +118,21 @@ export class RetrievalService {
     };
   }
 
+  /** Relevant chunks of one (e.g. user-provided) source, topped up in reading order. */
+  async retrieveFromSource(
+    sourceId: string,
+    query: RetrievalQuery,
+    limit = 5,
+  ): Promise<RetrievedChunk[]> {
+    const { chunks } = await this.retrieve({ ...query, sourceIds: [sourceId], limit });
+    if (chunks.length >= limit) return chunks;
+    const seen = new Set(chunks.map((c) => c.chunkId));
+    const head = (await this.chunks.bySource(sourceId, query.userId ?? null, limit)).filter(
+      (c) => !seen.has(c.chunkId),
+    );
+    return [...chunks, ...head].slice(0, limit);
+  }
+
   findByIds(ids: string[], userId: string | null): Promise<RetrievedChunk[]> {
     return this.chunks.findByIds(ids, userId);
   }

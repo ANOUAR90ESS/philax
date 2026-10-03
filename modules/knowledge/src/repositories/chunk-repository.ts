@@ -124,6 +124,20 @@ export class ChunkRepository {
     return rows.map((r) => toChunk(r, 'direct'));
   }
 
+  /** First chunks of one source in reading order (visibility-checked). */
+  async bySource(
+    sourceId: string,
+    userId: string | null,
+    limit: number,
+  ): Promise<RetrievedChunk[]> {
+    const { rows } = await this.db.query<Row>(
+      `SELECT ${COLUMNS}, 0::float AS score FROM source_chunks c JOIN sources s ON s.id = c.source_id
+       WHERE ${VISIBLE} AND c.source_id = $2 ORDER BY c.ordinal LIMIT $3`,
+      [userId, sourceId, limit],
+    );
+    return rows.map((r) => toChunk(r, 'direct'));
+  }
+
   async findByIds(ids: string[], userId: string | null): Promise<RetrievedChunk[]> {
     if (ids.length === 0) return [];
     const { rows } = await this.db.query<Row>(
