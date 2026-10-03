@@ -11,6 +11,8 @@ async function registerAndStart(page: Page, topic: string) {
     .fill(`e2e-${Date.now()}-${Math.random().toString(16).slice(2)}@test.dev`);
   await page.getByLabel('Password').fill('a-long-password');
   await page.getByRole('button', { name: 'Create account' }).click();
+  // Registration returns to the home page with the draft restored.
+  await expect(page).toHaveURL(/\/$/);
   await expect(page.getByRole('textbox', { name: 'Paste a link or write an idea' })).toHaveValue(
     topic,
   );
