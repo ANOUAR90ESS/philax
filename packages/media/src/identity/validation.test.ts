@@ -1,12 +1,18 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { MEDIA_PROFILES, defineProfile } from '../profiles/catalog';
-import { MediaProfileRegistry } from '../registry';
+import { CHARACTER_STYLES } from '../profiles/catalog';
+import { CharacterStyleRegistry } from '../registry';
 import { CHARACTER_IDENTITIES } from './character-identities';
-import type { CharacterMediaProfile } from './types';
+import type { CharacterMediaConfig, CharacterStyle } from './types';
 import { MEDIA_LANGUAGES } from './types';
-import { appearancePresentation, validateCatalog, validateProfile } from './validation';
+import {
+  appearancePresentation,
+  validateConfigReuse,
+  validateMediaConfig,
+  validateStyle,
+  validateStyles,
+} from './validation';
 
 const seedDir = join(import.meta.dirname, '../../../../database/seeds/characters');
 const seedSlugs = readdirSync(seedDir)
@@ -14,168 +20,164 @@ const seedSlugs = readdirSync(seedDir)
   .map((f) => (JSON.parse(readFileSync(join(seedDir, f), 'utf8')) as { slug: string }).slug);
 
 const identity = (slug: string) => CHARACTER_IDENTITIES.find((i) => i.characterSlug === slug);
-const profile = (slug: string) => {
-  const p = MEDIA_PROFILES.find((m) => m.characterId === slug);
-  if (!p) throw new Error(slug);
-  return structuredClone(p) as CharacterMediaProfile;
+const style = (slug: string) => {
+  const s = CHARACTER_STYLES.find((m) => m.characterId === slug);
+  if (!s) throw new Error(slug);
+  return structuredClone(s) as CharacterStyle;
 };
 
-describe('media catalog', () => {
-  it('passes identity validation with no issues', () => {
-    expect(validateCatalog(CHARACTER_IDENTITIES, MEDIA_PROFILES)).toEqual([]);
+function config(slug: string, over: Partial<CharacterMediaConfig> = {}): CharacterMediaConfig {
+  const presentation = identity(slug)?.presentation ?? 'unknown';
+  return {
+    characterId: slug,
+    avatar: {
+      provider: 'heygen',
+      avatarId: `look-${slug}`,
+      liveAvatarId: `live-${slug}`,
+      presentation,
+    },
+    voice: { provider: 'elevenlabs', voiceId: `voice-${slug}`, languageVoices: {}, presentation },
+    ...over,
+  };
+}
+const providers = { avatarProviders: ['heygen'], voiceProviders: ['elevenlabs'] };
+
+describe('identity briefs', () => {
+  it('pass validation for every character with no issues', () => {
+    expect(validateStyles(CHARACTER_IDENTITIES, CHARACTER_STYLES)).toEqual([]);
   });
 
-  it('gives every seeded character an identity and a ready profile', () => {
-    const registry = new MediaProfileRegistry();
+  it('exist for every seeded character', () => {
+    const registry = new CharacterStyleRegistry();
     expect(seedSlugs.length).toBeGreaterThan(0);
-    for (const slug of seedSlugs) {
-      expect(identity(slug), slug).toBeDefined();
-      expect(registry.resolve(slug).status, slug).toBe('ready');
-    }
+    for (const slug of seedSlugs) expect(registry.resolve(slug).status, slug).toBe('ready');
   });
 
-  it('keeps presentation consistent across character, avatar and voice', () => {
-    const female = MEDIA_PROFILES.filter((p) => identity(p.characterId)?.presentation === 'female');
-    expect(female.map((p) => p.characterId).sort()).toEqual([
+  it('keep presentation consistent across character, portrait and voice', () => {
+    const female = CHARACTER_STYLES.filter(
+      (s) => identity(s.characterId)?.presentation === 'female',
+    );
+    expect(female.map((s) => s.characterId).sort()).toEqual([
       'hannah-arendt',
       'mary-wollstonecraft',
       'simone-de-beauvoir',
     ]);
-    for (const p of MEDIA_PROFILES) {
-      const expected = identity(p.characterId)?.presentation;
-      expect(p.visualIdentity.presentation, p.characterId).toBe(expected);
-      expect(p.voiceIdentity.presentation, p.characterId).toBe(expected);
-      const features = appearancePresentation(p.avatar.appearance);
-      expect(['unknown', expected], p.characterId).toContain(features);
+    for (const s of CHARACTER_STYLES) {
+      const expected = identity(s.characterId)?.presentation;
+      expect(s.visualIdentity.presentation, s.characterId).toBe(expected);
+      expect(s.voiceIdentity.presentation, s.characterId).toBe(expected);
+      expect(['unknown', expected]).toContain(appearancePresentation(s.portrait));
     }
   });
 
-  it('gives every character a full visual identity and voice profile in en, es and ar', () => {
-    for (const p of MEDIA_PROFILES) {
-      expect(p.visualIdentity.approximateAge).toBeGreaterThan(0);
-      expect(p.visualIdentity.appearanceReference).toBeTruthy();
-      expect(p.visualIdentity.era).toBeTruthy();
-      expect(p.voiceIdentity.ageProfile).toBeTruthy();
-      expect(p.voiceIdentity.tone.length).toBeGreaterThan(5);
-      expect(p.voiceIdentity.speechStyle.length).toBeGreaterThan(10);
-      expect(p.disclosure).toBe('ai_reconstruction');
-      for (const lang of MEDIA_LANGUAGES) expect(p.voice.languageVoices[lang]).toBeTruthy();
+  it('carry a full visual identity and voice profile in en, es and ar', () => {
+    for (const s of CHARACTER_STYLES) {
+      expect(s.visualIdentity.approximateAge).toBeGreaterThan(0);
+      expect(s.visualIdentity.appearanceReference).toBeTruthy();
+      expect(s.voiceIdentity.tone.length).toBeGreaterThan(5);
+      expect(s.voiceIdentity.speechStyle.length).toBeGreaterThan(10);
+      expect(s.voiceSettings.speed).toBeGreaterThanOrEqual(0.7);
+      expect(s.voiceSettings.speed).toBeLessThanOrEqual(1.2);
+      expect(s.disclosure).toBe('ai_reconstruction');
+      for (const lang of MEDIA_LANGUAGES) expect(s.voiceIdentity.languageProfiles).toContain(lang);
     }
   });
 
-  it('never shares an avatar, look or voice between two characters', () => {
-    const ids = MEDIA_PROFILES.flatMap((p) => [
-      p.avatar.avatarId,
-      p.voice.voiceId,
-      ...Object.values(p.voice.languageVoices),
-    ]);
-    expect(new Set(ids).size).toBe(ids.length);
+  it('reject a brief that contradicts the character', () => {
+    const arendt = style('hannah-arendt');
+    arendt.visualIdentity.presentation = 'male';
+    arendt.voiceIdentity.presentation = 'male';
+    arendt.voiceSettings.speed = 1.2;
+    const codes = validateStyle(identity('hannah-arendt'), arendt).map((i) => i.code);
+    expect(codes).toEqual(
+      expect.arrayContaining([
+        'avatar_presentation_mismatch',
+        'voice_presentation_mismatch',
+        'voice_settings_inconsistent',
+      ]),
+    );
+    const kierkegaard = style('soren-kierkegaard');
+    kierkegaard.voiceIdentity.ageProfile = 'elder';
+    expect(validateStyle(identity('soren-kierkegaard'), kierkegaard).map((i) => i.code)).toContain(
+      'age_mismatch',
+    );
   });
 });
 
-describe('identity validation', () => {
-  it('rejects Hannah Arendt with a male avatar and voice', () => {
-    const p = profile('hannah-arendt');
-    p.visualIdentity.presentation = 'male';
-    p.voiceIdentity.presentation = 'male';
-    const codes = validateProfile(identity('hannah-arendt'), p).map((i) => i.code);
-    expect(codes).toContain('avatar_presentation_mismatch');
-    expect(codes).toContain('voice_presentation_mismatch');
-  });
-
-  it('rejects Karl Marx with a female avatar and voice', () => {
-    const p = profile('karl-marx');
-    p.visualIdentity.presentation = 'female';
-    p.voiceIdentity.presentation = 'female';
-    const codes = validateProfile(identity('karl-marx'), p).map((i) => i.code);
-    expect(codes).toEqual(
-      expect.arrayContaining(['avatar_presentation_mismatch', 'voice_presentation_mismatch']),
-    );
-  });
-
-  it('checks the avatar features themselves, not only the declared label', () => {
-    const p = profile('simone-de-beauvoir');
-    p.avatar.appearance.facialHair = { style: 'full-beard', color: '#333' };
-    p.avatar.appearance.headwear = 'none';
-    p.avatar.appearance.hair.style = 'short';
-    p.avatar.appearance.attire.style = '20c-suit';
-    expect(validateProfile(identity('simone-de-beauvoir'), p).map((i) => i.code)).toContain(
-      'avatar_features_mismatch',
-    );
-  });
-
-  it('rejects an elder voice on a young avatar and missing languages', () => {
-    const p = profile('soren-kierkegaard');
-    p.voiceIdentity.ageProfile = 'elder';
-    delete p.voice.languageVoices.ar;
-    const codes = validateProfile(identity('soren-kierkegaard'), p).map((i) => i.code);
-    expect(codes).toContain('age_mismatch');
-    expect(codes).toContain('missing_language_voice');
-  });
-
-  it('rejects a rendering that contradicts the voice profile', () => {
-    const p = profile('friedrich-nietzsche');
-    p.voice.rendering.rate = 1.3;
-    expect(validateProfile(identity('friedrich-nietzsche'), p).map((i) => i.code)).toContain(
-      'voice_rendering_inconsistent',
-    );
-  });
-
-  it('assigns nothing when a presentation is undocumented', () => {
-    const issues = validateProfile(
-      {
-        characterSlug: 'hannah-arendt',
-        presentation: 'unknown',
-        presentationBasis: 'test',
-        likeness: 'conjectural',
-      },
-      profile('hannah-arendt'),
-    );
-    expect(issues.map((i) => i.code)).toEqual(['identity_uncertain']);
-  });
-
-  it('detects the same avatar or voice reused by another character', () => {
-    const nietzsche = profile('friedrich-nietzsche');
-    const marx = profile('karl-marx');
-    marx.avatar.avatarId = nietzsche.avatar.avatarId;
-    const arendt = profile('hannah-arendt');
-    const beauvoir = profile('simone-de-beauvoir');
-    beauvoir.voice.languageVoices.en = arendt.voice.languageVoices.en ?? '';
-    const issues = validateCatalog(CHARACTER_IDENTITIES, [nietzsche, marx, arendt, beauvoir]);
-    expect(issues.filter((i) => i.code === 'identity_reuse').map((i) => i.characterId)).toEqual([
-      'karl-marx',
-      'simone-de-beauvoir',
-    ]);
-  });
-
-  it('withholds invalid or unknown profiles instead of falling back', () => {
-    const broken = profile('hannah-arendt');
-    broken.voiceIdentity.presentation = 'male';
-    const registry = new MediaProfileRegistry(CHARACTER_IDENTITIES, [
-      broken,
-      profile('karl-marx'),
-      defineProfile('not-a-character', {
-        visual: { presentation: 'male', approximateAge: 50, era: 'x', appearanceReference: 'x' },
-        appearance: profile('karl-marx').avatar.appearance,
-        voice: {
-          presentation: 'male',
-          ageProfile: 'mature',
-          tone: 'x',
-          pace: 'measured',
-          speechStyle: 'x',
-        },
-        rendering: { pitch: 0.9, rate: 1, sentencePauseMs: 400 },
+describe('provider asset configuration', () => {
+  it('accepts Hannah Arendt with female-presenting assets', () => {
+    expect(
+      validateMediaConfig(identity('hannah-arendt'), config('hannah-arendt'), {
+        ...providers,
+        facts: { voiceGender: 'female', avatarGender: 'Female' },
       }),
+    ).toEqual([]);
+  });
+
+  it('rejects Karl Marx configured with a female avatar and voice', () => {
+    const codes = validateMediaConfig(
+      identity('karl-marx'),
+      config('karl-marx', {
+        avatar: { provider: 'heygen', avatarId: 'a', liveAvatarId: null, presentation: 'female' },
+        voice: { provider: 'elevenlabs', voiceId: 'v', languageVoices: {}, presentation: 'female' },
+      }),
+      providers,
+    ).map((i) => i.code);
+    expect(codes).toEqual(['avatar_presentation_mismatch', 'voice_presentation_mismatch']);
+  });
+
+  it('rejects assets the provider itself lists with another gender', () => {
+    const codes = validateMediaConfig(identity('hannah-arendt'), config('hannah-arendt'), {
+      ...providers,
+      facts: { voiceGender: 'male', avatarGender: 'male' },
+    }).map((i) => i.code);
+    expect(codes).toEqual(['avatar_presentation_mismatch', 'voice_presentation_mismatch']);
+  });
+
+  it('reports missing assets and unknown providers instead of substituting', () => {
+    const codes = validateMediaConfig(
+      identity('friedrich-nietzsche'),
+      config('friedrich-nietzsche', {
+        avatar: { provider: 'other', avatarId: null, liveAvatarId: null, presentation: 'male' },
+        voice: { provider: 'elevenlabs', voiceId: null, languageVoices: {}, presentation: 'male' },
+      }),
+      providers,
+    ).map((i) => i.code);
+    expect(codes).toEqual(['invalid_provider', 'avatar_not_configured', 'voice_not_configured']);
+  });
+
+  it('assigns nothing to a character whose presentation is undocumented', () => {
+    expect(
+      validateMediaConfig(
+        {
+          characterSlug: 'x',
+          presentation: 'unknown',
+          presentationBasis: '',
+          likeness: 'conjectural',
+        },
+        config('x'),
+        providers,
+      ).map((i) => i.code),
+    ).toEqual(['identity_uncertain']);
+  });
+
+  it('never lets two characters share an avatar or a voice', () => {
+    const marx = config('karl-marx');
+    const nietzsche = config('friedrich-nietzsche', {
+      avatar: { ...marx.avatar },
+      voice: {
+        ...config('friedrich-nietzsche').voice,
+        languageVoices: { ar: marx.voice.voiceId ?? '' },
+      },
+    });
+    const arendt = config('hannah-arendt');
+    const beauvoir = config('simone-de-beauvoir', { voice: { ...arendt.voice } });
+    const issues = validateConfigReuse([marx, nietzsche, arendt, beauvoir]);
+    expect(issues.map((i) => [i.characterId, i.detail])).toEqual([
+      ['friedrich-nietzsche', 'Avatar is already used by karl-marx.'],
+      ['friedrich-nietzsche', 'Live avatar is already used by karl-marx.'],
+      ['friedrich-nietzsche', 'Voice (ar) is already used by karl-marx.'],
+      ['simone-de-beauvoir', 'Voice is already used by hannah-arendt.'],
     ]);
-    expect(registry.resolve('hannah-arendt')).toMatchObject({
-      status: 'unavailable',
-      reason: 'invalid_profile',
-    });
-    expect(registry.resolve('karl-marx').status).toBe('ready');
-    expect(registry.resolve('not-a-character').status).toBe('unavailable');
-    expect(registry.resolve('someone-new')).toMatchObject({
-      status: 'unavailable',
-      reason: 'no_profile',
-    });
   });
 });

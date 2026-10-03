@@ -1,4 +1,4 @@
-import { isAppError, type DebateStreamEvent } from '@philax/types';
+import { isAppError } from '@philax/types';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
 /**
@@ -6,10 +6,18 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
  * must happen before calling this (errors before streaming are normal JSON
  * errors); errors during streaming become `error` events with an error id.
  */
-export async function streamSse(
+interface StreamError {
+  type: 'error';
+  code: string;
+  message: string;
+  errorId: string;
+  details?: unknown;
+}
+
+export async function streamSse<E extends { type: string }>(
   request: FastifyRequest,
   reply: FastifyReply,
-  run: (emit: (e: DebateStreamEvent) => void, signal: AbortSignal) => Promise<void>,
+  run: (emit: (e: E) => void, signal: AbortSignal) => Promise<void>,
 ): Promise<void> {
   const controller = new AbortController();
   request.raw.on('close', () => controller.abort());
@@ -22,7 +30,7 @@ export async function streamSse(
     connection: 'keep-alive',
     'x-accel-buffering': 'no',
   });
-  const emit = (e: DebateStreamEvent) => {
+  const emit = (e: E | StreamError) => {
     if (!reply.raw.writableEnded)
       reply.raw.write(`event: ${e.type}\ndata: ${JSON.stringify(e)}\n\n`);
   };
@@ -35,7 +43,13 @@ export async function streamSse(
     const errorId = request.id;
     if (isAppError(err) && err.status < 500) {
       request.log.info({ code: err.code, errorId }, 'stream rejected');
-      emit({ type: 'error', code: err.code, message: err.message, errorId });
+      emit({
+        type: 'error',
+        code: err.code,
+        message: err.message,
+        errorId,
+        ...(err.details ? { details: err.details } : {}),
+      });
     } else {
       request.log.error({ err, errorId }, 'stream failed');
       const code = isAppError(err)
@@ -48,7 +62,8 @@ export async function streamSse(
         : code === 'AI_UNAVAILABLE'
           ? 'The AI service is unavailable right now. Please try again shortly.'
           : 'Something went wrong on our side. Please try again.';
-      emit({ type: 'error', code, message, errorId });
+      const details = isAppError(err) ? err.details : undefined;
+      emit({ type: 'error', code, message, errorId, ...(details ? { details } : {}) });
     }
   } finally {
     clearInterval(heartbeat);

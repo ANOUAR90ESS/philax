@@ -52,6 +52,10 @@ test('core scenario: topic → characters → rounds → user joins → synthesi
   ).toBeVisible();
   await expect(stage.getByText(/they are not historical images or recordings/)).toBeVisible();
   await expect(stage.getByText('Listening').first()).toBeVisible();
+  // No provider keys in this environment: the app says so instead of faking an avatar or voice.
+  await expect(stage.getByText('Provider status: NOT CONFIGURED')).toBeVisible();
+  await expect(stage.getByText(/^Voice unavailable: /)).toBeVisible();
+  await expect(stage.locator('video')).toBeHidden();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,

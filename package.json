@@ -23,6 +23,7 @@
     "db:migrate": "pnpm --filter @philax/database migrate",
     "db:seed": "pnpm --filter @philax/database seed",
     "db:reset-test": "pnpm --filter @philax/database reset-test",
+    "media": "tsx apps/api/src/ops.ts",
     "knowledge:index": "pnpm --filter @philax/knowledge index"
   },
   "devDependencies": {

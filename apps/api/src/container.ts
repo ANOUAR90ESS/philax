@@ -14,6 +14,15 @@ import { PoolDb } from '@philax/database';
 import { AiCallRepository, DebateService, PgAdvisoryLock } from '@philax/debates';
 import { RetrievalService } from '@philax/knowledge';
 import {
+  CharacterMediaService,
+  ElevenLabsVoiceProvider,
+  HeyGenVideoAvatarProvider,
+  LiveAvatarProvider,
+  MediaProfileRepository,
+  type AvatarProvider,
+  type VoiceProvider,
+} from '@philax/media-service';
+import {
   FirecrawlExtractor,
   InputService,
   ReadabilityExtractor,
@@ -43,6 +52,7 @@ export interface Container {
   retrieval: RetrievalService;
   debates: DebateService;
   characters: CharacterRepository;
+  media: CharacterMediaService;
   close(): Promise<void>;
 }
 
@@ -52,6 +62,17 @@ export interface ContainerOverrides {
   llmProviders?: LLMProvider[];
   embeddings?: EmbeddingProvider | null;
   extractor?: ContentExtractor;
+  /** Media providers; tests substitute these (mocks are for automated tests only). */
+  voice?: VoiceProvider;
+  avatar?: AvatarProvider | null;
+}
+
+function avatarProvider(env: Env): AvatarProvider | null {
+  if (env.MEDIA_AVATAR_MODE === 'live')
+    return new LiveAvatarProvider({ apiKey: env.LIVEAVATAR_API_KEY });
+  if (env.MEDIA_AVATAR_MODE === 'video')
+    return new HeyGenVideoAvatarProvider({ apiKey: env.HEYGEN_API_KEY });
+  return null;
 }
 
 export function createContainer(env: Env, overrides: ContainerOverrides = {}): Container {
@@ -97,6 +118,19 @@ export function createContainer(env: Env, overrides: ContainerOverrides = {}): C
     track: (userId, event, props) => analytics.capture(userId, event as AnalyticsEvent, props),
   });
 
+  const media = new CharacterMediaService({
+    repository: new MediaProfileRepository(db),
+    voice:
+      overrides.voice ??
+      new ElevenLabsVoiceProvider({
+        apiKey: env.ELEVENLABS_API_KEY,
+        modelId: env.ELEVENLABS_MODEL_ID,
+      }),
+    avatar: overrides.avatar !== undefined ? overrides.avatar : avatarProvider(env),
+    voiceModel: env.ELEVENLABS_MODEL_ID,
+    maxLiveSessions: env.MEDIA_MAX_LIVE_SESSIONS,
+  });
+
   return {
     env,
     db,
@@ -108,7 +142,9 @@ export function createContainer(env: Env, overrides: ContainerOverrides = {}): C
     retrieval,
     debates,
     characters: new CharacterRepository(db),
+    media,
     close: async () => {
+      await media.close();
       if (ownsPool) await db.close();
     },
   };

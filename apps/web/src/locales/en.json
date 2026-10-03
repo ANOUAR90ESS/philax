@@ -170,20 +170,12 @@
     "idle": "The stage is quiet. New turns are presented here with voice and subtitles.",
     "portraitLabel": "Portrait of {{name}} (AI reconstruction)",
     "noAvatar": "{{name}}: no verified portrait yet",
-    "disclosure": "AI reconstruction. The portrait and voice of {{name}} are generated; they are not historical images or recordings.",
+    "disclosure": "AI reconstruction. The avatar and voice of {{name}} are generated; they are not historical images or recordings.",
     "mute": "Mute voice",
     "unmute": "Turn voice on",
     "skip": "Skip",
     "listen": "Listen",
     "listenTo": "Listen to {{name}}",
-    "voiceIssue": {
-      "no_compatible_voice": "This device has no voice matching {{name}} in this language, so subtitles only.",
-      "no_language_voice": "{{name}} has no voice for this language yet, so subtitles only.",
-      "no_profile": "{{name}} has no verified voice yet, so subtitles only.",
-      "no_provider": "The voice service for {{name}} is unavailable, so subtitles only.",
-      "not_configured": "The voice service for {{name}} is not set up, so subtitles only.",
-      "provider_error": "The voice for {{name}} could not play, so subtitles only."
-    },
     "states": {
       "IDLE": "Waiting",
       "LISTENING": "Listening",
@@ -194,7 +186,51 @@
       "AGREEING": "Agreeing",
       "DISAGREEING": "Disagreeing",
       "CONSIDERING": "Considering"
-    }
+    },
+    "providerNotConfigured": "Provider status: NOT CONFIGURED",
+    "providerReady": "Provider status: configured",
+    "providerDetail": "voice {{voice}}, avatar {{avatar}}",
+    "configured": "configured",
+    "notConfigured": "not configured",
+    "off": "off",
+    "mediaStatusFailed": "Could not check the voice and avatar services.",
+    "avatarLabel": "Avatar of {{name}} (AI reconstruction)",
+    "loadingAvatar": "Starting the avatar…",
+    "loadingVoice": "Preparing the voice…",
+    "issue": {
+      "voice": "Voice unavailable: {{reason}}.",
+      "avatar": "Avatar unavailable: {{reason}}."
+    },
+    "reasons": {
+      "provider_not_configured": "provider not configured",
+      "not_configured": "none is configured for this character yet",
+      "identity_mismatch": "the configured one does not match this character",
+      "invalid_provider": "invalid provider configuration",
+      "invalid_api_key": "the provider rejected the server's credentials",
+      "quota_exceeded": "the provider quota is used up",
+      "rate_limited": "too many requests, try again shortly",
+      "timeout": "the provider took too long",
+      "unavailable": "the provider is not responding",
+      "invalid_avatar": "the configured avatar was not found",
+      "invalid_voice": "the configured voice was not found",
+      "generation_failed": "generation failed",
+      "busy": "all avatar sessions are in use"
+    },
+    "retry": "Retry",
+    "controls": "Playback controls",
+    "pause": "Pause",
+    "resume": "Resume",
+    "captionsOn": "Show captions",
+    "captionsOff": "Hide captions",
+    "avatarOn": "Show avatar",
+    "avatarOff": "Hide avatar",
+    "speed": "Voice speed",
+    "speeds": {
+      "slow": "Slower",
+      "normal": "Normal",
+      "fast": "Faster"
+    },
+    "replay": "Replay"
   },
   "sources": {
     "title": "Sources",
@@ -286,7 +322,8 @@
       "AI_OUTPUT_INVALID": "We could not produce a reliable result. Please try again.",
       "NO_SUITABLE_CHARACTERS": "We could not find enough well-documented, genuinely different perspectives for this input.",
       "INVALID_STATE": "That action is not available at this stage of the debate.",
-      "INTERNAL": "Something went wrong on our side. Please try again."
+      "INTERNAL": "Something went wrong on our side. Please try again.",
+      "MEDIA_UNAVAILABLE": "The voice or avatar is unavailable right now."
     }
   },
   "claimKinds": {

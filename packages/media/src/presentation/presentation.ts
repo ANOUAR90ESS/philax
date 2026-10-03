@@ -1,6 +1,4 @@
-import type { DebateMessage, DebateMove, DebateParticipant } from '@philax/types';
-import { segmentSpeech, type SubtitleSegment } from '../lipsync/visemes';
-import type { MediaProfileRegistry, ProfileResolution } from '../registry';
+import type { DebateMessage, DebateMove } from '@philax/types';
 
 export const AVATAR_STATES = [
   'IDLE',
@@ -73,44 +71,4 @@ export function stageStates(
     } else states[id] = 'IDLE';
   }
   return states;
-}
-
-export interface PresentationPlan {
-  messageId: string;
-  characterId: string;
-  characterSlug: string;
-  language: string;
-  media: ProfileResolution;
-  segments: SubtitleSegment[];
-  states: Record<string, AvatarState>;
-}
-
-/**
- * DebateMessage → character → media profile → voice and avatar timing.
- * The debate engine's output is consumed as-is; user messages are not staged.
- */
-export function planPresentation(
-  message: DebateMessage,
-  participants: readonly DebateParticipant[],
-  registry: MediaProfileRegistry,
-  language: string,
-): PresentationPlan | null {
-  if (message.speaker.type !== 'character') return null;
-  const characterId = message.speaker.characterId;
-  const participant = participants.find((p) => p.character.id === characterId);
-  if (!participant) return null;
-  const media = registry.resolve(participant.character.slug);
-  const rate = media.status === 'ready' ? media.profile.voice.rendering.rate : 1;
-  return {
-    messageId: message.id,
-    characterId,
-    characterSlug: participant.character.slug,
-    language,
-    media,
-    segments: segmentSpeech(message.content, rate),
-    states: stageStates(
-      participants.map((p) => p.character.id),
-      { speaking: message },
-    ),
-  };
 }

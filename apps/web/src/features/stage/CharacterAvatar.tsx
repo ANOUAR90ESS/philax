@@ -5,9 +5,7 @@ import type {
   FacialHairStyle,
   HairStyle,
   Presentation,
-  Viseme,
 } from '@philax/media';
-import { VISEME_SHAPE } from '@philax/media';
 import { useEffect, useId, useState, type ReactNode } from 'react';
 
 interface Props {
@@ -15,7 +13,6 @@ interface Props {
   presentation: Presentation;
   age: number;
   state: AvatarState;
-  viseme: Viseme;
   /** Accessible name; omit for decorative copies next to a visible name. */
   label?: string;
   size?: 'small' | 'large';
@@ -414,15 +411,15 @@ const BROWS: Record<AvatarState, { lift: number; tilt: number; gaze: [number, nu
 };
 
 /**
- * A procedurally drawn period portrait. Animation is restrained: blinking,
- * a slight head movement per state and a mouth that follows the voice.
+ * A procedurally drawn period portrait, used for the cast, for listeners and
+ * whenever the provider avatar is off or unavailable. Animation is restrained:
+ * blinking and a slight head movement per state.
  */
 export function CharacterAvatar({
   appearance,
   presentation,
   age,
   state,
-  viseme,
   label,
   size = 'small',
   animated = true,
@@ -434,9 +431,10 @@ export function CharacterAvatar({
   const skinShadow = shade(skin, -0.12);
   const female = presentation === 'female';
   const brow = BROWS[state];
-  const mouth = VISEME_SHAPE[viseme];
-  const mouthW = 9 + mouth.width * 9;
-  const mouthH = 1 + mouth.open * 9;
+  // Illustrated portrait: a closed mouth. Speech is shown by the provider's
+  // lip-synced avatar, never imitated here.
+  const mouthW = 13;
+  const mouthH = 1;
   const mouthY = CY + 36;
   const browColor =
     appearance.hair.style === 'powdered-wig' || appearance.hair.style === 'bald'

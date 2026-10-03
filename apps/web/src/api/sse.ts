@@ -14,10 +14,10 @@ export function parseSseFrame(frame: string): string | null {
  * POSTs to an SSE endpoint and invokes `onEvent` for each event. Uses fetch
  * (not EventSource) because the endpoints are POST and need credentials.
  */
-export async function streamEvents(
+export async function streamEvents<E = DebateStreamEvent>(
   path: string,
   body: unknown,
-  onEvent: (event: DebateStreamEvent) => void,
+  onEvent: (event: E) => void,
   signal?: AbortSignal,
 ): Promise<void> {
   let res: Response;
@@ -38,7 +38,7 @@ export async function streamEvents(
     const parsed = ApiErrorSchema.safeParse(json);
     if (parsed.success) {
       const e = parsed.data.error;
-      throw new ApiClientError(e.code as ErrorCode, e.message, res.status, e.errorId);
+      throw new ApiClientError(e.code as ErrorCode, e.message, res.status, e.errorId, e.details);
     }
     throw new ApiClientError('INTERNAL', 'Unexpected error', res.status, null);
   }
@@ -54,7 +54,7 @@ export async function streamEvents(
       const frame = buffer.slice(0, idx);
       buffer = buffer.slice(idx + 2);
       const data = parseSseFrame(frame);
-      if (data) onEvent(JSON.parse(data) as DebateStreamEvent);
+      if (data) onEvent(JSON.parse(data) as E);
     }
   }
 }

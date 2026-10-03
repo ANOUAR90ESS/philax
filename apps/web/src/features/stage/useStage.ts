@@ -1,80 +1,96 @@
-import {
-  StagePlayer,
-  planPresentation,
-  stageStates,
-  type AvatarOutcome,
-  type AvatarState,
-} from '@philax/media';
 import type { DebateMessage, DebateView } from '@philax/types';
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
+import { mediaApi } from '../../api/media';
 import type { LiveDraft } from '../../hooks/useDebate';
-import { useMediaServices } from './media-services';
+import { DEFAULT_PREFS, StagePlayback, type PlaybackDeps, type StagePrefs } from './playback';
 
-const MUTE_KEY = 'philax.stage.muted';
+const PREFS_KEY = 'philax.stage.prefs';
 
-function readMuted(): boolean {
+function readPrefs(): StagePrefs {
   try {
-    return window.localStorage.getItem(MUTE_KEY) === '1';
+    const raw = window.localStorage.getItem(PREFS_KEY);
+    if (!raw) return DEFAULT_PREFS;
+    const p = JSON.parse(raw) as Partial<StagePrefs>;
+    return {
+      muted: typeof p.muted === 'boolean' ? p.muted : DEFAULT_PREFS.muted,
+      captions: typeof p.captions === 'boolean' ? p.captions : DEFAULT_PREFS.captions,
+      avatar: typeof p.avatar === 'boolean' ? p.avatar : DEFAULT_PREFS.avatar,
+      speed: p.speed === 'slow' || p.speed === 'fast' ? p.speed : 'normal',
+    };
   } catch {
-    return false;
+    return DEFAULT_PREFS;
   }
 }
 
-function writeMuted(muted: boolean) {
+function savePrefs(prefs: StagePrefs) {
   try {
-    window.localStorage.setItem(MUTE_KEY, muted ? '1' : '0');
+    window.localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
   } catch {
     // Storage unavailable (private mode): the choice lasts for this page only.
   }
 }
 
+export function browserPlaybackDeps(): PlaybackDeps {
+  return {
+    api: mediaApi,
+    createAudio: () => new Audio(),
+    createViewer: async () => (await import('./livekit-viewer')).createLiveKitViewer(),
+    savePrefs,
+  };
+}
+
+/** Lets tests supply playback dependencies (mocked API and media elements). */
+export const PlaybackDepsContext = createContext<PlaybackDeps | null>(null);
+
 /**
  * Connects the debate to the stage: turns that arrive while the page is open
  * are presented in order; earlier turns can be replayed on request.
  */
-const NO_PARTICIPANTS: DebateView['participants'] = [];
-
 export function useStage(debate: DebateView | null, draft: LiveDraft | null) {
-  const services = useMediaServices();
+  const injected = useContext(PlaybackDepsContext);
   const [player] = useState(
-    () => new StagePlayer(services.voices, { muted: readMuted(), playClip: services.playClip }),
+    () => new StagePlayback({ savePrefs, ...(injected ?? browserPlaybackDeps()) }, readPrefs()),
   );
   const snapshot = useSyncExternalStore(player.subscribe, player.getSnapshot, player.getSnapshot);
-  const [muted, setMutedState] = useState(() => player.isMuted());
-  const [avatars, setAvatars] = useState<Map<string, AvatarOutcome>>(new Map());
   const seen = useRef<Set<string> | null>(null);
-  const participants = debate?.participants ?? NO_PARTICIPANTS;
-  const language = debate?.language ?? 'en';
+  const debateId = debate?.id;
   const messages = debate?.messages;
+  const castKey = debate?.participants.map((p) => p.character.id).join() ?? '';
+  const [mediaError, setMediaError] = useState(false);
+  const [reload, setReload] = useState(0);
 
   useEffect(() => () => player.dispose(), [player]);
 
-  // Resolve each participant's avatar through the gateway (validated against identity).
-  const participantKey = participants.map((p) => `${p.character.id}:${p.character.slug}`).join();
+  // What each participant can be shown and heard with (resolved and validated on the server).
   useEffect(() => {
+    if (!debateId || !castKey) return;
     let cancelled = false;
-    void Promise.all(
-      participants.map(async (p) => {
-        const media = services.registry.resolve(p.character.slug);
-        const outcome: AvatarOutcome =
-          media.status === 'ready'
-            ? await services.avatars.avatarFor(media)
-            : { status: 'unavailable', reason: 'no_provider' };
-        return [p.character.id, outcome] as const;
-      }),
-    ).then((entries) => {
-      if (!cancelled) setAvatars(new Map(entries));
-    });
+    void (injected?.api ?? mediaApi)
+      .cast(debateId)
+      .then(({ status, cast }) => {
+        if (cancelled) return;
+        player.setMedia(status, cast);
+        setMediaError(false);
+      })
+      .catch(() => {
+        if (!cancelled) setMediaError(true);
+      });
     return () => {
       cancelled = true;
     };
-    // participantKey captures the identity of the cast.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [participantKey, services]);
+  }, [debateId, castKey, player, injected, reload]);
 
   // Present new character turns as they arrive.
   useEffect(() => {
-    if (!messages) return;
+    if (!messages || !debateId) return;
     // Turns already on the page when it opens are not replayed automatically.
     if (!seen.current) {
       seen.current = new Set(messages.map((m) => m.id));
@@ -83,44 +99,30 @@ export function useStage(debate: DebateView | null, draft: LiveDraft | null) {
     for (const m of messages) {
       if (seen.current.has(m.id)) continue;
       seen.current.add(m.id);
-      const plan = planPresentation(m, participants, services.registry, language);
-      if (plan) player.enqueue(plan);
+      player.enqueue(debateId, m);
     }
-  }, [messages, participants, language, services, player]);
+  }, [messages, debateId, player]);
 
   const play = useCallback(
     (message: DebateMessage) => {
-      const plan = planPresentation(message, participants, services.registry, language);
-      if (plan) player.playNow(plan);
+      if (debateId) player.playNow(debateId, message);
     },
-    [participants, language, services, player],
+    [debateId, player],
   );
 
-  const setMuted = useCallback(
-    (value: boolean) => {
-      player.setMuted(value);
-      setMutedState(value);
-      writeMuted(value);
-    },
+  const attachVideo = useCallback(
+    (el: HTMLVideoElement | null) => player.attachVideo(el),
     [player],
   );
 
-  const states: Record<string, AvatarState> = snapshot.plan
-    ? snapshot.plan.states
-    : stageStates(
-        participants.map((p) => p.character.id),
-        { thinkingCharacterId: draft?.characterId },
-      );
-
   return {
     snapshot,
-    states,
-    avatars,
-    muted,
-    setMuted,
+    attachVideo,
+    states: player.states(debate?.participants ?? [], draft?.characterId),
     play,
-    skip: () => player.skip(),
-    registry: services.registry,
+    player,
+    mediaError,
+    reloadMedia: () => setReload((n) => n + 1),
   };
 }
 

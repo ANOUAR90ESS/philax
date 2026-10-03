@@ -25,7 +25,7 @@ export function Avatar({ name, seat, slug }: { name: string; seat: number; slug?
   if (portrait)
     return (
       <span className={`avatar avatar--portrait ${seatClass(seat)}`} aria-hidden="true">
-        <CharacterAvatar {...portrait} state="IDLE" viseme="rest" animated={false} />
+        <CharacterAvatar {...portrait} state="IDLE" animated={false} />
       </span>
     );
   return (

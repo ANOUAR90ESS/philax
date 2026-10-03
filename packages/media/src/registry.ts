@@ -1,49 +1,51 @@
 import { CHARACTER_IDENTITIES } from './identity/character-identities';
-import type { CharacterIdentity, CharacterMediaProfile } from './identity/types';
-import { validateCatalog, type IdentityIssue } from './identity/validation';
-import { MEDIA_PROFILES } from './profiles/catalog';
+import type { CharacterIdentity, CharacterStyle } from './identity/types';
+import { validateStyles, type IdentityIssue } from './identity/validation';
+import { CHARACTER_STYLES } from './profiles/catalog';
 
-export type ProfileResolution =
-  | { status: 'ready'; profile: CharacterMediaProfile; identity: CharacterIdentity }
+export type StyleResolution =
+  | { status: 'ready'; style: CharacterStyle; identity: CharacterIdentity }
   | { status: 'unavailable'; reason: 'no_profile' | 'invalid_profile'; issues: IdentityIssue[] };
 
 /**
- * The only way the application obtains a media profile. Profiles that fail
- * identity validation are withheld; there is deliberately no fallback to a
- * generic or another character's avatar or voice.
+ * The only way to obtain a character's identity brief. Briefs that fail
+ * validation are withheld; there is deliberately no generic fallback.
  */
-export class MediaProfileRegistry {
+export class CharacterStyleRegistry {
   private readonly identities: Map<string, CharacterIdentity>;
-  private readonly profiles = new Map<string, CharacterMediaProfile>();
+  private readonly styles = new Map<string, CharacterStyle>();
   private readonly rejected = new Map<string, IdentityIssue[]>();
   readonly issues: readonly IdentityIssue[];
 
   constructor(
     identities: readonly CharacterIdentity[] = CHARACTER_IDENTITIES,
-    profiles: readonly CharacterMediaProfile[] = MEDIA_PROFILES,
+    styles: readonly CharacterStyle[] = CHARACTER_STYLES,
   ) {
     this.identities = new Map(identities.map((i) => [i.characterSlug, i]));
-    this.issues = validateCatalog(identities, profiles);
+    this.issues = validateStyles(identities, styles);
     for (const issue of this.issues) {
       const list = this.rejected.get(issue.characterId) ?? [];
       list.push(issue);
       this.rejected.set(issue.characterId, list);
     }
-    for (const p of profiles)
-      if (!this.rejected.has(p.characterId)) this.profiles.set(p.characterId, p);
+    for (const s of styles)
+      if (!this.rejected.has(s.characterId)) this.styles.set(s.characterId, s);
   }
 
-  resolve(characterSlug: string): ProfileResolution {
+  resolve(characterSlug: string): StyleResolution {
     const rejected = this.rejected.get(characterSlug);
     if (rejected) return { status: 'unavailable', reason: 'invalid_profile', issues: rejected };
-    const profile = this.profiles.get(characterSlug);
+    const style = this.styles.get(characterSlug);
     const identity = this.identities.get(characterSlug);
-    if (!profile || !identity) return { status: 'unavailable', reason: 'no_profile', issues: [] };
-    return { status: 'ready', profile, identity };
+    if (!style || !identity) return { status: 'unavailable', reason: 'no_profile', issues: [] };
+    return { status: 'ready', style, identity };
   }
 
-  /** Slugs with a usable profile. */
+  identity(characterSlug: string): CharacterIdentity | undefined {
+    return this.identities.get(characterSlug);
+  }
+
   characters(): string[] {
-    return [...this.profiles.keys()];
+    return [...this.styles.keys()];
   }
 }

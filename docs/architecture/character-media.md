@@ -1,81 +1,129 @@
-# Character avatars and voices
+# Character media: avatars and voices
 
-Every debate character is seen and heard through a **media profile** that is part of
-its identity, not a UI decoration. The code lives in `packages/media` (`@philax/media`);
-the debate engine is untouched and its `DebateMessage` output is consumed as-is.
-
-## Identity chain
+Every debate character can be **seen** (a lip-synced HeyGen avatar) and **heard**
+(an ElevenLabs voice). Both are AI reconstructions and are labelled as such
+everywhere they appear. Nothing here imitates a recording of the real person.
 
 ```
-Character (seed slug)
-  → CharacterIdentity        canonical presentation + evidence (identity/character-identities.ts)
-  → CharacterVisualIdentity  presentation, approximate age, era, visual reference
-  → CharacterVoiceIdentity   presentation, age profile, tone, pace, speech style, languages
-  → AvatarAppearance + VoiceRendering (what providers actually render)
+HeyGen      = avatar (real-time LiveAvatar, or rendered video segments)
+ElevenLabs  = voice (TTS with per-character timing for subtitles and sync)
+Debate Engine = what is said (unchanged; media only reads stored turns)
+Character profile = who it is (identity brief + configured assets)
 ```
 
-`validateProfile` / `validateCatalog` (identity/validation.ts) reject, among others:
+## Flow
 
-- an avatar or voice whose presentation differs from the character's (Arendt with a male
-  voice, Marx with a female avatar), including avatar _features_ that contradict it
-  (a beard or period dress of the other presentation);
-- characters whose presentation is undocumented (`unknown`): nothing is assigned;
-- a voice age that does not fit the portrait's age, or a pitch/rate that contradicts
-  the voice profile's pace and age;
-- a missing English, Spanish or Arabic voice;
-- any avatar, appearance, voice id or voice rendering reused by another character.
+```
+Debate Engine ──(stored turn)──► Character Media Service ──► Voice gateway ──► ElevenLabs
+                                   │  resolve + validate         (VoiceProvider)
+                                   └────────────────────────► Avatar gateway ──► HeyGen LiveAvatar (LITE) / HeyGen v3 video
+                                                                  (AvatarProvider)
+Browser ◄── audio + timing / LiveKit viewer token / video URL ── Philax API (/api/media/*)
+```
 
-`MediaProfileRegistry` is the only way to obtain a profile. Invalid or missing profiles
-resolve to `unavailable`; there is no generic or borrowed fallback. The UI then shows a
-neutral monogram and subtitles only.
+- `packages/media`: provider-free identity model: canonical identities, identity
+  briefs (`CHARACTER_STYLES`: presentation, age, era, appearance, voice tone and
+  pace, delivery settings), validation, subtitles, stage states.
+- `modules/media` (`@philax/media-service`): provider ports
+  (`VoiceProvider.synthesize`, `AvatarProvider.createSession / speak / stopSession`),
+  the ElevenLabs, LiveAvatar and HeyGen video adapters (plain `fetch`/WebSocket, no
+  SDKs), the `character_media_profiles` repository, the cache and
+  `CharacterMediaService`.
+- `apps/api`: `/api/media/*` routes (auth, ownership, rate limits).
+- `apps/web`: the debate stage and its controls. It never talks to a provider.
 
-A unit test checks that every seeded character has a valid profile, so adding a
-character means adding one identity entry and one `defineProfile(...)` call.
+Providers can be replaced by implementing the ports; the Debate Engine is not involved.
 
-## Providers and gateways
+## Security
 
-`AvatarProvider` (`generateAvatar`, `renderSpeech`) and `VoiceProvider` (`synthesize`)
-are the provider interfaces. The application only talks to `AvatarGateway` and
-`VoiceGateway`, which pick the provider named by the profile, verify that the returned
-avatar presents as the character, cache reusable output, and turn provider failures
-into explicit `unavailable` outcomes.
+- Keys are environment variables read by the API only: `ELEVENLABS_API_KEY`,
+  `HEYGEN_API_KEY` (video segments), `LIVEAVATAR_API_KEY` (real-time). They never
+  reach the browser, the database, prompts or source control, and are not logged.
+- The browser receives only: audio bytes and timing, a HeyGen video URL, or a
+  **session-scoped** LiveKit viewer token for a real-time avatar.
+- The text to voice is always read from the stored debate turn after an ownership
+  check (`debateId` + `messageId`), so the endpoints cannot voice arbitrary text.
+- There is **no default voice or avatar**. A character without its own configured
+  asset is "unavailable", never given another character's or a generic one.
 
-Built in (no keys, no cost):
+## Identity checks
 
-| Provider            | What it does                                                                    |
-| ------------------- | ------------------------------------------------------------------------------- |
-| `procedural-svg`    | Vector period portrait drawn from the profile's appearance, animated on device. |
-| `browser-speech`    | Web Speech API voices, filtered by language and documented voice presentation.  |
-| `heygen` (stub)     | Adapter for streaming/pre-rendered video avatars via a backend media proxy.     |
-| `elevenlabs` (stub) | Adapter for TTS clips via a backend media proxy.                                |
+Before any provider call, `CharacterMediaService.resolve` checks:
 
-Device voices are only used when their vendor documents their presentation (e.g.
-"Microsoft Zira" female, "Microsoft Hamed" male); unknown voices are never used. Each
-character's language voice id deterministically picks one compatible device voice and
-renders it with the character's own pitch, rate and pauses, so the character keeps the
-same identity across Arabic, Spanish and English. Several characters may share one
-installed device voice; their renderings stay distinct (validated) and this is a device
-limitation, not a profile choice. The stub adapters refuse calls until a backend proxy
-endpoint holding the vendor credentials exists; vendor keys never reach the browser.
+1. The character has a valid identity brief (presentation documented, avatar and
+   voice briefs agree on presentation and age, speed fits the pace).
+2. The configured avatar and voice declare a presentation that matches the
+   character (Marx cannot be given a female voice; Arendt cannot be given a male one).
+3. What the provider reports matches too: ElevenLabs `labels.gender` of the voice,
+   HeyGen `gender` of the avatar look. (LiveAvatar does not document per-avatar
+   gender, so real-time avatars rely on the declared presentation.)
+4. No asset is shared between characters (database unique indexes plus a check
+   across all rows, including per-language voices).
 
-## Presentation
+A failure makes that side unavailable with a reason (`not_configured`,
+`identity_mismatch`, `invalid_voice`, `provider_not_configured`, …). The UI shows
+"Voice unavailable" / "Avatar unavailable" with the reason and, for transient
+failures, Retry. The turn stays readable as captions.
 
-`planPresentation(message, participants, registry, language)` maps a `DebateMessage` to
-the speaker's profile, subtitle segments with per-word visemes, and the avatar state of
-every participant (`IDLE`, `LISTENING`, `THINKING`, `SPEAKING`, `CHALLENGING`,
-`RESPONDING`, `AGREEING`, `DISAGREEING`, `CONSIDERING`). `StagePlayer` plays turns in
-order, one sentence at a time: the voice speaks, its word boundaries move the
-subtitles and drive the mouth, and without a usable voice the turn plays as timed
-subtitles. The full text stays in the transcript, and any earlier turn can be replayed.
+## Playback modes
 
-The stage always labels portraits and voices as an AI reconstruction, never as
-historical images or recordings.
+Chosen per turn from the user's controls and what is available:
 
-## Cost and latency
+| Mode    | When                                         | How                                                                                     |
+| ------- | -------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `live`  | avatar on, `MEDIA_AVATAR_MODE=live`          | LiveAvatar LITE session; the API streams ElevenLabs PCM 24 kHz over the session socket  |
+| `video` | avatar on, `MEDIA_AVATAR_MODE=video`         | voice plays immediately; a HeyGen v3 segment is rendered from the same audio for replay |
+| `audio` | avatar off (or unavailable), voice on        | ElevenLabs MP3 with character timing                                                    |
+| `text`  | voice muted and avatar off, or nothing works | captions on a reading-speed clock; no provider call at all                              |
 
-Nothing is rendered per message by default: the portrait is drawn and animated on the
-device and speech is synthesized by the device. For paid providers, `planDelivery`
-decides from measured capabilities (latency, cost per minute, delivery mode) and a
-`RenderBudget` whether to stream, use pre-rendered segments (only for reusable text),
-or show the still avatar with audio; rendered clips and videos are cached by provider,
-voice/avatar, language and text hash.
+Subtitles come from ElevenLabs character alignment. In `live` mode they start on
+the avatar's `agent.speak_started` event, so captions follow the mouth.
+
+Cost: each user has at most one real-time session (opening another closes the
+previous one), sessions close after 90 s without speech, the server caps open
+sessions (`MEDIA_MAX_LIVE_SESSIONS`), turns already on the page are not replayed
+automatically, and audio is cached by character + voice + language + model +
+delivery settings + exact text (no secrets in the key; it is a hash).
+
+## Database
+
+`character_media_profiles` (migration `0003`): `character_id`, `avatar_provider`,
+`avatar_id` (HeyGen look), `live_avatar_id` (LiveAvatar), `avatar_presentation`,
+`voice_provider`, `voice_id`, `voice_presentation`, `presentation`,
+`age_profile`, `voice_style`, `visual_notes`, `language_configuration`
+(`{"languages": [...], "voices": {"ar": "<voice id>"}}`), timestamps. Identity
+columns are synced from the briefs; asset ids are set by an operator.
+
+## Setting up a character
+
+```bash
+pnpm db:migrate
+pnpm media media:sync                       # identity briefs for every character
+# Voice: pick an existing ElevenLabs voice, or design one from the brief (spends credits):
+pnpm media media:design-voice hannah-arendt # writes preview mp3s and prints generated ids
+pnpm media media:design-voice hannah-arendt --save <generated voice id>
+# or: pnpm media media:configure hannah-arendt --voice <voice id> --voice-presentation female
+# Avatar: create the avatar in HeyGen/LiveAvatar from period references (AI reconstruction), then:
+pnpm media media:configure hannah-arendt --live-avatar <liveavatar id> --avatar <heygen look id> --avatar-presentation female
+pnpm media media:verify                     # read-only check against the live providers
+```
+
+Per-language voices of the same character: `--voice-ar <id>`, `--voice-es <id>`.
+The character never changes with the language.
+
+Without keys the app runs normally and shows **Provider status: NOT CONFIGURED**.
+
+## Provider APIs used
+
+- ElevenLabs: `POST /v1/text-to-speech/{voice_id}/with-timestamps`,
+  `GET /v1/voices/{voice_id}`, `POST /v1/text-to-voice/design`, `POST /v1/text-to-voice`.
+- HeyGen LiveAvatar: `POST /v1/sessions/token` (mode `LITE`), `POST /v1/sessions/start`,
+  `POST /v1/sessions/stop`; WebSocket commands `agent.speak`, `agent.speak_end`,
+  `agent.interrupt`; events `session.state_updated`, `agent.speak_started`,
+  `agent.speak_ended`, `agent.speak_interrupted`, `error`.
+- HeyGen v3: `POST /v3/assets`, `POST /v3/videos`, `GET /v3/videos/{id}`,
+  `GET /v3/avatars/looks/{id}`.
+
+Provider errors are classified (invalid key, quota, rate limit with Retry-After,
+timeout, unavailable, invalid asset, generation failure). Mocks of these
+providers exist only in automated tests.

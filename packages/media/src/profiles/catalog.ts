@@ -1,45 +1,42 @@
 import type {
   AvatarAppearance,
-  CharacterMediaProfile,
+  CharacterStyle,
   CharacterVisualIdentity,
   CharacterVoiceIdentity,
-  VoiceRendering,
+  VoicePace,
 } from '../identity/types';
 import { MEDIA_LANGUAGES } from '../identity/types';
 
-/** Provider ids of the built-in, no-cost implementations. */
-export const PROCEDURAL_AVATAR_PROVIDER = 'procedural-svg';
-export const BROWSER_VOICE_PROVIDER = 'browser-speech';
-
-interface ProfileInput {
+interface StyleInput {
   visual: Required<Omit<CharacterVisualIdentity, 'presentation'>> & {
     presentation: CharacterVisualIdentity['presentation'];
   };
   appearance: AvatarAppearance;
   voice: Omit<CharacterVoiceIdentity, 'languageProfiles'>;
-  rendering: VoiceRendering;
+  /** Delivery speed for the voice provider (ElevenLabs `speed`, 0.7–1.2). */
+  speed: number;
 }
 
+/** Steadier delivery for slower, graver speakers; more variation for brisk ones. */
+const STABILITY: Record<VoicePace, number> = {
+  slow: 0.65,
+  deliberate: 0.55,
+  measured: 0.5,
+  brisk: 0.4,
+};
+
 /**
- * Builds a profile whose avatar and voice ids are owned by exactly one
- * character. `characterId` is the character's stable seed slug.
+ * Identity brief for one character: what the avatar and the voice must look and
+ * sound like. Provider asset ids are configuration (database), not part of this.
+ * `characterId` is the character's stable seed slug.
  */
-export function defineProfile(slug: string, input: ProfileInput): CharacterMediaProfile {
+export function defineStyle(slug: string, input: StyleInput): CharacterStyle {
   return {
     characterId: slug,
-    avatar: {
-      provider: PROCEDURAL_AVATAR_PROVIDER,
-      avatarId: `avatar:${slug}`,
-      appearance: input.appearance,
-    },
-    voice: {
-      provider: BROWSER_VOICE_PROVIDER,
-      voiceId: `voice:${slug}`,
-      languageVoices: Object.fromEntries(MEDIA_LANGUAGES.map((l) => [l, `voice:${slug}:${l}`])),
-      rendering: input.rendering,
-    },
     visualIdentity: input.visual,
     voiceIdentity: { ...input.voice, languageProfiles: [...MEDIA_LANGUAGES] },
+    portrait: input.appearance,
+    voiceSettings: { speed: input.speed, stability: STABILITY[input.voice.pace], style: 0.3 },
     disclosure: 'ai_reconstruction',
   };
 }
@@ -56,9 +53,9 @@ const SKIN = {
 
 const NO_BEARD = { style: 'none', color: 'transparent' } as const;
 
-/** Media profiles for every seeded character. */
-export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
-  defineProfile('adam-smith', {
+/** Identity briefs for every seeded character. */
+export const CHARACTER_STYLES: readonly CharacterStyle[] = [
+  defineStyle('adam-smith', {
     visual: {
       presentation: 'male',
       approximateAge: 64,
@@ -82,9 +79,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Plain Enlightenment prose that builds from everyday examples to principles.',
     },
-    rendering: { pitch: 0.9, rate: 0.97, sentencePauseMs: 450 },
+    speed: 0.97,
   }),
-  defineProfile('amartya-sen', {
+  defineStyle('amartya-sen', {
     visual: {
       presentation: 'male',
       approximateAge: 80,
@@ -108,9 +105,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Courteous and exact; weighs plural reasons and capabilities.',
     },
-    rendering: { pitch: 0.86, rate: 0.98, sentencePauseMs: 420 },
+    speed: 0.98,
   }),
-  defineProfile('aristotle', {
+  defineStyle('aristotle', {
     visual: {
       presentation: 'male',
       approximateAge: 60,
@@ -134,9 +131,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Classifies and defines; moves from common opinion to first principles.',
     },
-    rendering: { pitch: 0.94, rate: 1.0, sentencePauseMs: 480 },
+    speed: 1.0,
   }),
-  defineProfile('confucius', {
+  defineStyle('confucius', {
     visual: {
       presentation: 'male',
       approximateAge: 70,
@@ -160,9 +157,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'slow',
       speechStyle: 'Aphoristic and exemplary; teaches by question and maxim.',
     },
-    rendering: { pitch: 0.84, rate: 0.86, sentencePauseMs: 650 },
+    speed: 0.86,
   }),
-  defineProfile('david-hume', {
+  defineStyle('david-hume', {
     visual: {
       presentation: 'male',
       approximateAge: 55,
@@ -186,9 +183,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Sceptical and good-humoured; tests every claim against experience.',
     },
-    rendering: { pitch: 0.92, rate: 0.96, sentencePauseMs: 460 },
+    speed: 0.96,
   }),
-  defineProfile('epictetus', {
+  defineStyle('epictetus', {
     visual: {
       presentation: 'male',
       approximateAge: 65,
@@ -212,9 +209,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'deliberate',
       speechStyle: 'Direct second-person exhortation with short, pointed questions.',
     },
-    rendering: { pitch: 0.82, rate: 0.92, sentencePauseMs: 520 },
+    speed: 0.92,
   }),
-  defineProfile('epicurus', {
+  defineStyle('epicurus', {
     visual: {
       presentation: 'male',
       approximateAge: 55,
@@ -238,9 +235,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Calm and companionable; reasons toward tranquillity.',
     },
-    rendering: { pitch: 0.96, rate: 0.95, sentencePauseMs: 520 },
+    speed: 0.95,
   }),
-  defineProfile('friedrich-hayek', {
+  defineStyle('friedrich-hayek', {
     visual: {
       presentation: 'male',
       approximateAge: 75,
@@ -264,9 +261,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'deliberate',
       speechStyle: 'Patient, hedged exposition that stresses the limits of knowledge.',
     },
-    rendering: { pitch: 0.88, rate: 0.92, sentencePauseMs: 480 },
+    speed: 0.92,
   }),
-  defineProfile('friedrich-nietzsche', {
+  defineStyle('friedrich-nietzsche', {
     visual: {
       presentation: 'male',
       approximateAge: 42,
@@ -290,9 +287,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'deliberate',
       speechStyle: 'Aphoristic and provocative; builds to emphatic declarations.',
     },
-    rendering: { pitch: 0.95, rate: 0.9, sentencePauseMs: 600 },
+    speed: 0.9,
   }),
-  defineProfile('fyodor-dostoevsky', {
+  defineStyle('fyodor-dostoevsky', {
     visual: {
       presentation: 'male',
       approximateAge: 50,
@@ -316,9 +313,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'brisk',
       speechStyle: 'Impassioned and searching; doubles back on its own objections.',
     },
-    rendering: { pitch: 0.93, rate: 1.06, sentencePauseMs: 380 },
+    speed: 1.06,
   }),
-  defineProfile('hannah-arendt', {
+  defineStyle('hannah-arendt', {
     visual: {
       presentation: 'female',
       approximateAge: 55,
@@ -342,9 +339,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Draws careful distinctions in sober, exact formulations.',
     },
-    rendering: { pitch: 1.0, rate: 0.97, sentencePauseMs: 520 },
+    speed: 0.97,
   }),
-  defineProfile('immanuel-kant', {
+  defineStyle('immanuel-kant', {
     visual: {
       presentation: 'male',
       approximateAge: 66,
@@ -368,9 +365,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'deliberate',
       speechStyle: 'Architectonic; defines terms and argues from necessary conditions.',
     },
-    rendering: { pitch: 0.9, rate: 0.93, sentencePauseMs: 500 },
+    speed: 0.93,
   }),
-  defineProfile('jean-jacques-rousseau', {
+  defineStyle('jean-jacques-rousseau', {
     visual: {
       presentation: 'male',
       approximateAge: 54,
@@ -394,9 +391,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Eloquent and personal; contrasts natural goodness with social corruption.',
     },
-    rendering: { pitch: 0.97, rate: 1.0, sentencePauseMs: 460 },
+    speed: 1.0,
   }),
-  defineProfile('jean-paul-sartre', {
+  defineStyle('jean-paul-sartre', {
     visual: {
       presentation: 'male',
       approximateAge: 60,
@@ -420,9 +417,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'brisk',
       speechStyle: 'Fast and polemical; presses on freedom and responsibility.',
     },
-    rendering: { pitch: 0.98, rate: 1.1, sentencePauseMs: 320 },
+    speed: 1.1,
   }),
-  defineProfile('john-locke', {
+  defineStyle('john-locke', {
     visual: {
       presentation: 'male',
       approximateAge: 65,
@@ -446,9 +443,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Plain, careful argument from experience and consent.',
     },
-    rendering: { pitch: 0.87, rate: 0.95, sentencePauseMs: 480 },
+    speed: 0.95,
   }),
-  defineProfile('john-rawls', {
+  defineStyle('john-rawls', {
     visual: {
       presentation: 'male',
       approximateAge: 55,
@@ -472,9 +469,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Methodical; invites the listener into thought experiments.',
     },
-    rendering: { pitch: 0.97, rate: 0.95, sentencePauseMs: 500 },
+    speed: 0.95,
   }),
-  defineProfile('john-stuart-mill', {
+  defineStyle('john-stuart-mill', {
     visual: {
       presentation: 'male',
       approximateAge: 60,
@@ -498,9 +495,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Balanced and lucid; anticipates objections.',
     },
-    rendering: { pitch: 0.93, rate: 1.0, sentencePauseMs: 460 },
+    speed: 1.0,
   }),
-  defineProfile('karl-marx', {
+  defineStyle('karl-marx', {
     visual: {
       presentation: 'male',
       approximateAge: 57,
@@ -524,9 +521,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Polemical and historical; names material interests and contradictions.',
     },
-    rendering: { pitch: 0.88, rate: 1.02, sentencePauseMs: 420 },
+    speed: 1.02,
   }),
-  defineProfile('karl-popper', {
+  defineStyle('karl-popper', {
     visual: {
       presentation: 'male',
       approximateAge: 80,
@@ -550,9 +547,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Sharp and critical; seeks the refutation, not the confirmation.',
     },
-    rendering: { pitch: 0.86, rate: 1.03, sentencePauseMs: 400 },
+    speed: 1.03,
   }),
-  defineProfile('martin-heidegger', {
+  defineStyle('martin-heidegger', {
     visual: {
       presentation: 'male',
       approximateAge: 70,
@@ -576,9 +573,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'slow',
       speechStyle: 'Etymological and circling; returns to the question of Being.',
     },
-    rendering: { pitch: 0.85, rate: 0.86, sentencePauseMs: 650 },
+    speed: 0.86,
   }),
-  defineProfile('mary-wollstonecraft', {
+  defineStyle('mary-wollstonecraft', {
     visual: {
       presentation: 'female',
       approximateAge: 38,
@@ -602,9 +599,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'brisk',
       speechStyle: 'Forthright moral argument that appeals to reason and rights.',
     },
-    rendering: { pitch: 1.06, rate: 1.05, sentencePauseMs: 400 },
+    speed: 1.05,
   }),
-  defineProfile('peter-singer', {
+  defineStyle('peter-singer', {
     visual: {
       presentation: 'male',
       approximateAge: 75,
@@ -628,9 +625,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Plain and consequence-focused; reasons through concrete cases.',
     },
-    rendering: { pitch: 0.9, rate: 1.0, sentencePauseMs: 420 },
+    speed: 1.0,
   }),
-  defineProfile('plato', {
+  defineStyle('plato', {
     visual: {
       presentation: 'male',
       approximateAge: 60,
@@ -654,9 +651,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Dialogical; leads by questions toward definitions and forms.',
     },
-    rendering: { pitch: 0.92, rate: 0.98, sentencePauseMs: 520 },
+    speed: 0.98,
   }),
-  defineProfile('robert-nozick', {
+  defineStyle('robert-nozick', {
     visual: {
       presentation: 'male',
       approximateAge: 40,
@@ -680,9 +677,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'brisk',
       speechStyle: 'Inventive thought experiments and quick counterexamples.',
     },
-    rendering: { pitch: 1.0, rate: 1.08, sentencePauseMs: 340 },
+    speed: 1.08,
   }),
-  defineProfile('sigmund-freud', {
+  defineStyle('sigmund-freud', {
     visual: {
       presentation: 'male',
       approximateAge: 65,
@@ -706,9 +703,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'deliberate',
       speechStyle: 'Case-based and interpretive; uncovers hidden motives.',
     },
-    rendering: { pitch: 0.87, rate: 0.94, sentencePauseMs: 500 },
+    speed: 0.94,
   }),
-  defineProfile('simone-de-beauvoir', {
+  defineStyle('simone-de-beauvoir', {
     visual: {
       presentation: 'female',
       approximateAge: 45,
@@ -732,9 +729,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'brisk',
       speechStyle: 'Rapid and concrete; grounds abstractions in lived situations.',
     },
-    rendering: { pitch: 1.04, rate: 1.1, sentencePauseMs: 330 },
+    speed: 1.1,
   }),
-  defineProfile('soren-kierkegaard', {
+  defineStyle('soren-kierkegaard', {
     visual: {
       presentation: 'male',
       approximateAge: 30,
@@ -758,9 +755,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Ironic and indirect; addresses the single individual.',
     },
-    rendering: { pitch: 1.04, rate: 1.02, sentencePauseMs: 440 },
+    speed: 1.02,
   }),
-  defineProfile('thomas-hobbes', {
+  defineStyle('thomas-hobbes', {
     visual: {
       presentation: 'male',
       approximateAge: 80,
@@ -784,9 +781,9 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Blunt definitions and stark, mechanistic conclusions.',
     },
-    rendering: { pitch: 0.8, rate: 0.97, sentencePauseMs: 430 },
+    speed: 0.97,
   }),
-  defineProfile('thomas-kuhn', {
+  defineStyle('thomas-kuhn', {
     visual: {
       presentation: 'male',
       approximateAge: 50,
@@ -810,6 +807,6 @@ export const MEDIA_PROFILES: readonly CharacterMediaProfile[] = [
       pace: 'measured',
       speechStyle: 'Historical case studies with careful qualifications.',
     },
-    rendering: { pitch: 0.95, rate: 0.99, sentencePauseMs: 460 },
+    speed: 0.99,
   }),
 ];

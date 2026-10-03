@@ -17,6 +17,8 @@
     "@philax/database": "workspace:*",
     "@philax/debates": "workspace:*",
     "@philax/knowledge": "workspace:*",
+    "@philax/media": "workspace:*",
+    "@philax/media-service": "workspace:*",
     "@philax/perspectives": "workspace:*",
     "@philax/prompts": "workspace:*",
     "@philax/sources": "workspace:*",
