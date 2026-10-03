@@ -48,6 +48,11 @@ export const EnvSchema = z.object({
   LIVEAVATAR_API_KEY: optionalString,
   /** live: real-time LiveAvatar sessions; video: rendered HeyGen segments; off: voice and portraits only. */
   MEDIA_AVATAR_MODE: z.enum(['live', 'video', 'off']).default('live'),
+  /** Prepare missing avatars/voices automatically when a character is first selected (spends provider credits once per character). */
+  MEDIA_AUTO_PREPARE: z
+    .enum(['true', 'false'])
+    .default('true')
+    .transform((v) => v === 'true'),
   MEDIA_MAX_LIVE_SESSIONS: z.coerce.number().int().min(0).max(100).default(4),
   POSTHOG_KEY: optionalString,
   POSTHOG_HOST: z.string().default('https://us.i.posthog.com'),

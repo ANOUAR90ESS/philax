@@ -1,5 +1,6 @@
 import type { CharacterAlignment } from '@philax/media';
 import { MediaProviderError } from '../errors';
+import type { PreparedVoice, PrepareVoiceInput, VoiceGateway } from '../gateways';
 import { callJson, malformed, type FetchLike } from '../http';
 import type {
   AssetFacts,
@@ -170,5 +171,36 @@ export class ElevenLabsVoiceProvider implements VoiceProvider {
     );
     if (!res.voice_id) throw malformed(this.name, 'no voice_id');
     return res.voice_id;
+  }
+}
+
+/**
+ * Voice preparation through ElevenLabs Voice Design: a voice is designed from
+ * the character's voice identity, the first candidate is saved to the
+ * account's library and its recorded gender is returned for validation.
+ */
+export class ElevenLabsVoiceGateway implements VoiceGateway {
+  readonly provider = 'elevenlabs' as const;
+
+  constructor(
+    private readonly voices: ElevenLabsVoiceProvider,
+    private readonly enabled = true,
+  ) {}
+
+  get canPrepare(): boolean {
+    return this.enabled && this.voices.configured;
+  }
+
+  async prepareCharacterVoice(input: PrepareVoiceInput): Promise<PreparedVoice> {
+    const [candidate] = await this.voices.designVoice({ description: input.description });
+    if (!candidate) throw malformed('elevenlabs', 'no voice candidates');
+    const voiceId = await this.voices.saveDesignedVoice({
+      name: input.name,
+      description: input.description,
+      generatedVoiceId: candidate.generatedVoiceId,
+      labels: { gender: input.presentation, use_case: 'philax-character' },
+    });
+    const facts = await this.voices.describeVoice(voiceId);
+    return { voiceId, gender: facts.gender };
   }
 }

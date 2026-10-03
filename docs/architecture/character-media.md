@@ -34,6 +34,53 @@ Browser ◄── audio + timing / LiveKit viewer token / video URL ── Phila
 
 Providers can be replaced by implementing the ports; the Debate Engine is not involved.
 
+## Participant preparation (Media Orchestrator)
+
+Characters are chosen for intellectual relevance only; media never limits who
+can be selected. After the debate is planned, the debate service hands the
+selected participants to the `MediaOrchestrator` (through its
+`ParticipantPreparer` port) and the debate starts only when they are prepared.
+Users see a single step, "Preparing the participants", never provider details.
+
+```
+Topic → Perspectives → Character selection → Knowledge → Plan
+      → Media Orchestrator ─┬─ Voice gateway  → ElevenLabs (Voice Design)
+                            └─ Avatar gateway → HeyGen (prompt avatar look)
+      → Debate starts
+```
+
+For each participant, in parallel (two at a time, for provider rate limits):
+
+1. Ensure a media profile exists (created on first selection).
+2. Resolve the identity: the character's brief, or for characters added later
+   the presentation recorded in its profile (`media:configure <slug>
+--presentation …`). An unknown identity is never guessed, so nothing is
+   prepared for it.
+3. Reuse a valid existing voice and avatar.
+4. Prepare only a side that is missing: a voice designed from the voice brief,
+   or (video mode) an avatar look generated from the visual brief. Each side is
+   claimed in the database, so concurrent debates prepare a character once.
+   Transient provider failures are retried once.
+5. Validate the result against the character (the provider's reported gender
+   included), save it and validate the profile again as playback will see it.
+
+Outcome: a participant is ready, or a side is simply not set up (no provider
+key, `MEDIA_AUTO_PREPARE=false`, or a real-time LiveAvatar, which has no API to
+create avatars and must be configured), in which case it is presented without
+that side. If a preparation **failed**, the debate does not start: the user
+sees "We couldn't prepare one of the participants. Please try again." and the
+next attempt prepares again before the first round. Nothing is ever replaced
+with another character's avatar or voice.
+
+Internal states (`MEDIA_PREPARATION_STARTED`, `VOICE_RESOLVING`,
+`AVATAR_RESOLVING`, `MEDIA_VALIDATING`, `MEDIA_READY`, `MEDIA_FAILED`) are
+logged for operators only.
+
+Profiles carry a per-side status, an overall status and a `version` that
+increases whenever an asset changes; replaced assets are kept in
+`asset_history`. Debates never store asset ids, so changing them never breaks
+an existing debate.
+
 ## Security
 
 - Keys are environment variables read by the API only: `ELEVENLABS_API_KEY`,
@@ -91,7 +138,9 @@ delivery settings + exact text (no secrets in the key; it is a hash).
 `avatar_id` (HeyGen look), `live_avatar_id` (LiveAvatar), `avatar_presentation`,
 `voice_provider`, `voice_id`, `voice_presentation`, `presentation`,
 `age_profile`, `voice_style`, `visual_notes`, `language_configuration`
-(`{"languages": [...], "voices": {"ar": "<voice id>"}}`), timestamps. Identity
+(`{"languages": [...], "voices": {"ar": "<voice id>"}}`), timestamps; migration
+`0004` adds `status`, `avatar_status`, `voice_status`, `version` and
+`asset_history`. Identity
 columns are synced from the briefs; asset ids are set by an operator.
 
 ## Setting up a character
@@ -108,6 +157,10 @@ pnpm media media:configure hannah-arendt --live-avatar <liveavatar id> --avatar 
 pnpm media media:verify                     # read-only check against the live providers
 ```
 
+With `MEDIA_AUTO_PREPARE=true` (the default) missing voices, and avatars in
+video mode, are prepared automatically the first time a character is
+selected; this spends provider credits once per character.
+
 Per-language voices of the same character: `--voice-ar <id>`, `--voice-es <id>`.
 The character never changes with the language.
 
@@ -122,7 +175,7 @@ Without keys the app runs normally and shows **Provider status: NOT CONFIGURED**
   `agent.interrupt`; events `session.state_updated`, `agent.speak_started`,
   `agent.speak_ended`, `agent.speak_interrupted`, `error`.
 - HeyGen v3: `POST /v3/assets`, `POST /v3/videos`, `GET /v3/videos/{id}`,
-  `GET /v3/avatars/looks/{id}`.
+  `GET /v3/avatars/looks/{id}`, `POST /v3/avatars` (type `prompt`).
 
 Provider errors are classified (invalid key, quota, rate limit with Retry-After,
 timeout, unavailable, invalid asset, generation failure). Mocks of these

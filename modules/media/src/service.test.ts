@@ -34,6 +34,10 @@ function row(
     voiceStyle: {},
     visualNotes: '',
     languageConfiguration: {},
+    status: 'not_ready',
+    avatarStatus: null,
+    voiceStatus: null,
+    version: 1,
     updatedAt: '',
     ...patch,
   };
@@ -252,10 +256,10 @@ describe('CharacterMediaService: identity', () => {
     expect(media.status().voice.configured).toBe(false);
   });
 
-  it('refuses characters without a validated identity brief', async () => {
+  it('gives nothing to a character whose identity is not recorded yet', async () => {
     const { media } = service([]);
     const { view } = await media.resolve({ id: 'x', slug: 'new-thinker' }, 'en');
-    expect(view.voice).toMatchObject({ reason: 'identity_mismatch' });
+    expect(view.voice).toMatchObject({ reason: 'not_configured' });
   });
 });
 

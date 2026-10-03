@@ -7,6 +7,9 @@ export {
   toMediaConfig,
   type AssetAssignment,
   type MediaProfileRow,
+  type MediaSide,
+  type ProfileStatus,
+  type SideStatus,
 } from './repository';
 export {
   CharacterMediaService,
@@ -15,12 +18,31 @@ export {
   type MediaCharacter,
   type TurnInput,
 } from './service';
-export { ElevenLabsVoiceProvider, type ElevenLabsOptions } from './providers/elevenlabs';
+export {
+  ElevenLabsVoiceGateway,
+  ElevenLabsVoiceProvider,
+  type ElevenLabsOptions,
+} from './providers/elevenlabs';
 export {
   LiveAvatarProvider,
   type LiveAvatarOptions,
   type SocketFactory,
   type SocketLike,
 } from './providers/liveavatar';
-export { HeyGenVideoAvatarProvider, type HeyGenVideoOptions } from './providers/heygen-video';
+export {
+  HeyGenAvatarGateway,
+  HeyGenVideoAvatarProvider,
+  type HeyGenVideoOptions,
+} from './providers/heygen-video';
 export { runMediaCommand } from './cli';
+export * from './gateways';
+export {
+  MediaOrchestrator,
+  MEDIA_PREPARATION_STATES,
+  type MediaOrchestratorOptions,
+  type MediaPreparationState,
+  type ParticipantOutcome,
+  type PreparableCharacter,
+  type PrepareParticipantsInput,
+  type SideOutcome,
+} from './orchestrator';

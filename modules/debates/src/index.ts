@@ -1,5 +1,9 @@
 export { DebateService } from './services/debate-service';
-export type { DebateServiceDeps } from './services/debate-service';
+export type {
+  DebateServiceDeps,
+  ParticipantPreparer,
+  PreparableParticipant,
+} from './services/debate-service';
 export { PgAdvisoryLock } from './services/lock';
 export type { DebateLock } from './services/lock';
 export { AiCallRepository } from './repositories/ai-call-repository';
