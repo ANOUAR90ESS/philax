@@ -24,8 +24,10 @@ function meta(document: HtmlDocument, ...names: string[]): string | null {
 /** Turns article HTML into plain text with paragraph breaks preserved. */
 export function htmlToText(html: string): string {
   const { document } = parseHTML(`<!doctype html><html><body>${html}</body></html>`);
-  const blocks = [...document.querySelectorAll(BLOCKS)]
-    .map((el) => (el.textContent ?? '').replace(/\s+/g, ' ').trim())
+  const blocks = Array.from(
+    document.querySelectorAll(BLOCKS) as unknown as ArrayLike<{ textContent: string | null }>,
+  )
+    .map((el: { textContent: string | null }) => (el.textContent ?? '').replace(/\s+/g, ' ').trim())
     .filter(Boolean);
   if (blocks.length) return blocks.join('\n\n');
   return (document.body?.textContent ?? '').replace(/\s+/g, ' ').trim();

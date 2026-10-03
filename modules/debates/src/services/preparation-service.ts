@@ -330,14 +330,12 @@ export function fallbackPlan(analysis: TopicAnalysis, ids: string[]): DebatePlan
           poles: ['', ''],
         },
       ];
-  const axes = tensions
-    .slice(0, 3)
-    .map((t, i) => ({
-      id: `x${i + 1}`,
-      axis: t.axis,
-      description: t.description.padEnd(10, '.'),
-      between: ids,
-    }));
+  const axes = tensions.slice(0, 3).map((t, i) => ({
+    id: `x${i + 1}`,
+    axis: t.axis,
+    description: t.description.padEnd(10, '.'),
+    between: ids,
+  }));
   return {
     disagreementAxes: axes,
     openings: ids.map((id) => ({

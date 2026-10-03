@@ -342,14 +342,12 @@ export class TurnGenerator {
         citation: citationTag(e),
         text: e.content,
       })),
-      transcript: ctx.messages
-        .slice(-8)
-        .map((m) => ({
-          messageId: m.id,
-          speaker: speakerName(ctx, m),
-          move: m.move,
-          text: m.content,
-        })),
+      transcript: ctx.messages.slice(-8).map((m) => ({
+        messageId: m.id,
+        speaker: speakerName(ctx, m),
+        move: m.move,
+        text: m.content,
+      })),
       replyTo: replyTo
         ? { messageId: replyTo.id, speaker: speakerName(ctx, replyTo), text: replyTo.content }
         : null,

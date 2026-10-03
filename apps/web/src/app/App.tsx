@@ -1,6 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout } from '../components/Layout';
+import { RequireAuth } from '../components/RequireAuth';
 import { ChallengePage } from '../routes/ChallengePage';
+import { DebatePage } from '../routes/DebatePage';
+import { MyDebatesPage } from '../routes/MyDebatesPage';
 import { HomePage } from '../routes/HomePage';
 import { NotFoundPage } from '../routes/NotFoundPage';
 import { PrivacyPage } from '../routes/PrivacyPage';
@@ -17,6 +20,22 @@ export function AppRoutes() {
         <Route path="signin" element={<SignInPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="privacy" element={<PrivacyPage />} />
+        <Route
+          path="debates/:id"
+          element={
+            <RequireAuth>
+              <DebatePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="me"
+          element={
+            <RequireAuth>
+              <MyDebatesPage />
+            </RequireAuth>
+          }
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

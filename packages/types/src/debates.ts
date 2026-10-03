@@ -155,6 +155,8 @@ export const DebateViewSchema = z.object({
     .nullable(),
   participants: z.array(DebateParticipantSchema),
   rounds: z.array(DebateRoundSchema),
+  /** Number of scheduled (non-user) rounds for this debate. */
+  plannedRounds: z.number().int().min(1),
   messages: z.array(DebateMessageSchema),
   disagreementAxes: z.array(z.string()),
   challenge: ChallengeFramingSchema.nullable(),

@@ -152,7 +152,16 @@
       "title": "Examining your idea",
       "hidden": "Hidden assumptions",
       "strongest": "Strongest objection"
-    }
+    },
+    "finished": "{{name}} finished speaking.",
+    "loading": "Loading the debate…",
+    "back": "Back to start",
+    "reply": "In reply to",
+    "jumpToSource": "Source {{label}}",
+    "thinking": "Preparing…",
+    "transcriptEmpty": "The debate has not started yet.",
+    "start": "Begin the debate",
+    "yourTurnHint": "You can add your view at any point, or conclude the debate."
   },
   "sources": {
     "title": "Sources",
@@ -199,7 +208,8 @@
       "evidence": "Evidence",
       "priorities": "Priorities",
       "schools": "Schools of thought"
-    }
+    },
+    "challengeCta": "Test your own view: challenge my idea"
   },
   "profile": {
     "title": "My debates",
@@ -209,7 +219,9 @@
     "open": "Open",
     "account": "Account",
     "deleteAccount": "Delete my account and all data",
-    "deleteAccountConfirm": "This permanently deletes your account, debates, inputs and saved items. Continue?"
+    "deleteAccountConfirm": "This permanently deletes your account, debates, inputs and saved items. Continue?",
+    "delete": "Delete",
+    "savedBadge": "Saved"
   },
   "privacy": {
     "title": "Privacy",
@@ -243,5 +255,14 @@
       "INVALID_STATE": "That action is not available at this stage of the debate.",
       "INTERNAL": "Something went wrong on our side. Please try again."
     }
+  },
+  "claimKinds": {
+    "claim": "Claim",
+    "evidence": "Evidence",
+    "assumption": "Assumption",
+    "question": "Question",
+    "value_judgment": "Value judgement",
+    "prediction": "Prediction",
+    "definition": "Definition"
   }
 }

@@ -1,5 +1,5 @@
 import type { DebateView } from '@philax/types';
-import { canUserJoin, nextAction } from '../domain/state-machine';
+import { canUserJoin, nextAction, schedule } from '../domain/state-machine';
 import type { DebateRecord } from '../repositories/debate-repository';
 import type { Repos } from './context';
 import { stripTurnKey } from './turn-generator';
@@ -40,6 +40,7 @@ export async function buildDebateView(
       : null,
     participants,
     rounds: rounds.map(({ id: _id, ...r }) => r),
+    plannedRounds: schedule(debate.mode, limits.maxRounds).length,
     messages: messages.map(stripTurnKey),
     disagreementAxes: debate.plan?.disagreementAxes.map((a) => a.description) ?? [],
     challenge: debate.challenge,

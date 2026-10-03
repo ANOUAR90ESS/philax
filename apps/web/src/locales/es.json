@@ -152,7 +152,16 @@
       "title": "Examinando tu idea",
       "hidden": "Supuestos ocultos",
       "strongest": "Objeción más fuerte"
-    }
+    },
+    "finished": "{{name}} ha terminado de hablar.",
+    "loading": "Cargando el debate…",
+    "back": "Volver al inicio",
+    "reply": "En respuesta a",
+    "jumpToSource": "Fuente {{label}}",
+    "thinking": "Preparando…",
+    "transcriptEmpty": "El debate aún no ha comenzado.",
+    "start": "Comenzar el debate",
+    "yourTurnHint": "Puedes añadir tu opinión en cualquier momento o concluir el debate."
   },
   "sources": {
     "title": "Fuentes",
@@ -199,7 +208,8 @@
       "evidence": "Evidencia",
       "priorities": "Prioridades",
       "schools": "Escuelas de pensamiento"
-    }
+    },
+    "challengeCta": "Pon a prueba tu propia opinión: desafía mi idea"
   },
   "profile": {
     "title": "Mis debates",
@@ -209,7 +219,9 @@
     "open": "Abrir",
     "account": "Cuenta",
     "deleteAccount": "Eliminar mi cuenta y todos mis datos",
-    "deleteAccountConfirm": "Esto elimina definitivamente tu cuenta, debates, entradas y elementos guardados. ¿Continuar?"
+    "deleteAccountConfirm": "Esto elimina definitivamente tu cuenta, debates, entradas y elementos guardados. ¿Continuar?",
+    "delete": "Eliminar",
+    "savedBadge": "Guardado"
   },
   "privacy": {
     "title": "Privacidad",
@@ -243,5 +255,14 @@
       "INVALID_STATE": "Esa acción no está disponible en esta fase del debate.",
       "INTERNAL": "Algo falló por nuestra parte. Inténtalo de nuevo."
     }
+  },
+  "claimKinds": {
+    "claim": "Afirmación",
+    "evidence": "Evidencia",
+    "assumption": "Supuesto",
+    "question": "Pregunta",
+    "value_judgment": "Juicio de valor",
+    "prediction": "Predicción",
+    "definition": "Definición"
   }
 }
