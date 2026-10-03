@@ -41,13 +41,13 @@ test('core scenario: topic → characters → rounds → user joins → synthesi
   await expect(page.getByRole('button', { name: 'Next round' })).toBeVisible({ timeout: 30_000 });
   const firstMessage = page.getByRole('article').first();
   await expect(firstMessage.getByText(/Sources cited/)).toBeVisible();
-  await firstMessage
-    .getByRole('link', { name: /^Source E\d+$/ })
-    .first()
-    .click();
-  await expect(
-    firstMessage.getByText('Bibliographic reference (no verified link yet)').first(),
-  ).toBeVisible();
+  const marker = firstMessage.getByRole('link', { name: /^Source E\d+$/ }).first();
+  const label = ((await marker.textContent()) ?? '').trim();
+  await marker.click();
+  // The citation opens the turn's source list and moves focus to that exact source.
+  const source = firstMessage.locator('li.source-item').filter({ hasText: label }).first();
+  await expect(source).toBeVisible();
+  await expect(source).toBeFocused();
 
   // The user enters the debate and participants respond, challenge and reframe.
   await page
