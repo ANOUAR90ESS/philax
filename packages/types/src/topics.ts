@@ -47,6 +47,8 @@ export const TopicAnalysisSchema = z.object({
   questions: z.array(z.string().min(1).max(400)).min(1).max(8),
   tensions: z.array(TensionSchema).max(8),
   requiredPerspectives: z.array(PerspectiveRequirementSchema).min(2).max(8),
+  /** English search terms for knowledge retrieval (the knowledge base is English). */
+  retrievalKeywords: z.array(z.string().min(2).max(60)).min(3).max(20),
   /** False when the input is purely factual and does not admit reasonable disagreement. */
   admitsReasonableDisagreement: z.boolean(),
 });
