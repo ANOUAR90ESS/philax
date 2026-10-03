@@ -10,6 +10,7 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "@philax/media": "workspace:*",
     "@philax/types": "workspace:*",
     "@philax/ui": "workspace:*",
     "i18next": "^26.4.2",

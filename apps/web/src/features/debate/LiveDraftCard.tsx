@@ -23,7 +23,7 @@ export function LiveDraftCard({
       aria-busy="true"
     >
       <header className="message__head">
-        <Avatar name={name} seat={participant?.seat ?? 0} />
+        <Avatar name={name} seat={participant?.seat ?? 0} slug={participant?.character.slug} />
         <div>
           <h4 className="message__speaker">{name}</h4>
           <p className="px-m0 px-small px-muted">

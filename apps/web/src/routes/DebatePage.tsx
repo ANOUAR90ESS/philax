@@ -10,6 +10,8 @@ import { JoinDebate } from '../features/debate/JoinDebate';
 import { PreparationProgress } from '../features/debate/PreparationProgress';
 import { SynthesisView } from '../features/debate/SynthesisView';
 import { Transcript } from '../features/debate/Transcript';
+import { DebateStage } from '../features/stage/DebateStage';
+import { useStage } from '../features/stage/useStage';
 import { TopicPanel } from '../features/topic/TopicPanel';
 import { isPreparing, useDebate } from '../hooks/useDebate';
 
@@ -30,6 +32,7 @@ export function DebatePage() {
     setSaved,
     reload,
   } = useDebate(id);
+  const stage = useStage(view, draft);
 
   useEffect(() => {
     if (view?.topic?.title) document.title = `${view.topic.title} · ${t('app.name')}`;
@@ -108,6 +111,8 @@ export function DebatePage() {
 
       {preparing ? <PreparationProgress steps={steps} /> : null}
 
+      <DebateStage debate={view} draft={draft} stage={stage} />
+
       <div className="debate__layout">
         <aside className="debate__side" aria-label={t('debate.participants')}>
           {view.participants.length ? (
@@ -132,6 +137,7 @@ export function DebatePage() {
             draft={draft}
             liveRound={liveRound}
             onSourceOpen={() => void debatesApi.trackSourceOpened(id).catch(() => undefined)}
+            onListen={stage.play}
           />
 
           {error ? (

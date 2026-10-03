@@ -37,7 +37,7 @@ Without an LLM key the app runs, but debate creation returns a clear
 ```
 apps/api        Fastify API: routes → controllers → module services; SSE streaming
 apps/web        React SPA (i18n en/es/ar, RTL), features: input, debate, topic, characters, sources, profile
-packages/       types (Zod contracts) · config · prompts (versioned) · ai (LLM gateway, embeddings) · ui
+packages/       types (Zod contracts) · config · prompts (versioned) · ai (LLM gateway, embeddings) · ui · media (avatars, voices)
 modules/        users · billing · sources · topics · perspectives · characters · knowledge · arguments · debates
 database/       SQL migrations, curated seed (29 thinkers, 23 perspectives), migration/seed runners
 tests/          integration, E2E, evaluation dataset, test doubles
@@ -46,7 +46,8 @@ deploy/         Dockerfiles and nginx config
 ```
 
 Start with [docs/architecture/overview.md](docs/architecture/overview.md) and
-[docs/architecture/decisions.md](docs/architecture/decisions.md).
+[docs/architecture/decisions.md](docs/architecture/decisions.md). Character avatars and
+voices are described in [docs/architecture/character-media.md](docs/architecture/character-media.md).
 
 ## Principles
 

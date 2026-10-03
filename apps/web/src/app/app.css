@@ -649,3 +649,242 @@ h3 {
   font-size: 1.08rem;
   color: var(--px-ink);
 }
+
+/* Debate stage: the cast as characters, the speaker in focus */
+.stage {
+  background: var(--px-surface);
+  border: 1px solid var(--px-line);
+  border-radius: var(--px-radius);
+  padding: 0.9rem;
+  display: grid;
+  gap: 0.9rem;
+}
+.stage__cast {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  overflow-x: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0.25rem;
+}
+.stage__seat {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 0.15rem;
+  inline-size: 5.5rem;
+  flex: none;
+  text-align: center;
+  font-size: 0.8rem;
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+.stage__seat.is-active {
+  opacity: 1;
+}
+.stage__seat .portrait,
+.stage__seat .portrait-missing {
+  inline-size: 3.6rem;
+  block-size: 3.6rem;
+  transition: transform 0.3s ease;
+}
+.stage__seat.is-active .portrait,
+.stage__seat.is-active .portrait-missing {
+  transform: scale(1.08);
+}
+.stage__seat.is-active .portrait__ring {
+  stroke-width: 7;
+}
+.stage__seat-name {
+  font-weight: 600;
+  line-height: 1.2;
+}
+.stage__seat-state {
+  color: var(--px-ink-soft);
+  font-size: 0.75rem;
+}
+.stage__focus {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  text-align: center;
+  border-block-start: 1px solid var(--px-line);
+  padding-block-start: 0.9rem;
+}
+.stage__now {
+  margin: 0;
+}
+.stage__now strong {
+  color: var(--seat, var(--px-ink));
+}
+.stage__role {
+  color: var(--px-ink-soft);
+  font-size: 0.9rem;
+}
+.stage__disclosure,
+.stage__voice-note,
+.stage__idle {
+  margin: 0;
+  max-inline-size: 48ch;
+}
+.stage__disclosure {
+  color: var(--px-ink-soft);
+}
+.stage__subtitles {
+  margin: 0;
+  inline-size: 100%;
+  max-inline-size: var(--px-measure);
+  min-block-size: 3.4em;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--px-radius);
+  background: var(--px-surface-2);
+  font-family: var(--px-font-read);
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+.stage__word.is-current {
+  color: var(--seat, var(--px-ink));
+  text-decoration: underline 2px;
+  text-underline-offset: 0.2em;
+}
+.stage__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.portrait {
+  display: block;
+  overflow: visible;
+}
+.portrait--large {
+  inline-size: min(14rem, 60vw);
+  block-size: auto;
+}
+.portrait__ground {
+  fill: var(--px-surface-2);
+}
+.portrait__ring {
+  fill: none;
+  stroke: var(--seat, var(--px-line));
+  stroke-width: 3;
+}
+.portrait__head,
+.portrait__body {
+  transform-box: view-box;
+  transform-origin: 50% 85%;
+  transition: transform 0.6s ease;
+}
+.portrait--listening .portrait__head {
+  animation: px-breathe 6s ease-in-out infinite;
+}
+.portrait--speaking .portrait__head,
+.portrait--challenging .portrait__head,
+.portrait--responding .portrait__head {
+  animation: px-sway 3.4s ease-in-out infinite;
+}
+.portrait--thinking .portrait__head,
+.portrait--considering .portrait__head {
+  transform: rotate(-3deg);
+}
+.portrait--agreeing .portrait__head {
+  animation: px-nod 1.8s ease-in-out 2;
+}
+.portrait--disagreeing .portrait__head {
+  animation: px-shake 2.6s ease-in-out 1;
+}
+@keyframes px-breathe {
+  50% {
+    transform: translateY(1px);
+  }
+}
+@keyframes px-sway {
+  25% {
+    transform: rotate(1.2deg);
+  }
+  75% {
+    transform: rotate(-1deg) translateY(-0.5px);
+  }
+}
+@keyframes px-nod {
+  40% {
+    transform: rotate(0) translateY(2px);
+  }
+}
+@keyframes px-shake {
+  20% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+  80% {
+    transform: rotate(-1deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portrait__head {
+    animation: none !important;
+    transition: none;
+  }
+}
+.portrait-missing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--seat, var(--px-ink));
+  color: var(--px-surface);
+  font-family: var(--px-font-read);
+  font-weight: 700;
+}
+.portrait-missing--large {
+  inline-size: min(14rem, 60vw);
+  block-size: min(14rem, 60vw);
+  font-size: 3rem;
+}
+.avatar--portrait {
+  background: none;
+  overflow: hidden;
+}
+.avatar--portrait .portrait {
+  inline-size: 100%;
+  block-size: 100%;
+}
+.message__listen {
+  margin-inline-start: auto;
+  align-self: start;
+  border: 1px solid var(--px-line);
+  border-radius: 999px;
+  background: none;
+  color: var(--px-ink-soft);
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.7rem;
+  cursor: pointer;
+}
+.message__listen:hover {
+  color: var(--px-ink);
+  border-color: var(--seat, var(--px-ink));
+}
+@media (max-width: 30rem) {
+  .stage {
+    padding: 0.7rem 0.5rem;
+  }
+  .stage__cast {
+    justify-content: flex-start;
+  }
+  .stage__seat {
+    inline-size: 4.6rem;
+  }
+  .portrait--large,
+  .portrait-missing--large {
+    inline-size: 10rem;
+    block-size: 10rem;
+  }
+  .stage__subtitles {
+    font-size: 1.05rem;
+  }
+}

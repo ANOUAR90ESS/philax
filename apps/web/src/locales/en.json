@@ -163,6 +163,39 @@
     "start": "Begin the debate",
     "yourTurnHint": "You can add your view at any point, or conclude the debate."
   },
+  "stage": {
+    "label": "Debate stage",
+    "speaking": "Now speaking:",
+    "preparing": "Preparing a reply:",
+    "idle": "The stage is quiet. New turns are presented here with voice and subtitles.",
+    "portraitLabel": "Portrait of {{name}} (AI reconstruction)",
+    "noAvatar": "{{name}}: no verified portrait yet",
+    "disclosure": "AI reconstruction. The portrait and voice of {{name}} are generated; they are not historical images or recordings.",
+    "mute": "Mute voice",
+    "unmute": "Turn voice on",
+    "skip": "Skip",
+    "listen": "Listen",
+    "listenTo": "Listen to {{name}}",
+    "voiceIssue": {
+      "no_compatible_voice": "This device has no voice matching {{name}} in this language, so subtitles only.",
+      "no_language_voice": "{{name}} has no voice for this language yet, so subtitles only.",
+      "no_profile": "{{name}} has no verified voice yet, so subtitles only.",
+      "no_provider": "The voice service for {{name}} is unavailable, so subtitles only.",
+      "not_configured": "The voice service for {{name}} is not set up, so subtitles only.",
+      "provider_error": "The voice for {{name}} could not play, so subtitles only."
+    },
+    "states": {
+      "IDLE": "Waiting",
+      "LISTENING": "Listening",
+      "THINKING": "Thinking",
+      "SPEAKING": "Speaking",
+      "CHALLENGING": "Challenging",
+      "RESPONDING": "Responding",
+      "AGREEING": "Agreeing",
+      "DISAGREEING": "Disagreeing",
+      "CONSIDERING": "Considering"
+    }
+  },
   "sources": {
     "title": "Sources",
     "cited": "Sources cited",

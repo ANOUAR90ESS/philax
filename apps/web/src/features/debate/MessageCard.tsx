@@ -12,6 +12,8 @@ interface Props {
   onSourceOpen?: () => void;
   /** Language of the debate content (independent of the UI locale). */
   lang?: string;
+  /** Replays the turn on the debate stage (voice, avatar and subtitles). */
+  onListen?: (message: DebateMessage) => void;
 }
 
 export function speakerLabel(
@@ -24,7 +26,14 @@ export function speakerLabel(
     : (participants.get(m.speaker.characterId)?.character.displayName ?? '');
 }
 
-export function MessageCard({ message, participants, messages, onSourceOpen, lang }: Props) {
+export function MessageCard({
+  message,
+  participants,
+  messages,
+  onSourceOpen,
+  lang,
+  onListen,
+}: Props) {
   const { t } = useTranslation();
   const you = t('debate.you');
   const participant =
@@ -43,7 +52,7 @@ export function MessageCard({ message, participants, messages, onSourceOpen, lan
     >
       <header className="message__head">
         {message.speaker.type === 'character' ? (
-          <Avatar name={name} seat={seat} />
+          <Avatar name={name} seat={seat} slug={participant?.character.slug} />
         ) : (
           <span className="avatar avatar--user" aria-hidden="true">
             ✦
@@ -65,6 +74,16 @@ export function MessageCard({ message, participants, messages, onSourceOpen, lan
             ) : null}
           </p>
         </div>
+        {onListen && message.speaker.type === 'character' ? (
+          <button
+            type="button"
+            className="message__listen"
+            onClick={() => onListen(message)}
+            aria-label={t('stage.listenTo', { name })}
+          >
+            <span aria-hidden="true">▶</span> {t('stage.listen')}
+          </button>
+        ) : null}
       </header>
       {message.speaker.type === 'user' ? (
         <p className="speech" dir="auto">
