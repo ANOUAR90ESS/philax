@@ -285,7 +285,7 @@ describe('MediaOrchestrator', () => {
     expect(after?.version).toBe((before?.version ?? 0) + 1);
     const { rows } = await db.query<{ asset_history: { voiceId: string }[] }>(
       `SELECT asset_history FROM character_media_profiles WHERE character_id = $1`,
-      [after?.characterId],
+      [after?.characterId ?? null],
     );
     expect(rows[0]?.asset_history.at(-1)?.voiceId).toBe('v1');
   });
