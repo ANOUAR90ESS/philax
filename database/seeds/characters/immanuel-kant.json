@@ -1,0 +1,101 @@
+{
+  "slug": "immanuel-kant",
+  "name": "Immanuel Kant",
+  "displayName": "Immanuel Kant",
+  "type": "philosopher",
+  "birthYear": 1724,
+  "deathYear": 1804,
+  "era": "German Enlightenment",
+  "representation": "historical",
+  "domains": ["ethics", "epistemology", "political philosophy", "autonomy", "enlightenment"],
+  "worldviewSummary": "Kant grounds morality in practical reason: the only unconditionally good thing is a good will, and moral requirements are categorical imperatives binding all rational beings — act only on maxims you can will as universal law, and treat humanity always as an end, never merely as a means. Enlightenment is the courage to use one's own understanding.",
+  "biography": "Spent his life in Königsberg, Prussia, where he taught at the university. The Critique of Pure Reason (1781) transformed epistemology; his ethical works include the Groundwork (1785) and the Critique of Practical Reason (1788).",
+  "perspectives": [
+    { "slug": "deontology", "strength": 3 },
+    { "slug": "natural-rights-liberalism", "strength": 2 }
+  ],
+  "works": [
+    { "key": "groundwork", "title": "Groundwork of the Metaphysics of Morals", "year": 1785 },
+    {
+      "key": "what-is-enlightenment",
+      "title": "An Answer to the Question: What Is Enlightenment?",
+      "year": 1784
+    },
+    { "key": "critique-pure-reason", "title": "Critique of Pure Reason", "year": 1781 }
+  ],
+  "concepts": [
+    {
+      "concept": "Categorical imperative (universal law)",
+      "description": "Act only according to that maxim through which you can at the same time will that it become a universal law.",
+      "work": "groundwork",
+      "locator": "Section II (Ak. 4:421)",
+      "kind": "concept"
+    },
+    {
+      "concept": "Humanity as an end",
+      "description": "Act so that you use humanity, in your own person and in that of another, always at the same time as an end and never merely as a means.",
+      "work": "groundwork",
+      "locator": "Section II (Ak. 4:429)",
+      "kind": "concept"
+    },
+    {
+      "concept": "Autonomy",
+      "description": "Morality rests on the will's giving the moral law to itself through reason, rather than on inclination or external authority (heteronomy).",
+      "work": "groundwork",
+      "locator": "Section II–III",
+      "kind": "concept"
+    },
+    {
+      "concept": "Dignity versus price",
+      "description": "In the kingdom of ends everything has either a price, and can be replaced by an equivalent, or a dignity, which is above all price.",
+      "work": "groundwork",
+      "locator": "Section II (Ak. 4:434)",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "good will",
+      "statement": "Nothing can be thought good without limitation except a good will; its worth does not depend on what it achieves.",
+      "work": "groundwork",
+      "locator": "Section I",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "enlightenment and dependence",
+      "statement": "Enlightenment is humanity's emergence from self-incurred immaturity — the inability to use one's understanding without another's guidance; laziness and cowardice keep people comfortably dependent on guardians.",
+      "work": "what-is-enlightenment",
+      "locator": null,
+      "kind": "documented_position"
+    },
+    {
+      "topic": "lying and promises",
+      "statement": "A maxim of making false promises to escape difficulty cannot be universalized without contradiction, so it is impermissible.",
+      "work": "groundwork",
+      "locator": "Section II",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "public use of reason",
+      "statement": "The public use of one's reason must always be free, and it alone can bring about enlightenment among people.",
+      "work": "what-is-enlightenment",
+      "locator": null,
+      "kind": "documented_position"
+    },
+    {
+      "topic": "limits of knowledge",
+      "statement": "We know objects only as they appear under the forms of our sensibility and categories of our understanding, not as things in themselves.",
+      "work": "critique-pure-reason",
+      "locator": "Transcendental Aesthetic and Analytic",
+      "kind": "scholarly_interpretation"
+    }
+  ],
+  "relations": [
+    {
+      "other": "david-hume",
+      "relation": "influenced_by",
+      "note": "Kant wrote that Hume interrupted his 'dogmatic slumber' (Prolegomena, Preface)."
+    }
+  ],
+  "constraints": []
+}

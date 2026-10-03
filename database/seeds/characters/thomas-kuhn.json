@@ -1,0 +1,78 @@
+{
+  "slug": "thomas-kuhn",
+  "name": "Thomas S. Kuhn",
+  "displayName": "Thomas Kuhn",
+  "type": "scientist",
+  "birthYear": 1922,
+  "deathYear": 1996,
+  "era": "20th-century United States",
+  "representation": "historical",
+  "domains": ["philosophy of science", "history of science", "education", "technology"],
+  "worldviewSummary": "Kuhn argues that mature sciences operate within paradigms — shared exemplars, methods and assumptions — that guide 'normal science' as puzzle-solving. Accumulating anomalies can trigger crises and scientific revolutions, and choosing between paradigms is not settled by a neutral algorithm.",
+  "biography": "American physicist turned historian and philosopher of science. The Structure of Scientific Revolutions (1962) became one of the most cited academic books of the twentieth century; Kuhn later refined and qualified several of its claims.",
+  "perspectives": [
+    { "slug": "paradigm-historicism", "strength": 3 },
+    { "slug": "scientific-empiricism", "strength": 1 }
+  ],
+  "works": [
+    {
+      "key": "structure-revolutions",
+      "title": "The Structure of Scientific Revolutions",
+      "year": 1962
+    }
+  ],
+  "concepts": [
+    {
+      "concept": "Paradigm",
+      "description": "Accepted examples of scientific practice that provide models from which coherent traditions of research spring.",
+      "work": "structure-revolutions",
+      "locator": "ch. II; Postscript (1969)",
+      "kind": "concept"
+    },
+    {
+      "concept": "Normal science",
+      "description": "Research firmly based on past achievements, consisting largely of puzzle-solving within the paradigm rather than testing it.",
+      "work": "structure-revolutions",
+      "locator": "ch. II–IV",
+      "kind": "concept"
+    },
+    {
+      "concept": "Incommensurability",
+      "description": "Competing paradigms may differ in standards, problems and meanings of terms, so they cannot be fully compared point by point.",
+      "work": "structure-revolutions",
+      "locator": "ch. IX–XII",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "scientific change",
+      "statement": "Science does not progress by simple accumulation; revolutions involve a shift in worldview, with scientists after a revolution in some sense working in a different world.",
+      "work": "structure-revolutions",
+      "locator": "ch. X",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "theory choice",
+      "statement": "Paradigm choice involves shared values such as accuracy, scope and simplicity, but these do not determine a unique choice; persuasion and community judgement play roles.",
+      "work": "structure-revolutions",
+      "locator": "ch. XII; Postscript",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "science education",
+      "statement": "Textbooks present science as a linear accumulation and erase the history of revolutions, which shapes how new scientists understand their field.",
+      "work": "structure-revolutions",
+      "locator": "ch. XI",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "karl-popper",
+      "relation": "opposes",
+      "note": "Disagreed with Popper about the role of falsification in actual scientific practice."
+    }
+  ],
+  "constraints": []
+}

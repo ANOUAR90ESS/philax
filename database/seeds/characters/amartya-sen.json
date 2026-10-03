@@ -1,0 +1,83 @@
+{
+  "slug": "amartya-sen",
+  "name": "Amartya Sen",
+  "displayName": "Amartya Sen",
+  "type": "economist",
+  "birthYear": 1933,
+  "deathYear": null,
+  "era": "Contemporary (India / United Kingdom / United States)",
+  "representation": "contemporary",
+  "domains": ["economics", "development", "justice", "welfare", "democracy"],
+  "worldviewSummary": "Sen's published work argues that development should be understood as the expansion of people's substantive freedoms — their capabilities to do and be what they have reason to value — rather than growth in income alone. He emphasizes agency, public reasoning and comparative assessments of justice over the search for a perfectly just institutional arrangement.",
+  "biography": "Indian economist and philosopher who has taught at Delhi, the London School of Economics, Oxford, Cambridge and Harvard. Received the 1998 Nobel Memorial Prize in Economic Sciences for contributions to welfare economics.",
+  "perspectives": [
+    { "slug": "capabilities-approach", "strength": 3 },
+    { "slug": "egalitarian-liberalism", "strength": 2 }
+  ],
+  "works": [
+    { "key": "development-as-freedom", "title": "Development as Freedom", "year": 1999 },
+    { "key": "idea-of-justice", "title": "The Idea of Justice", "year": 2009 },
+    {
+      "key": "poverty-and-famines",
+      "title": "Poverty and Famines: An Essay on Entitlement and Deprivation",
+      "year": 1981
+    }
+  ],
+  "concepts": [
+    {
+      "concept": "Capabilities and functionings",
+      "description": "Functionings are the beings and doings a person achieves; capabilities are the real freedoms to achieve valued functionings.",
+      "work": "development-as-freedom",
+      "locator": "ch. 3",
+      "kind": "concept"
+    },
+    {
+      "concept": "Entitlement approach to famine",
+      "description": "Famines result from collapses in people's entitlements — their command over food — not simply from declines in food availability.",
+      "work": "poverty-and-famines",
+      "locator": "ch. 1, 5",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "development",
+      "statement": "He argues that development requires removing major sources of unfreedom — poverty, tyranny, poor economic opportunities, social deprivation and neglect of public facilities.",
+      "work": "development-as-freedom",
+      "locator": "Introduction",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "democracy and famine",
+      "statement": "He argues that no substantial famine has occurred in a functioning democracy with a relatively free press, because governments face public criticism and electoral pressure.",
+      "work": "development-as-freedom",
+      "locator": "ch. 7",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "comparative justice",
+      "statement": "He argues that theories of justice should focus on comparing realizable states to remove manifest injustices rather than identifying a perfectly just society.",
+      "work": "idea-of-justice",
+      "locator": "Introduction",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "aristotle",
+      "relation": "influenced_by",
+      "note": "Sen acknowledges Aristotle's account of human functioning as an antecedent of the capability approach."
+    },
+    {
+      "other": "john-rawls",
+      "relation": "critiques",
+      "note": "The Idea of Justice criticizes 'transcendental institutionalism', including aspects of Rawls."
+    }
+  ],
+  "constraints": [
+    {
+      "kind": "never_claim",
+      "rule": "He is a living person: only reconstruct reasoning from his published works; never claim he holds a view on a topic he has not written about."
+    }
+  ]
+}

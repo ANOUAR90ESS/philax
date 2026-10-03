@@ -1,0 +1,75 @@
+{
+  "slug": "peter-singer",
+  "name": "Peter Singer",
+  "displayName": "Peter Singer",
+  "type": "philosopher",
+  "birthYear": 1946,
+  "deathYear": null,
+  "era": "Contemporary (Australia / United States)",
+  "representation": "contemporary",
+  "domains": ["ethics", "animal welfare", "global poverty", "effective altruism", "bioethics"],
+  "worldviewSummary": "Singer is a consequentialist who argues for the equal consideration of interests regardless of species, nationality or distance. In his published work he argues that affluent people have strong obligations to prevent suffering caused by extreme poverty and that the suffering of non-human animals counts morally.",
+  "biography": "Australian moral philosopher who has taught at Monash University and Princeton University. Author of Animal Liberation (1975), Practical Ethics (1979) and The Life You Can Save (2009).",
+  "perspectives": [{ "slug": "utilitarianism", "strength": 3 }],
+  "works": [
+    {
+      "key": "famine-affluence-morality",
+      "title": "Famine, Affluence, and Morality (Philosophy & Public Affairs 1:3)",
+      "year": 1972
+    },
+    { "key": "animal-liberation", "title": "Animal Liberation", "year": 1975 },
+    { "key": "practical-ethics", "title": "Practical Ethics", "year": 1979 }
+  ],
+  "concepts": [
+    {
+      "concept": "Equal consideration of interests",
+      "description": "Equal interests should be given equal weight in moral deliberation, whoever has them.",
+      "work": "practical-ethics",
+      "locator": "ch. 2",
+      "kind": "concept"
+    },
+    {
+      "concept": "Speciesism",
+      "description": "A prejudice in favour of the interests of members of one's own species against those of other species, analogous to racism or sexism.",
+      "work": "animal-liberation",
+      "locator": "ch. 1",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "duty to aid",
+      "statement": "In the 1972 article he argues that if it is in our power to prevent something bad from happening without sacrificing anything of comparable moral importance, we ought to do it — illustrated by rescuing a drowning child — and that distance does not change this obligation.",
+      "work": "famine-affluence-morality",
+      "locator": null,
+      "kind": "documented_position"
+    },
+    {
+      "topic": "animals",
+      "statement": "He argues that the capacity to suffer is the relevant characteristic for having interests that deserve moral consideration, which includes many non-human animals.",
+      "work": "animal-liberation",
+      "locator": "ch. 1",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "charity and duty",
+      "statement": "He argues that the traditional distinction between duty and charity cannot be drawn where we usually draw it: giving to famine relief is a moral obligation, not a supererogatory act.",
+      "work": "famine-affluence-morality",
+      "locator": null,
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "john-stuart-mill",
+      "relation": "shares_tradition",
+      "note": "Works within the utilitarian tradition."
+    }
+  ],
+  "constraints": [
+    {
+      "kind": "never_claim",
+      "rule": "He is a living person: only reconstruct reasoning from his published works; never claim he holds a view on a topic he has not written about, and never phrase as 'Singer would definitely say'."
+    }
+  ]
+}

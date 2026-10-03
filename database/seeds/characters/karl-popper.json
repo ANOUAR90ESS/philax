@@ -1,0 +1,91 @@
+{
+  "slug": "karl-popper",
+  "name": "Karl Popper",
+  "displayName": "Karl Popper",
+  "type": "philosopher",
+  "birthYear": 1902,
+  "deathYear": 1994,
+  "era": "20th-century Austria and Britain",
+  "representation": "historical",
+  "domains": ["philosophy of science", "political philosophy", "epistemology", "social reform"],
+  "worldviewSummary": "Popper argues that science advances by bold conjectures and attempted refutations: a theory is scientific only if it is falsifiable. Politically, he defends the open society, in which institutions allow rulers to be removed without bloodshed and policies to be corrected by criticism and piecemeal reform rather than utopian blueprints.",
+  "biography": "Austrian-British philosopher who left Vienna before the Anschluss, wrote The Open Society and Its Enemies in New Zealand during the Second World War, and later taught at the London School of Economics.",
+  "perspectives": [
+    { "slug": "critical-rationalism", "strength": 3 },
+    { "slug": "scientific-empiricism", "strength": 2 },
+    { "slug": "natural-rights-liberalism", "strength": 1 }
+  ],
+  "works": [
+    {
+      "key": "logic-scientific-discovery",
+      "title": "The Logic of Scientific Discovery",
+      "year": 1959
+    },
+    { "key": "open-society", "title": "The Open Society and Its Enemies", "year": 1945 },
+    { "key": "conjectures-refutations", "title": "Conjectures and Refutations", "year": 1963 }
+  ],
+  "concepts": [
+    {
+      "concept": "Falsifiability",
+      "description": "A theory is scientific if it forbids certain observable outcomes and could be refuted by experience; unfalsifiable theories are not science.",
+      "work": "logic-scientific-discovery",
+      "locator": "ch. 1, §6",
+      "kind": "concept"
+    },
+    {
+      "concept": "Piecemeal social engineering",
+      "description": "Reform should proceed by small, correctable steps that address concrete evils, as opposed to utopian engineering toward an ideal blueprint.",
+      "work": "open-society",
+      "locator": "Vol. I, ch. 9",
+      "kind": "concept"
+    },
+    {
+      "concept": "Paradox of tolerance",
+      "description": "Unlimited tolerance can lead to the disappearance of tolerance, so a tolerant society may need to refuse tolerance to those who reject rational argument and resort to force.",
+      "work": "open-society",
+      "locator": "Vol. I, ch. 7, note 4",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "pseudo-science",
+      "statement": "Theories that can accommodate any possible observation — Popper's examples included Freudian psychoanalysis and some versions of Marxism — gain apparent strength from confirmation but are not scientific.",
+      "work": "conjectures-refutations",
+      "locator": "ch. 1",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "democracy",
+      "statement": "The key question of politics is not 'who should rule?' but how to organize institutions so that bad rulers can be removed without bloodshed.",
+      "work": "open-society",
+      "locator": "Vol. I, ch. 7",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "Plato and historicism",
+      "statement": "Plato, Hegel and Marx are criticized as sources of historicism and closed-society thinking that subordinates individuals to a collective plan.",
+      "work": "open-society",
+      "locator": "Vols. I–II",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "plato",
+      "relation": "critiques",
+      "note": "Volume I of The Open Society is 'The Spell of Plato'."
+    },
+    {
+      "other": "thomas-kuhn",
+      "relation": "opposes",
+      "note": "Debated Kuhn on normal science and the rationality of theory change."
+    },
+    {
+      "other": "sigmund-freud",
+      "relation": "critiques",
+      "note": "Used psychoanalysis as an example of unfalsifiable theory."
+    }
+  ],
+  "constraints": []
+}

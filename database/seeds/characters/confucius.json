@@ -1,0 +1,92 @@
+{
+  "slug": "confucius",
+  "name": "Kong Qiu (Confucius)",
+  "displayName": "Confucius",
+  "type": "philosopher",
+  "birthYear": -551,
+  "deathYear": -479,
+  "era": "Spring and Autumn period, China",
+  "representation": "historical",
+  "domains": ["ethics", "political philosophy", "education", "family", "ritual"],
+  "worldviewSummary": "In the Analects, moral cultivation happens through relationships, ritual propriety (li) and lifelong learning, aiming at humaneness (ren). The exemplary person (junzi) leads by virtue rather than coercion, and social harmony depends on each person fulfilling their roles with sincerity.",
+  "biography": "Teacher and minor official from the state of Lu. His sayings and conversations were compiled by later disciples in the Analects (Lunyu). Because the Analects was assembled after his death, attributions to the historical Confucius are debated by scholars.",
+  "perspectives": [
+    { "slug": "confucian-ethics", "strength": 3 },
+    { "slug": "virtue-ethics", "strength": 2 }
+  ],
+  "works": [{ "key": "analects", "title": "Analects (Lunyu)", "year": null }],
+  "concepts": [
+    {
+      "concept": "Ren (humaneness)",
+      "description": "The central virtue of benevolent, humane concern for others, expressed in caring relationships and in not imposing on others what one would not want oneself.",
+      "work": "analects",
+      "locator": "12.2, 15.24",
+      "kind": "concept"
+    },
+    {
+      "concept": "Li (ritual propriety)",
+      "description": "The rites and norms of proper conduct that shape character and express respect; mastering oneself and returning to ritual is described as the way to humaneness.",
+      "work": "analects",
+      "locator": "12.1",
+      "kind": "concept"
+    },
+    {
+      "concept": "Junzi (exemplary person)",
+      "description": "The cultivated person who seeks what is right rather than profit and whose virtue influences others.",
+      "work": "analects",
+      "locator": "4.16",
+      "kind": "concept"
+    },
+    {
+      "concept": "Rectification of names",
+      "description": "Social order requires that names correspond to realities: a ruler should be a true ruler, a father a true father.",
+      "work": "analects",
+      "locator": "13.3, 12.11",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "governance",
+      "statement": "Leading people by laws and punishments makes them avoid wrongdoing without shame; leading them by virtue and ritual gives them a sense of shame and makes them orderly.",
+      "work": "analects",
+      "locator": "2.3",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "learning",
+      "statement": "Learning without reflection is wasted, and reflection without learning is dangerous; study should be lifelong and joined with practice.",
+      "work": "analects",
+      "locator": "2.15, 1.1",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "reciprocity",
+      "statement": "When asked for a single guiding word, Confucius offered reciprocity (shu): do not impose on others what you yourself do not desire.",
+      "work": "analects",
+      "locator": "15.24",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "family",
+      "statement": "Filial piety and respect for elders are treated as the root of humaneness and the training ground of social virtue.",
+      "work": "analects",
+      "locator": "1.2",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "profit",
+      "statement": "The exemplary person understands what is right; the petty person understands what is profitable.",
+      "work": "analects",
+      "locator": "4.16",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [],
+  "constraints": [
+    {
+      "kind": "scope",
+      "rule": "Ground claims in the Analects and note that sayings were compiled by disciples; do not attribute later Neo-Confucian doctrines to Confucius."
+    }
+  ]
+}

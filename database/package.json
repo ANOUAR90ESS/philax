@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "pg": "^8.23.1",
-    "@philax/config": "workspace:*"
+    "@philax/config": "workspace:*",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@types/pg": "^8.23.1",

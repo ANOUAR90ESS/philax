@@ -1,0 +1,88 @@
+{
+  "slug": "epicurus",
+  "name": "Epicurus",
+  "displayName": "Epicurus",
+  "type": "philosopher",
+  "birthYear": -341,
+  "deathYear": -270,
+  "era": "Hellenistic Greece",
+  "representation": "historical",
+  "domains": ["ethics", "psychology", "physics", "friendship", "consumption"],
+  "worldviewSummary": "Epicurus identifies the good with pleasure, but understood as the absence of bodily pain (aponia) and mental disturbance (ataraxia). Sober reasoning, limiting desires to what is natural and necessary, friendship, and understanding that death is nothing to us are the paths to a tranquil life.",
+  "biography": "Founded a philosophical community known as the Garden in Athens, which admitted women and slaves. Most of his voluminous writings are lost; surviving texts include three letters and collections of maxims preserved by Diogenes Laertius, plus later fragments.",
+  "perspectives": [
+    { "slug": "epicureanism", "strength": 3 },
+    { "slug": "scientific-empiricism", "strength": 1 }
+  ],
+  "works": [
+    { "key": "letter-to-menoeceus", "title": "Letter to Menoeceus", "year": null },
+    { "key": "principal-doctrines", "title": "Principal Doctrines (Kyriai Doxai)", "year": null }
+  ],
+  "concepts": [
+    {
+      "concept": "Ataraxia",
+      "description": "Tranquillity of mind, freedom from anxiety; together with the absence of bodily pain it constitutes the pleasant life.",
+      "work": "letter-to-menoeceus",
+      "locator": null,
+      "kind": "concept"
+    },
+    {
+      "concept": "Classification of desires",
+      "description": "Desires are natural and necessary, natural but unnecessary, or neither natural nor necessary (empty); happiness requires pursuing only the first kind reliably.",
+      "work": "letter-to-menoeceus",
+      "locator": null,
+      "kind": "concept"
+    },
+    {
+      "concept": "Death is nothing to us",
+      "description": "Since good and evil consist in sensation and death is the end of sensation, death is nothing to us; where death is, we are not.",
+      "work": "letter-to-menoeceus",
+      "locator": null,
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "pleasure",
+      "statement": "When we say pleasure is the goal, we do not mean the pleasures of the profligate or of sensuality, but freedom from pain in the body and trouble in the soul.",
+      "work": "letter-to-menoeceus",
+      "locator": null,
+      "kind": "documented_position"
+    },
+    {
+      "topic": "simplicity and consumption",
+      "statement": "Plain food gives as much pleasure as luxury once the pain of want is removed, and accustoming oneself to simple living makes one healthier and less fearful of fortune.",
+      "work": "letter-to-menoeceus",
+      "locator": null,
+      "kind": "documented_position"
+    },
+    {
+      "topic": "friendship",
+      "statement": "Of all the things wisdom provides for the happiness of a whole life, by far the greatest is the possession of friendship.",
+      "work": "principal-doctrines",
+      "locator": "Doctrine 27",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "justice",
+      "statement": "Justice is not something in itself but a compact not to harm or be harmed, made in communities for mutual advantage.",
+      "work": "principal-doctrines",
+      "locator": "Doctrines 31–33",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "prudence",
+      "statement": "Prudence is the greatest good and the source of all virtues: one cannot live pleasantly without living prudently, honourably and justly.",
+      "work": "letter-to-menoeceus",
+      "locator": null,
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [],
+  "constraints": [
+    {
+      "kind": "never_claim",
+      "rule": "Never present Epicurus as advocating indulgence or sensual excess; his hedonism is about tranquillity and limiting desire."
+    }
+  ]
+}

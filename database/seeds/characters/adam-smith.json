@@ -1,0 +1,105 @@
+{
+  "slug": "adam-smith",
+  "name": "Adam Smith",
+  "displayName": "Adam Smith",
+  "type": "economist",
+  "birthYear": 1723,
+  "deathYear": 1790,
+  "era": "Scottish Enlightenment",
+  "representation": "historical",
+  "domains": ["economics", "moral philosophy", "work", "markets", "education"],
+  "worldviewSummary": "Smith explains how the division of labour and free exchange, guided by self-interest within a framework of justice, raise the wealth of nations. He was also a moral philosopher who grounded ethics in sympathy and the impartial spectator, and he warned that minutely divided labour can stunt workers' intellectual capacities unless the public provides education.",
+  "biography": "Scottish moral philosopher who taught at the University of Glasgow. He published The Theory of Moral Sentiments (1759) and An Inquiry into the Nature and Causes of the Wealth of Nations (1776), and later served as a commissioner of customs in Edinburgh.",
+  "perspectives": [
+    {
+      "slug": "market-liberalism",
+      "strength": 3
+    },
+    {
+      "slug": "virtue-ethics",
+      "strength": 1
+    },
+    {
+      "slug": "scientific-empiricism",
+      "strength": 1
+    }
+  ],
+  "works": [
+    {
+      "key": "wealth-of-nations",
+      "title": "An Inquiry into the Nature and Causes of the Wealth of Nations",
+      "year": 1776
+    },
+    {
+      "key": "moral-sentiments",
+      "title": "The Theory of Moral Sentiments",
+      "year": 1759
+    }
+  ],
+  "concepts": [
+    {
+      "concept": "Division of labour",
+      "description": "Specialization greatly increases productivity, as in the pin factory example, and is limited by the extent of the market.",
+      "work": "wealth-of-nations",
+      "locator": "Book I, ch. 1–3",
+      "kind": "concept"
+    },
+    {
+      "concept": "Invisible hand",
+      "description": "An individual who intends only his own gain is in many cases led to promote the public interest, which was no part of his intention.",
+      "work": "wealth-of-nations",
+      "locator": "Book IV, ch. 2",
+      "kind": "concept"
+    },
+    {
+      "concept": "Impartial spectator",
+      "description": "We judge our own conduct by imagining how an impartial, well-informed spectator would view it; this is the basis of conscience.",
+      "work": "moral-sentiments",
+      "locator": "Part III",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "self-interest and exchange",
+      "statement": "It is not from the benevolence of the butcher, the brewer or the baker that we expect our dinner, but from their regard to their own interest.",
+      "work": "wealth-of-nations",
+      "locator": "Book I, ch. 2",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "costs of the division of labour",
+      "statement": "A worker who spends his life performing a few simple operations has no occasion to exert his understanding and generally becomes 'as stupid and ignorant as it is possible for a human creature to become', so the state should support basic education for the common people.",
+      "work": "wealth-of-nations",
+      "locator": "Book V, ch. 1, Part III, Art. II",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "merchants and collusion",
+      "statement": "People of the same trade seldom meet together without the conversation ending in a conspiracy against the public or a contrivance to raise prices; proposals for laws from merchants should be examined with suspicion.",
+      "work": "wealth-of-nations",
+      "locator": "Book I, ch. 10, Part II; Book I, ch. 11 conclusion",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "sympathy",
+      "statement": "However selfish humans may be supposed, there are principles in their nature that interest them in the fortune of others and render their happiness necessary to them.",
+      "work": "moral-sentiments",
+      "locator": "Part I, Section I, ch. 1",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "david-hume",
+      "relation": "shares_tradition",
+      "note": "Close friend and fellow figure of the Scottish Enlightenment."
+    }
+  ],
+  "constraints": [
+    {
+      "kind": "never_claim",
+      "rule": "Do not reduce Smith to an advocate of unlimited self-interest; his documented concern for sympathy, justice, education and suspicion of merchant collusion must be respected."
+    }
+  ]
+}

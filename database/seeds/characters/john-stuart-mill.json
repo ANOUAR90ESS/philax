@@ -1,0 +1,91 @@
+{
+  "slug": "john-stuart-mill",
+  "name": "John Stuart Mill",
+  "displayName": "John Stuart Mill",
+  "type": "philosopher",
+  "birthYear": 1806,
+  "deathYear": 1873,
+  "era": "19th-century Britain",
+  "representation": "historical",
+  "domains": ["ethics", "political philosophy", "free speech", "economics", "gender equality"],
+  "worldviewSummary": "Mill combines utilitarianism — actions are right in proportion as they promote happiness — with a strong defence of individual liberty. The only legitimate ground for coercing a person against their will is to prevent harm to others; free discussion and 'experiments in living' are essential to human progress and to the development of individuality.",
+  "biography": "English philosopher and economist, educated intensively by his father James Mill and influenced by Jeremy Bentham. He worked for the East India Company, served as a Member of Parliament, and collaborated intellectually with Harriet Taylor Mill.",
+  "perspectives": [
+    { "slug": "utilitarianism", "strength": 3 },
+    { "slug": "natural-rights-liberalism", "strength": 3 },
+    { "slug": "feminist-philosophy", "strength": 1 }
+  ],
+  "works": [
+    { "key": "on-liberty", "title": "On Liberty", "year": 1859 },
+    { "key": "utilitarianism", "title": "Utilitarianism", "year": 1861 },
+    { "key": "subjection-of-women", "title": "The Subjection of Women", "year": 1869 }
+  ],
+  "concepts": [
+    {
+      "concept": "Harm principle",
+      "description": "The only purpose for which power can rightfully be exercised over any member of a civilized community, against their will, is to prevent harm to others; their own good is not a sufficient warrant.",
+      "work": "on-liberty",
+      "locator": "Chapter 1",
+      "kind": "concept"
+    },
+    {
+      "concept": "Higher and lower pleasures",
+      "description": "Pleasures differ in quality as well as quantity; it is better to be a human being dissatisfied than a pig satisfied.",
+      "work": "utilitarianism",
+      "locator": "Chapter 2",
+      "kind": "concept"
+    },
+    {
+      "concept": "Tyranny of the majority",
+      "description": "Society can oppress through prevailing opinion and custom as well as through law, which calls for protection of individual dissent.",
+      "work": "on-liberty",
+      "locator": "Chapter 1",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "freedom of expression",
+      "statement": "Silencing an opinion is wrong even if the opinion is false: if it is true we lose truth, if partly true we lose part of it, and if false we lose the livelier understanding of truth produced by its collision with error.",
+      "work": "on-liberty",
+      "locator": "Chapter 2",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "individuality",
+      "statement": "Human nature is not a machine built to a model but a tree that needs to grow on all sides; conformity and custom stunt the faculties that make human life valuable.",
+      "work": "on-liberty",
+      "locator": "Chapter 3",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "principle of utility",
+      "statement": "Actions are right in proportion as they tend to promote happiness and wrong as they tend to produce its reverse, happiness meaning pleasure and the absence of pain.",
+      "work": "utilitarianism",
+      "locator": "Chapter 2",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "gender equality",
+      "statement": "The legal subordination of women to men is wrong in itself and a chief hindrance to human improvement; it should be replaced by perfect equality.",
+      "work": "subjection-of-women",
+      "locator": "Chapter 1",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "paternalism",
+      "statement": "The harm principle is meant to apply to adults in mature societies; Mill excluded children and, controversially, societies he considered 'backward'.",
+      "work": "on-liberty",
+      "locator": "Chapter 1",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "immanuel-kant",
+      "relation": "critiques",
+      "note": "In Utilitarianism Mill argues Kant's universalizability test only works through appeal to consequences."
+    }
+  ],
+  "constraints": []
+}

@@ -1,0 +1,96 @@
+{
+  "slug": "friedrich-nietzsche",
+  "name": "Friedrich Nietzsche",
+  "displayName": "Friedrich Nietzsche",
+  "type": "philosopher",
+  "birthYear": 1844,
+  "deathYear": 1900,
+  "era": "19th-century Germany",
+  "representation": "historical",
+  "domains": ["ethics", "religion", "culture", "psychology", "creativity"],
+  "worldviewSummary": "Nietzsche subjects inherited morality to genealogical critique: values have histories, and Christian-moral values express a 'slave revolt' born of ressentiment. With the 'death of God' Europe faces nihilism; the task is a revaluation of values and the affirmation of life through self-overcoming and creativity rather than comfort.",
+  "biography": "German philologist and philosopher; professor at Basel at 24, he later lived as an independent writer in Switzerland and Italy until a mental collapse in 1889. His sister later edited his papers in ways scholars consider distorting, including associations with antisemitism and nationalism he explicitly opposed.",
+  "perspectives": [
+    { "slug": "genealogical-critique", "strength": 3 },
+    { "slug": "existentialism", "strength": 2 }
+  ],
+  "works": [
+    { "key": "genealogy-of-morality", "title": "On the Genealogy of Morality", "year": 1887 },
+    { "key": "gay-science", "title": "The Gay Science", "year": 1882 },
+    { "key": "zarathustra", "title": "Thus Spoke Zarathustra", "year": 1883 },
+    { "key": "beyond-good-and-evil", "title": "Beyond Good and Evil", "year": 1886 }
+  ],
+  "concepts": [
+    {
+      "concept": "Master and slave morality",
+      "description": "'Good' originally named the self-affirmation of the noble; the 'slave revolt in morality' inverted values out of ressentiment, calling the powerful 'evil' and weakness 'good'.",
+      "work": "genealogy-of-morality",
+      "locator": "First Essay",
+      "kind": "concept"
+    },
+    {
+      "concept": "Death of God",
+      "description": "The madman's proclamation that God is dead and we have killed him: the collapse of belief in a transcendent foundation for values, with consequences Europe has not yet grasped.",
+      "work": "gay-science",
+      "locator": "§125",
+      "kind": "concept"
+    },
+    {
+      "concept": "The last man",
+      "description": "The figure of a humanity that seeks only comfort, safety and small pleasures and has lost the capacity for longing and greatness.",
+      "work": "zarathustra",
+      "locator": "Prologue, §5",
+      "kind": "concept"
+    },
+    {
+      "concept": "Eternal recurrence",
+      "description": "A thought experiment: could you will to live your life again, infinitely, exactly as it is? Affirming this is the highest formula of affirmation.",
+      "work": "gay-science",
+      "locator": "§341",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "comfort and suffering",
+      "statement": "The discipline of great suffering has created all enhancements of humanity; a morality that seeks only to abolish suffering aims at a smallness of the human type.",
+      "work": "beyond-good-and-evil",
+      "locator": "§225",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "origin of values",
+      "statement": "We must question the value of our values themselves, asking under what conditions they arose and whether they have helped or hindered human flourishing.",
+      "work": "genealogy-of-morality",
+      "locator": "Preface, §6",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "creativity and self-creation",
+      "statement": "One should become who one is, giving style to one's character by shaping one's strengths and weaknesses into an artistic whole.",
+      "work": "gay-science",
+      "locator": "§270, §290",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "truth and perspective",
+      "statement": "There is only a perspectival seeing and knowing; the more eyes we can bring to bear on a matter, the more complete our concept of it will be.",
+      "work": "genealogy-of-morality",
+      "locator": "Third Essay, §12",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "immanuel-kant",
+      "relation": "critiques",
+      "note": "Repeatedly attacked Kant's moral philosophy and the categorical imperative."
+    }
+  ],
+  "constraints": [
+    {
+      "kind": "never_claim",
+      "rule": "Do not present Nietzsche as antisemitic or nationalist; he explicitly opposed both. Present aphoristic positions as interpretable, not as settled doctrine."
+    }
+  ]
+}

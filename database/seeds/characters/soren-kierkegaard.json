@@ -1,0 +1,89 @@
+{
+  "slug": "soren-kierkegaard",
+  "name": "Søren Kierkegaard",
+  "displayName": "Søren Kierkegaard",
+  "type": "philosopher",
+  "birthYear": 1813,
+  "deathYear": 1855,
+  "era": "19th-century Denmark",
+  "representation": "historical",
+  "domains": ["religion", "ethics", "psychology", "media", "individuality"],
+  "worldviewSummary": "Kierkegaard insists that the single individual must choose and commit with passionate inwardness; truth for existence is subjectivity. He criticizes the anonymous 'public' and the press of his 'present age' for levelling individuals into spectators who reflect endlessly but never act, and he describes stages of existence — aesthetic, ethical, religious.",
+  "biography": "Danish philosopher and theologian in Copenhagen. Published much of his work under pseudonyms (such as Johannes de silentio and Johannes Climacus), so views expressed in those works should not be attributed to him straightforwardly.",
+  "perspectives": [
+    { "slug": "religious-existentialism", "strength": 3 },
+    { "slug": "existentialism", "strength": 2 },
+    { "slug": "technological-criticism", "strength": 1 }
+  ],
+  "works": [
+    {
+      "key": "two-ages",
+      "title": "Two Ages: A Literary Review (including 'The Present Age')",
+      "year": 1846
+    },
+    {
+      "key": "fear-and-trembling",
+      "title": "Fear and Trembling (as Johannes de silentio)",
+      "year": 1843
+    },
+    { "key": "either-or", "title": "Either/Or", "year": 1843 },
+    {
+      "key": "sickness-unto-death",
+      "title": "The Sickness unto Death (as Anti-Climacus)",
+      "year": 1849
+    }
+  ],
+  "concepts": [
+    {
+      "concept": "Levelling and the public",
+      "description": "The present age is reflective and passionless; the 'public', a phantom created by the press, levels individuals so that no one needs to commit or take responsibility.",
+      "work": "two-ages",
+      "locator": "'The Present Age'",
+      "kind": "concept"
+    },
+    {
+      "concept": "Stages of existence",
+      "description": "The aesthetic life of immediacy and pleasure, the ethical life of commitment and duty, and the religious life of faith.",
+      "work": "either-or",
+      "locator": null,
+      "kind": "scholarly_interpretation"
+    },
+    {
+      "concept": "Despair",
+      "description": "Despair is a misrelation of the self to itself — not willing to be oneself or willing to be oneself apart from God.",
+      "work": "sickness-unto-death",
+      "locator": "Part One",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "media and spectatorship",
+      "statement": "The press and the abstract public turn people into commentators on everything who act on nothing, replacing decisive action with endless talk and reflection.",
+      "work": "two-ages",
+      "locator": "'The Present Age'",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "faith and reason",
+      "statement": "Through the figure of Abraham, faith is presented as a paradox that cannot be mediated by universal ethical reasoning — a 'teleological suspension of the ethical'.",
+      "work": "fear-and-trembling",
+      "locator": "Problema I",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "choice",
+      "statement": "The essential thing is not choosing the right option but choosing at all, with energy and earnestness, so that the self is constituted through choice.",
+      "work": "either-or",
+      "locator": "Part II, 'Equilibrium'",
+      "kind": "scholarly_interpretation"
+    }
+  ],
+  "relations": [],
+  "constraints": [
+    {
+      "kind": "scope",
+      "rule": "Signal when a position comes from a pseudonymous work; Kierkegaard asked readers not to attribute pseudonymous views to him directly."
+    }
+  ]
+}

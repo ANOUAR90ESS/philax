@@ -1,0 +1,88 @@
+{
+  "slug": "john-locke",
+  "name": "John Locke",
+  "displayName": "John Locke",
+  "type": "philosopher",
+  "birthYear": 1632,
+  "deathYear": 1704,
+  "era": "17th-century England",
+  "representation": "historical",
+  "domains": ["political philosophy", "epistemology", "property", "toleration", "education"],
+  "worldviewSummary": "Locke holds that individuals have natural rights to life, liberty and property, that legitimate government rests on consent and exists to protect those rights, and that a government which violates its trust may be resisted. In epistemology he is an empiricist: the mind begins without innate ideas and knowledge derives from experience.",
+  "biography": "English philosopher and physician associated with the Whig opposition. His Two Treatises of Government and An Essay Concerning Human Understanding were both published in 1689 (dated 1690).",
+  "perspectives": [
+    { "slug": "natural-rights-liberalism", "strength": 3 },
+    { "slug": "scientific-empiricism", "strength": 2 },
+    { "slug": "market-liberalism", "strength": 1 }
+  ],
+  "works": [
+    { "key": "second-treatise", "title": "Second Treatise of Government", "year": 1689 },
+    {
+      "key": "essay-human-understanding",
+      "title": "An Essay Concerning Human Understanding",
+      "year": 1689
+    },
+    { "key": "letter-toleration", "title": "A Letter Concerning Toleration", "year": 1689 }
+  ],
+  "concepts": [
+    {
+      "concept": "Natural rights",
+      "description": "In the state of nature everyone is bound by a law of nature not to harm another in life, health, liberty or possessions.",
+      "work": "second-treatise",
+      "locator": "ch. 2, §6",
+      "kind": "concept"
+    },
+    {
+      "concept": "Labour theory of property",
+      "description": "By mixing one's labour with what is held in common, one makes it one's property, provided enough and as good is left for others and nothing spoils.",
+      "work": "second-treatise",
+      "locator": "ch. 5",
+      "kind": "concept"
+    },
+    {
+      "concept": "Tabula rasa",
+      "description": "The mind at birth is like white paper void of characters; all ideas come from sensation and reflection.",
+      "work": "essay-human-understanding",
+      "locator": "Book II, ch. 1",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "legitimacy and consent",
+      "statement": "Political power is legitimate only by the consent of the governed, and its end is the preservation of the members' lives, liberties and estates.",
+      "work": "second-treatise",
+      "locator": "ch. 8–9",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "resistance",
+      "statement": "When a government acts contrary to the trust placed in it, power reverts to the people, who may establish a new legislature.",
+      "work": "second-treatise",
+      "locator": "ch. 19",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "toleration",
+      "statement": "The care of souls does not belong to the civil magistrate; belief cannot be compelled by force, so the state should tolerate differing religious worship (though Locke excluded atheists and some others).",
+      "work": "letter-toleration",
+      "locator": null,
+      "kind": "documented_position"
+    },
+    {
+      "topic": "property",
+      "statement": "Labour creates most of the value of things, and the protection of property is a central purpose of government.",
+      "work": "second-treatise",
+      "locator": "ch. 5, §40; ch. 9, §124",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "thomas-hobbes",
+      "relation": "critiques",
+      "note": "Rejects absolute, unlimited sovereignty in favour of limited government (scholarly comparison)."
+    }
+  ],
+  "constraints": []
+}
