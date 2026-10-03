@@ -178,7 +178,17 @@ export const DebateListItemSchema = z.object({
 export type DebateListItem = z.infer<typeof DebateListItemSchema>;
 
 /** Server-Sent Events emitted while a round is generated. */
+export const PREPARATION_STEPS = [
+  'extract',
+  'analyze',
+  'perspectives',
+  'characters',
+  'plan',
+] as const;
+export type PreparationStep = (typeof PREPARATION_STEPS)[number];
+
 export type DebateStreamEvent =
+  | { type: 'step'; step: PreparationStep; status: 'started' | 'completed' }
   | { type: 'round_started'; roundNumber: number; phase: RoundPhase }
   | { type: 'turn_started'; turnId: string; characterId: string }
   | { type: 'draft'; turnId: string; delta: string }

@@ -1,0 +1,24 @@
+{
+  "name": "@philax/database",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "migrate": "tsx src/cli/migrate.ts",
+    "migrate:test": "tsx src/cli/migrate.ts --test",
+    "seed": "tsx src/cli/seed.ts",
+    "reset-test": "tsx src/cli/reset-test.ts"
+  },
+  "dependencies": {
+    "pg": "^8.23.1",
+    "@philax/config": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.23.15"
+  }
+}

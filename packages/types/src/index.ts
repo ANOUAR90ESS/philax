@@ -7,3 +7,4 @@ export * from './characters';
 export * from './arguments';
 export * from './debates';
 export * from './api';
+export * from './errors';
