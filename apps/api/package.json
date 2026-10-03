@@ -10,7 +10,9 @@
     "dev": "tsx watch src/main.ts",
     "start": "node dist/main.js",
     "build": "tsup",
-    "typecheck": "tsc -p tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json",
+    "migrate:prod": "node dist/ops.js migrate",
+    "seed:prod": "node dist/ops.js seed"
   },
   "dependencies": {
     "@fastify/cookie": "^11.1.2",
@@ -30,7 +32,11 @@
     "@philax/types": "workspace:*",
     "@philax/users": "workspace:*",
     "fastify": "^5.12.5",
-    "zod": "^4.6.5"
+    "zod": "^4.6.5",
+    "@anthropic-ai/sdk": "^0.131.0",
+    "@mozilla/readability": "^0.6.0",
+    "linkedom": "^0.18.13",
+    "pg": "^8.23.1"
   },
   "devDependencies": {
     "tsup": "^8.5.1",

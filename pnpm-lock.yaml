@@ -41,6 +41,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@anthropic-ai/sdk':
+        specifier: ^0.131.0
+        version: 0.131.0(zod@4.6.5)
       '@fastify/cookie':
         specifier: ^11.1.2
         version: 11.1.2
@@ -53,6 +56,9 @@ importers:
       '@fastify/rate-limit':
         specifier: ^11.2.0
         version: 11.2.0
+      '@mozilla/readability':
+        specifier: ^0.6.0
+        version: 0.6.0
       '@philax/ai':
         specifier: workspace:*
         version: link:../../packages/ai
@@ -92,6 +98,12 @@ importers:
       fastify:
         specifier: ^5.12.5
         version: 5.12.5
+      linkedom:
+        specifier: ^0.18.13
+        version: 0.18.13
+      pg:
+        specifier: ^8.23.1
+        version: 8.23.1
       zod:
         specifier: ^4.6.5
         version: 4.6.5

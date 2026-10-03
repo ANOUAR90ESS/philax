@@ -38,7 +38,11 @@ export async function buildApp(
             },
           },
     bodyLimit: 256 * 1024,
-    trustProxy: env.NODE_ENV === 'production',
+    // Trust X-Forwarded-For only from the configured number of proxy hops (0 = none); rate limits key on IP.
+    trustProxy:
+      env.TRUST_PROXY_HOPS > 0
+        ? (_address: string, hop: number) => hop < env.TRUST_PROXY_HOPS
+        : false,
     genReqId: () => crypto.randomUUID(),
   });
 

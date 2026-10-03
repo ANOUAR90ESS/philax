@@ -1,7 +1,11 @@
+import { existsSync } from 'node:fs';
 import { defineConfig, devices } from '@playwright/test';
 
-const chromium =
+// Use a preinstalled Chromium when present (sandboxed dev environments); otherwise
+// Playwright's own managed browser (CI runs `playwright install chromium`).
+const preinstalled =
   process.env.PLAYWRIGHT_CHROMIUM_PATH ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const launchOptions = existsSync(preinstalled) ? { executablePath: preinstalled } : {};
 
 export default defineConfig({
   testDir: '.',
@@ -14,14 +18,14 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:5174',
     trace: 'retain-on-failure',
-    launchOptions: { executablePath: chromium },
+    launchOptions,
   },
   projects: [
     {
       name: 'desktop',
-      use: { ...devices['Desktop Chrome'], launchOptions: { executablePath: chromium } },
+      use: { ...devices['Desktop Chrome'], launchOptions },
     },
-    { name: 'mobile', use: { ...devices['Pixel 7'], launchOptions: { executablePath: chromium } } },
+    { name: 'mobile', use: { ...devices['Pixel 7'], launchOptions } },
   ],
   webServer: [
     {

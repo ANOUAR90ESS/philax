@@ -17,3 +17,12 @@ process.on('SIGINT', () => void shutdown('SIGINT'));
 process.on('SIGTERM', () => void shutdown('SIGTERM'));
 
 await app.listen({ host: env.API_HOST, port: env.API_PORT });
+
+// Housekeeping: remove expired sessions hourly (privacy: no stale credentials kept).
+const purge = () =>
+  container.auth
+    .purgeExpiredSessions()
+    .then((n) => n && app.log.info({ removed: n }, 'expired sessions purged'))
+    .catch((err: unknown) => app.log.warn({ err }, 'session purge failed'));
+void purge();
+setInterval(() => void purge(), 60 * 60 * 1000).unref();

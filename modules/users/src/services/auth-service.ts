@@ -25,6 +25,7 @@ export interface AuthService {
   logout(sessionToken: string): Promise<void>;
   updateLocale(userId: string, locale: Locale): Promise<void>;
   deleteAccount(userId: string): Promise<void>;
+  purgeExpiredSessions(): Promise<number>;
 }
 
 function toView(u: UserRecord): UserView {
@@ -98,6 +99,10 @@ export class PasswordAuthService implements AuthService {
 
   async deleteAccount(userId: string): Promise<void> {
     await this.users.delete(userId);
+  }
+
+  purgeExpiredSessions(): Promise<number> {
+    return this.sessions.deleteExpired();
   }
 
   private async startSession(user: UserRecord): Promise<AuthResult> {

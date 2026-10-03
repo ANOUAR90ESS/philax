@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "pnpm --parallel --filter @philax/api --filter @philax/web dev",
-    "build": "pnpm -r --filter ./apps/* build",
+    "build": "pnpm --filter \"@philax/api\" --filter \"@philax/web\" build",
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",

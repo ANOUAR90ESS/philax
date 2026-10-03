@@ -21,6 +21,8 @@ export const EnvSchema = z.object({
   API_HOST: z.string().default('127.0.0.1'),
   API_PORT: z.coerce.number().int().min(1).max(65535).default(4000),
   CORS_ORIGINS: csv,
+  /** Number of trusted reverse-proxy hops for client IPs (0 = do not trust X-Forwarded-For). */
+  TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(5).default(0),
   SESSION_SECRET: optionalString,
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
   TEST_DATABASE_URL: optionalString,

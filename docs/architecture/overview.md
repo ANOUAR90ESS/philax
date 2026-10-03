@@ -41,5 +41,6 @@ apps/web  (React SPA, i18n, RTL)  ──HTTP/SSE──▶  apps/api (Fastify)
 - Only `packages/ai` knows vendor endpoints (lint-enforced).
 - Repositories are the only place SQL is written.
 
-See [data-flow.md](./data-flow.md) for the request pipeline and
-[decisions.md](./decisions.md) for the ADRs.
+See [data-flow.md](./data-flow.md) for the request pipeline,
+[decisions.md](./decisions.md) for the ADRs and
+[operations.md](./operations.md) for deployment, monitoring and the security review.
