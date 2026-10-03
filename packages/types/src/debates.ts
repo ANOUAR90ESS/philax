@@ -191,7 +191,8 @@ export type DebateStreamEvent =
   | { type: 'step'; step: PreparationStep; status: 'started' | 'completed' }
   | { type: 'round_started'; roundNumber: number; phase: RoundPhase }
   | { type: 'turn_started'; turnId: string; characterId: string }
-  | { type: 'draft'; turnId: string; delta: string }
+  /** Incremental speech text; when `reset` is true the client replaces the draft. */
+  | { type: 'draft'; turnId: string; delta: string; reset?: boolean }
   | { type: 'discard'; turnId: string; reason: string }
   | { type: 'message'; turnId: string; message: DebateMessage }
   | { type: 'round_completed'; roundNumber: number }

@@ -1,10 +1,13 @@
 import Fastify, { type FastifyInstance } from 'fastify';
 import type { Container } from './container';
 import { AuthController } from './controllers/auth.controller';
+import { CharactersController } from './controllers/characters.controller';
+import { DebatesController } from './controllers/debates.controller';
 import { registerAuth } from './plugins/auth';
 import { registerErrorHandler } from './plugins/error-handler';
 import { registerSecurity } from './plugins/security';
 import { authRoutes } from './routes/auth.routes';
+import { characterRoutes, debateRoutes } from './routes/debates.routes';
 import { healthRoutes } from './routes/health.routes';
 
 export interface BuildAppOptions {
@@ -49,6 +52,8 @@ export async function buildApp(
   const secureCookies = env.NODE_ENV === 'production';
   healthRoutes(app, container.db);
   authRoutes(app, new AuthController(container.auth, secureCookies, container.analytics));
+  debateRoutes(app, new DebatesController(container.debates));
+  characterRoutes(app, new CharactersController(container.characters));
 
   return app;
 }
