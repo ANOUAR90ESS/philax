@@ -1,0 +1,39 @@
+{
+  "name": "philax",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Knowledge-grounded AI debate platform for multi-perspective intellectual debates.",
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @philax/api --filter @philax/web dev",
+    "build": "pnpm -r --filter ./apps/* build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:e2e": "pnpm --filter @philax/tests e2e",
+    "eval": "pnpm --filter @philax/tests eval",
+    "db:migrate": "pnpm --filter @philax/database migrate",
+    "db:seed": "pnpm --filter @philax/database seed",
+    "db:reset-test": "pnpm --filter @philax/database reset-test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@types/node": "^24.0.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^5.0.3"
+  }
+}
