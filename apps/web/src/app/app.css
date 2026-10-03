@@ -722,8 +722,38 @@ h3 {
   color: var(--px-ink-soft);
   font-size: 0.9rem;
 }
+.stage__provider {
+  margin: 0 0 0.6rem;
+  text-align: center;
+}
+.stage__video {
+  inline-size: min(100%, 26rem);
+  aspect-ratio: 16 / 9;
+  border-radius: var(--px-radius);
+  background: var(--px-surface-2);
+  object-fit: cover;
+}
+.stage__video[hidden] {
+  display: none;
+}
+.stage__error {
+  margin: 0;
+  color: var(--px-danger, var(--px-ink));
+}
+.stage__speed {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+.stage__speed select {
+  font: inherit;
+  padding: 0.25rem 0.4rem;
+  border-radius: var(--px-radius);
+}
 .stage__disclosure,
 .stage__voice-note,
+.stage__loading,
 .stage__idle {
   margin: 0;
   max-inline-size: 48ch;

@@ -27,6 +27,7 @@ export const ERROR_CODES = [
   'AI_OUTPUT_INVALID',
   'NO_SUITABLE_CHARACTERS',
   'INVALID_STATE',
+  'MEDIA_UNAVAILABLE',
   'INTERNAL',
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];

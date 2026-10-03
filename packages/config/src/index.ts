@@ -38,6 +38,17 @@ export const EnvSchema = z.object({
   EMBEDDING_MODEL: optionalString,
 
   FIRECRAWL_API_KEY: optionalString,
+
+  /** Character media. Keys are read server-side only; the browser never sees them. */
+  ELEVENLABS_API_KEY: optionalString,
+  ELEVENLABS_MODEL_ID: z.string().default('eleven_multilingual_v2'),
+  /** HeyGen API (avatar video segments). */
+  HEYGEN_API_KEY: optionalString,
+  /** HeyGen LiveAvatar (real-time avatars) has its own key. */
+  LIVEAVATAR_API_KEY: optionalString,
+  /** live: real-time LiveAvatar sessions; video: rendered HeyGen segments; off: voice and portraits only. */
+  MEDIA_AVATAR_MODE: z.enum(['live', 'video', 'off']).default('live'),
+  MEDIA_MAX_LIVE_SESSIONS: z.coerce.number().int().min(0).max(100).default(4),
   POSTHOG_KEY: optionalString,
   POSTHOG_HOST: z.string().default('https://us.i.posthog.com'),
   SENTRY_DSN: optionalString,

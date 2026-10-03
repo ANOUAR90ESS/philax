@@ -1,6 +1,7 @@
 import { buildApp, createContainer } from '@philax/api';
 import type { PoolDb } from '@philax/database';
 import type { DebateStreamEvent } from '@philax/types';
+import type { AvatarProvider, VoiceProvider } from '@philax/media-service';
 import type { ContentExtractor } from '@philax/sources';
 import { testEnv } from './env';
 import { FixtureLLM, type FixtureOptions } from './fixture-llm';
@@ -10,7 +11,12 @@ export type App = Awaited<ReturnType<typeof buildApp>>;
 
 export async function createHarness(
   db: PoolDb,
-  opts: FixtureOptions & { embeddings?: boolean; extractor?: ContentExtractor } = {},
+  opts: FixtureOptions & {
+    embeddings?: boolean;
+    extractor?: ContentExtractor;
+    voice?: VoiceProvider;
+    avatar?: AvatarProvider | null;
+  } = {},
 ) {
   const llm = new FixtureLLM(opts);
   const container = createContainer(
@@ -24,6 +30,8 @@ export async function createHarness(
       llmProviders: [llm.provider],
       embeddings: opts.embeddings ? new HashingEmbeddingProvider() : null,
       extractor: opts.extractor,
+      voice: opts.voice,
+      avatar: opts.avatar,
     },
   );
   const app = await buildApp(container, { logger: false });

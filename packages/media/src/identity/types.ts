@@ -123,33 +123,58 @@ export interface AvatarAppearance {
   attire: { style: AttireStyle; color: string; accent: string };
 }
 
-/** Device-level rendering of a voice identity (pitch/rate are 0.5–2 TTS multipliers). */
-export interface VoiceRendering {
-  pitch: number;
-  rate: number;
-  /** Pause between subtitle sentences. */
-  sentencePauseMs: number;
+/** Provider-independent identity brief for one character. */
+export interface CharacterStyle {
+  /** The character's seed slug. */
+  characterId: string;
+  visualIdentity: CharacterVisualIdentity;
+  voiceIdentity: CharacterVoiceIdentity;
+  /** Illustrated portrait used for cast lists and cards (not a speaking avatar). */
+  portrait: AvatarAppearance;
+  /** Delivery settings passed to the voice provider. */
+  voiceSettings: { speed: number; stability: number; style: number };
+  /** Neither images nor voices are historical recordings. */
+  disclosure: 'ai_reconstruction';
 }
 
-export interface CharacterMediaProfile {
+/**
+ * Provider assets configured for one character (stored in the database,
+ * changeable without code). Each declares the presentation of the asset so it
+ * can be checked against the character before use.
+ */
+export interface CharacterMediaConfig {
   characterId: string;
   avatar: {
     provider: string;
-    avatarId: string;
-    fallbackImage?: string;
-    appearance: AvatarAppearance;
+    /** Avatar look used for generated video segments. */
+    avatarId: string | null;
+    /** Avatar used for real-time sessions. */
+    liveAvatarId: string | null;
+    presentation: Presentation;
   };
   voice: {
     provider: string;
-    voiceId: string;
-    /** Language tag → provider voice id. */
+    voiceId: string | null;
+    /** Language → voice id when a language needs its own voice. */
     languageVoices: Record<string, string>;
-    rendering: VoiceRendering;
+    presentation: Presentation;
   };
-  visualIdentity: CharacterVisualIdentity;
-  voiceIdentity: CharacterVoiceIdentity;
-  /** Neither the image nor the voice is a historical recording. */
-  disclosure: 'ai_reconstruction';
+}
+
+/** What a provider reports about an asset, when it reports anything. */
+export interface ProviderAssetFacts {
+  voiceGender?: string | null;
+  avatarGender?: string | null;
+}
+
+/** A character's identity, brief and provider assets, after validation. */
+export interface CharacterMediaProfile {
+  characterId: string;
+  avatar: { provider: string; avatarId: string | null; liveAvatarId: string | null };
+  voice: { provider: string; voiceId: string | null; languageVoices: Record<string, string> };
+  identity: { presentation: Presentation; ageProfile: AgeProfile | undefined };
+  speech: { tone: string; pace: VoicePace; style: string };
+  style: CharacterStyle;
 }
 
 export function ageProfileFor(age: number): AgeProfile {

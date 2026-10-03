@@ -3,6 +3,15 @@
  * Lets a deployment run migrations and load the curated seed without dev tooling.
  */
 import { loadDotEnv, loadEnv } from '@philax/config';
+import { CHARACTER_STYLES } from '@philax/media';
+import {
+  CharacterMediaService,
+  ElevenLabsVoiceProvider,
+  HeyGenVideoAvatarProvider,
+  LiveAvatarProvider,
+  MediaProfileRepository,
+  runMediaCommand,
+} from '@philax/media-service';
 import {
   loadSeed,
   migrate,
@@ -26,8 +35,36 @@ try {
     console.info(
       `[ops] seed: ${r.characters} characters, ${r.chunks} chunks (${r.retiredChunks} retired)`,
     );
+    const briefs = await new MediaProfileRepository(db).syncBriefs(CHARACTER_STYLES);
+    console.info(`[ops] media identity briefs: ${briefs.length}`);
+  } else if (command?.startsWith('media:')) {
+    const repository = new MediaProfileRepository(db);
+    const elevenlabs = new ElevenLabsVoiceProvider({
+      apiKey: env.ELEVENLABS_API_KEY,
+      modelId: env.ELEVENLABS_MODEL_ID,
+    });
+    const avatar =
+      env.MEDIA_AVATAR_MODE === 'live'
+        ? new LiveAvatarProvider({ apiKey: env.LIVEAVATAR_API_KEY })
+        : env.MEDIA_AVATAR_MODE === 'video'
+          ? new HeyGenVideoAvatarProvider({ apiKey: env.HEYGEN_API_KEY })
+          : null;
+    const service = new CharacterMediaService({
+      repository,
+      voice: elevenlabs,
+      avatar,
+      voiceModel: env.ELEVENLABS_MODEL_ID,
+    });
+    process.exitCode = await runMediaCommand(command, process.argv.slice(3), {
+      repository,
+      service,
+      elevenlabs,
+      log: (line) => console.info(line),
+    });
   } else {
-    console.error('usage: node dist/ops.js <migrate|seed>');
+    console.error(
+      'usage: node dist/ops.js <migrate|seed|media:sync|media:configure|media:verify|media:design-voice>',
+    );
     process.exitCode = 2;
   }
 } finally {

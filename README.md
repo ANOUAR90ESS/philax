@@ -23,22 +23,23 @@ pnpm dev                      # API on :4000, web on :5173
 Without an LLM key the app runs, but debate creation returns a clear
 `AI_UNAVAILABLE` error — there is no fake mode.
 
-| Command                           | Purpose                                                                                 |
-| --------------------------------- | --------------------------------------------------------------------------------------- |
-| `pnpm lint` / `pnpm format:check` | ESLint (incl. architecture boundaries) / Prettier                                       |
-| `pnpm typecheck`                  | strict TypeScript across the workspace                                                  |
-| `pnpm test`                       | unit, web and integration tests (needs `TEST_DATABASE_URL`) incl. offline AI eval gates |
-| `pnpm test:e2e`                   | Playwright E2E (real API + DB, deterministic fixture LLM)                               |
-| `pnpm eval [--live N]`            | AI evaluation report (`--live` uses real providers and costs money)                     |
-| `pnpm build`                      | production bundles (API via tsup, web via Vite)                                         |
+| Command                           | Purpose                                                                                  |
+| --------------------------------- | ---------------------------------------------------------------------------------------- |
+| `pnpm lint` / `pnpm format:check` | ESLint (incl. architecture boundaries) / Prettier                                        |
+| `pnpm typecheck`                  | strict TypeScript across the workspace                                                   |
+| `pnpm test`                       | unit, web and integration tests (needs `TEST_DATABASE_URL`) incl. offline AI eval gates  |
+| `pnpm test:e2e`                   | Playwright E2E (real API + DB, deterministic fixture LLM)                                |
+| `pnpm eval [--live N]`            | AI evaluation report (`--live` uses real providers and costs money)                      |
+| `pnpm build`                      | production bundles (API via tsup, web via Vite)                                          |
+| `pnpm media media:<command>`      | character avatars/voices: `sync`, `configure`, `verify`, `design-voice` (see media docs) |
 
 ## Repository
 
 ```
 apps/api        Fastify API: routes → controllers → module services; SSE streaming
 apps/web        React SPA (i18n en/es/ar, RTL), features: input, debate, topic, characters, sources, profile
-packages/       types (Zod contracts) · config · prompts (versioned) · ai (LLM gateway, embeddings) · ui · media (avatars, voices)
-modules/        users · billing · sources · topics · perspectives · characters · knowledge · arguments · debates
+packages/       types (Zod contracts) · config · prompts (versioned) · ai (LLM gateway, embeddings) · ui · media (character identity briefs, subtitles)
+modules/        users · billing · sources · topics · perspectives · characters · knowledge · arguments · debates · media (HeyGen/ElevenLabs gateway)
 database/       SQL migrations, curated seed (29 thinkers, 23 perspectives), migration/seed runners
 tests/          integration, E2E, evaluation dataset, test doubles
 docs/           architecture (overview, ADRs, data flow, operations), api, ai, knowledge, product

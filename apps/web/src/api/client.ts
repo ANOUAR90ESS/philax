@@ -9,6 +9,7 @@ export class ApiClientError extends Error {
     message: string,
     readonly status: number,
     readonly errorId: string | null,
+    readonly details?: unknown,
   ) {
     super(message);
     this.name = 'ApiClientError';
@@ -42,7 +43,7 @@ export async function apiRequest<T>(
     const parsed = ApiErrorSchema.safeParse(json);
     if (parsed.success) {
       const e = parsed.data.error;
-      throw new ApiClientError(e.code as ErrorCode, e.message, res.status, e.errorId);
+      throw new ApiClientError(e.code as ErrorCode, e.message, res.status, e.errorId, e.details);
     }
     throw new ApiClientError('INTERNAL', 'Unexpected error', res.status, null);
   }

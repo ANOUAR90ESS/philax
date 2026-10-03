@@ -1,6 +1,4 @@
-import type { AvatarAppearance, Presentation } from '@philax/media';
-import { useEffect, useState } from 'react';
-import { useMediaServices } from './media-services';
+import { CharacterStyleRegistry, type AvatarAppearance, type Presentation } from '@philax/media';
 
 export interface CharacterPortrait {
   appearance: AvatarAppearance;
@@ -8,29 +6,23 @@ export interface CharacterPortrait {
   age: number;
 }
 
-/** A character's validated portrait, or null when none may be shown. */
+const registry = new CharacterStyleRegistry();
+
+/**
+ * A character's illustrated portrait from its validated identity brief, or
+ * null when none may be shown (no brief, or one that failed validation).
+ */
+export function characterPortrait(slug: string | undefined): CharacterPortrait | null {
+  if (!slug) return null;
+  const brief = registry.resolve(slug);
+  if (brief.status !== 'ready') return null;
+  return {
+    appearance: brief.style.portrait,
+    presentation: brief.style.visualIdentity.presentation,
+    age: brief.style.visualIdentity.approximateAge ?? 50,
+  };
+}
+
 export function useCharacterPortrait(slug: string | undefined): CharacterPortrait | null {
-  const services = useMediaServices();
-  const [portrait, setPortrait] = useState<{ slug: string; value: CharacterPortrait } | null>(null);
-  useEffect(() => {
-    if (!slug) return;
-    const media = services.registry.resolve(slug);
-    if (media.status !== 'ready') return;
-    let cancelled = false;
-    void services.avatars.avatarFor(media).then((outcome) => {
-      if (cancelled || outcome.status !== 'ready' || !outcome.avatar.appearance) return;
-      setPortrait({
-        slug,
-        value: {
-          appearance: outcome.avatar.appearance,
-          presentation: outcome.avatar.presentation,
-          age: media.profile.visualIdentity.approximateAge ?? 50,
-        },
-      });
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [slug, services]);
-  return portrait && portrait.slug === slug ? portrait.value : null;
+  return characterPortrait(slug);
 }

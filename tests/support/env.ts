@@ -21,6 +21,9 @@ export function testEnv(overrides: Record<string, string> = {}): Env {
     FIRECRAWL_API_KEY: '',
     EMBEDDING_MODEL: '',
     POSTHOG_KEY: '',
+    ELEVENLABS_API_KEY: '',
+    HEYGEN_API_KEY: '',
+    LIVEAVATAR_API_KEY: '',
     ...overrides,
   });
 }

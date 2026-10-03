@@ -3,12 +3,14 @@ import type { Container } from './container';
 import { AuthController } from './controllers/auth.controller';
 import { CharactersController } from './controllers/characters.controller';
 import { DebatesController } from './controllers/debates.controller';
+import { MediaController } from './controllers/media.controller';
 import { registerAuth } from './plugins/auth';
 import { registerErrorHandler } from './plugins/error-handler';
 import { registerSecurity } from './plugins/security';
 import { authRoutes } from './routes/auth.routes';
 import { characterRoutes, debateRoutes } from './routes/debates.routes';
 import { healthRoutes } from './routes/health.routes';
+import { mediaRoutes } from './routes/media.routes';
 
 export interface BuildAppOptions {
   logger?: boolean;
@@ -58,6 +60,7 @@ export async function buildApp(
   authRoutes(app, new AuthController(container.auth, secureCookies, container.analytics));
   debateRoutes(app, new DebatesController(container.debates));
   characterRoutes(app, new CharactersController(container.characters));
+  mediaRoutes(app, new MediaController(container.media, container.debates));
 
   return app;
 }
