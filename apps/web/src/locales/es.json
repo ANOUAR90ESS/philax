@@ -1,0 +1,268 @@
+{
+  "app": {
+    "name": "Philax",
+    "tagline": "Examina ideas a través del desacuerdo estructurado.",
+    "skipToContent": "Saltar al contenido principal",
+    "footer": "Los debates son reconstrucciones de IA basadas en obras documentadas. Nadie es declarado ganador: tú decides.",
+    "privacyLink": "Privacidad"
+  },
+  "nav": {
+    "primary": "Principal",
+    "home": "Examinar",
+    "challenge": "Desafía mi idea",
+    "myDebates": "Mis debates",
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "account": "Cuenta"
+  },
+  "language": {
+    "label": "Idioma",
+    "en": "English",
+    "es": "Español",
+    "ar": "العربية"
+  },
+  "home": {
+    "heading": "¿Qué quieres examinar?",
+    "inputLabel": "Pega un enlace o escribe una idea",
+    "placeholder": "p. ej. ¿La inteligencia artificial hará a las personas menos creativas?",
+    "hint": "Una pregunta, una afirmación, un fragmento de texto o el enlace a un artículo.",
+    "start": "Iniciar debate",
+    "examplesTitle": "O prueba con una de estas",
+    "examples": [
+      "¿La tecnología hace a las personas más libres?",
+      "¿Debería ser gratuita la educación universitaria?",
+      "¿Está bien alguna vez incumplir la ley?"
+    ],
+    "howTitle": "Cómo funciona",
+    "how": [
+      "Analizamos tu texto en afirmaciones, supuestos y preguntas abiertas.",
+      "Buscamos perspectivas que realmente discrepan, y pensadores que las documentaron.",
+      "Debaten durante varias rondas citando fuentes. Puedes intervenir en cualquier momento."
+    ],
+    "detectedUrl": "Enlace detectado: leeremos el artículo y debatiremos sus afirmaciones."
+  },
+  "challenge": {
+    "heading": "Desafía mi idea",
+    "intro": "Escribe una idea que defiendas. Construiremos el mejor argumento a favor, el mejor en contra, un enfoque alternativo y sacaremos a la luz sus supuestos ocultos.",
+    "label": "Mi idea",
+    "placeholder": "p. ej. El teletrabajo siempre es mejor.",
+    "start": "Desafiarla"
+  },
+  "auth": {
+    "signInTitle": "Iniciar sesión",
+    "registerTitle": "Crear una cuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "passwordHint": "Al menos 10 caracteres.",
+    "displayName": "Nombre (opcional)",
+    "submitSignIn": "Iniciar sesión",
+    "submitRegister": "Crear cuenta",
+    "toRegister": "¿Eres nuevo? Crea una cuenta",
+    "toSignIn": "¿Ya tienes cuenta? Inicia sesión",
+    "required": "Inicia sesión para empezar y guardar debates."
+  },
+  "pipeline": {
+    "title": "Preparando el debate",
+    "steps": {
+      "extract": "Leyendo la entrada",
+      "analyze": "Identificando afirmaciones, supuestos y preguntas",
+      "perspectives": "Descubriendo perspectivas en conflicto",
+      "characters": "Seleccionando pensadores y recuperando evidencias",
+      "plan": "Planificando las líneas de desacuerdo"
+    },
+    "slow": "Esto puede tardar hasta un minuto."
+  },
+  "debate": {
+    "topic": "Tema",
+    "participants": "Participantes",
+    "round": "Ronda {{number}}",
+    "roundOf": "Ronda {{number}} de {{total}}",
+    "transcript": "Transcripción del debate",
+    "analysis": "Análisis de la entrada",
+    "claims": "Afirmaciones y supuestos",
+    "questions": "Preguntas en juego",
+    "tensions": "Dónde se espera el desacuerdo",
+    "axes": "Líneas de desacuerdo",
+    "next": "Siguiente ronda",
+    "generating": "Generando…",
+    "speaking": "{{name}} está hablando…",
+    "revising": "Revisando esta respuesta para que sea coherente con las fuentes…",
+    "toSynthesis": "Concluir: mostrar la síntesis",
+    "completed": "Este debate ha terminado.",
+    "why": "Por qué este pensador",
+    "perspective": "Perspectiva",
+    "argument": "Estructura del argumento",
+    "premises": "Premisas",
+    "conclusion": "Conclusión",
+    "assumptions": "Supuestos",
+    "objections": "Objeciones respondidas",
+    "repliesTo": "En respuesta a {{name}}",
+    "you": "Tú",
+    "save": "Guardar debate",
+    "saved": "Guardado",
+    "unsave": "Quitar de guardados",
+    "delete": "Eliminar debate",
+    "deleteConfirm": "¿Eliminar este debate definitivamente? No se puede deshacer.",
+    "notice": {
+      "historical": "Reconstrucción simulada basada en obras y posiciones documentadas. No son declaraciones reales de {{name}}.",
+      "contemporary": "Reconstrucción basada en declaraciones y obras públicamente documentadas de {{name}}. No es una declaración suya.",
+      "general": "Todas las intervenciones son reconstrucciones de IA basadas en ideas documentadas. Las fuentes aparecen con cada turno."
+    },
+    "phases": {
+      "DEBATE_CREATED": "Creado",
+      "TOPIC_ANALYZED": "Tema analizado",
+      "CHARACTERS_SELECTED": "Pensadores seleccionados",
+      "DEBATE_PLANNED": "Listo para empezar",
+      "OPENING": "Posiciones iniciales",
+      "CHALLENGE": "Desafíos directos",
+      "RESPONSE": "Respuestas",
+      "CROSS_EXAMINATION": "Interrogatorio cruzado",
+      "DEEP_DISAGREEMENT": "Desacuerdo profundo",
+      "OPEN_QUESTION": "La pregunta abierta",
+      "USER_EXCHANGE": "Tu aportación",
+      "USER_CHALLENGE": "Tu turno",
+      "SYNTHESIS": "Síntesis",
+      "COMPLETED": "Terminado",
+      "FAILED": "No se pudo preparar"
+    },
+    "moves": {
+      "assert": "Expone una posición",
+      "challenge": "Desafía",
+      "respond": "Responde",
+      "question": "Pregunta",
+      "answer": "Contesta",
+      "concede": "Concede un punto",
+      "reframe": "Replantea"
+    },
+    "roles": {
+      "debater": "Participante",
+      "supporter": "Mejor defensa",
+      "opponent": "Mejor oposición",
+      "alternative": "Enfoque alternativo"
+    },
+    "join": {
+      "title": "Entra en el debate",
+      "intro": "Expón tu posición o desafía a un participante. Te responderán, y no se limitarán a darte la razón.",
+      "label": "Tu posición",
+      "placeholder": "Creo que…",
+      "send": "Añadir al debate",
+      "invite": "Los participantes han llegado a la pregunta abierta. ¿Qué piensas tú?"
+    },
+    "challengeFraming": {
+      "title": "Examinando tu idea",
+      "hidden": "Supuestos ocultos",
+      "strongest": "Objeción más fuerte"
+    },
+    "finished": "{{name}} ha terminado de hablar.",
+    "loading": "Cargando el debate…",
+    "back": "Volver al inicio",
+    "reply": "En respuesta a",
+    "jumpToSource": "Fuente {{label}}",
+    "thinking": "Preparando…",
+    "transcriptEmpty": "El debate aún no ha comenzado.",
+    "start": "Comenzar el debate",
+    "yourTurnHint": "Puedes añadir tu opinión en cualquier momento o concluir el debate."
+  },
+  "sources": {
+    "title": "Fuentes",
+    "cited": "Fuentes citadas",
+    "none": "En este turno no se citaron fuentes.",
+    "paraphrase": "Paráfrasis de material documentado, no una cita textual.",
+    "locator": "Ubicación: {{locator}}",
+    "open": "Abrir fuente",
+    "noUrl": "Referencia bibliográfica (sin enlace verificado todavía)",
+    "types": {
+      "primary": "Fuente primaria",
+      "secondary": "Fuente secundaria",
+      "academic": "Fuente académica",
+      "article": "Artículo",
+      "book": "Libro",
+      "user-provided": "Tu entrada"
+    },
+    "kinds": {
+      "biographical_fact": "Dato biográfico",
+      "documented_position": "Posición documentada",
+      "concept": "Concepto",
+      "scholarly_interpretation": "Interpretación académica",
+      "interpretation": "Interpretación",
+      "user_content": "De tu entrada"
+    }
+  },
+  "synthesis": {
+    "title": "Síntesis",
+    "noWinner": "No hay ganador. Este resumen traza el desacuerdo para que formes tu propia opinión.",
+    "agree": "En qué coinciden",
+    "disagree": "En qué discrepan",
+    "why": "Por qué discrepan",
+    "assumptions": "Supuestos de fondo distintos",
+    "keyArguments": "Argumentos clave",
+    "unresolved": "Preguntas sin resolver",
+    "strongest": "La pregunta sin resolver más fuerte",
+    "userPosition": "Tu posición",
+    "sources": "Fuentes utilizadas",
+    "whatDoYouThink": "¿Tú qué piensas?",
+    "axes": {
+      "assumptions": "Supuestos",
+      "definitions": "Definiciones",
+      "values": "Valores",
+      "evidence": "Evidencia",
+      "priorities": "Prioridades",
+      "schools": "Escuelas de pensamiento"
+    },
+    "challengeCta": "Pon a prueba tu propia opinión: desafía mi idea"
+  },
+  "profile": {
+    "title": "Mis debates",
+    "saved": "Debates guardados",
+    "all": "Debates recientes",
+    "empty": "Todavía no hay debates.",
+    "open": "Abrir",
+    "account": "Cuenta",
+    "deleteAccount": "Eliminar mi cuenta y todos mis datos",
+    "deleteAccountConfirm": "Esto elimina definitivamente tu cuenta, debates, entradas y elementos guardados. ¿Continuar?",
+    "delete": "Eliminar",
+    "savedBadge": "Guardado"
+  },
+  "privacy": {
+    "title": "Privacidad",
+    "body": [
+      "Qué guardamos: tu correo, una contraseña cifrada (hash), tus debates (texto o enlace de entrada, texto extraído del artículo, análisis y turnos generados) y contadores de uso para aplicar los límites diarios.",
+      "Por qué: para ejecutar y mostrar tus debates, permitirte volver a los guardados y proteger el servicio contra abusos.",
+      "Durante cuánto tiempo: hasta que elimines el debate o tu cuenta. Las sesiones caducan a los 30 días. Los registros operativos excluyen tu contenido.",
+      "Eliminación: puedes eliminar cualquier debate, o tu cuenta completa con todos sus datos, desde «Mis debates». La eliminación es inmediata y definitiva.",
+      "Proveedores de IA: para generar debates, las partes relevantes de tu entrada se envían al proveedor de IA configurado. Las claves de API permanecen en nuestros servidores."
+    ]
+  },
+  "errors": {
+    "title": "Algo salió mal",
+    "reference": "Referencia: {{id}}",
+    "retry": "Reintentar",
+    "notFound": "No encontramos esa página.",
+    "codes": {
+      "NETWORK": "No pudimos conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+      "VALIDATION_FAILED": "Revisa lo que escribiste e inténtalo de nuevo.",
+      "UNAUTHENTICATED": "Inicia sesión para continuar.",
+      "FORBIDDEN": "No tienes acceso a esto.",
+      "NOT_FOUND": "No lo encontramos.",
+      "CONFLICT": "Esto entra en conflicto con datos existentes.",
+      "RATE_LIMITED": "Demasiadas solicitudes. Espera un momento.",
+      "QUOTA_EXCEEDED": "Has alcanzado el límite diario para esta acción.",
+      "EXTRACTION_FAILED": "No pudimos leer esa página. Prueba a pegar el texto.",
+      "URL_NOT_ALLOWED": "Ese enlace no se puede obtener. Usa una página web pública http(s).",
+      "AI_UNAVAILABLE": "El servicio de IA no está disponible ahora. Inténtalo en breve.",
+      "AI_OUTPUT_INVALID": "No pudimos generar un resultado fiable. Inténtalo de nuevo.",
+      "NO_SUITABLE_CHARACTERS": "No encontramos suficientes perspectivas bien documentadas y realmente distintas para esta entrada.",
+      "INVALID_STATE": "Esa acción no está disponible en esta fase del debate.",
+      "INTERNAL": "Algo falló por nuestra parte. Inténtalo de nuevo."
+    }
+  },
+  "claimKinds": {
+    "claim": "Afirmación",
+    "evidence": "Evidencia",
+    "assumption": "Supuesto",
+    "question": "Pregunta",
+    "value_judgment": "Juicio de valor",
+    "prediction": "Predicción",
+    "definition": "Definición"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "slug": "jean-paul-sartre",
+  "name": "Jean-Paul Sartre",
+  "displayName": "Jean-Paul Sartre",
+  "type": "philosopher",
+  "birthYear": 1905,
+  "deathYear": 1980,
+  "era": "20th-century France",
+  "representation": "historical",
+  "domains": ["existence", "freedom", "ethics", "psychology", "politics"],
+  "worldviewSummary": "Sartre holds that for human beings existence precedes essence: there is no given human nature, so we are 'condemned to be free' and wholly responsible for what we make of ourselves. Denying this freedom — hiding behind roles, nature or circumstances — is bad faith.",
+  "biography": "French philosopher, novelist and playwright, central figure of postwar existentialism and a politically engaged public intellectual. He declined the 1964 Nobel Prize in Literature.",
+  "perspectives": [
+    { "slug": "existentialism", "strength": 3 },
+    { "slug": "marxism", "strength": 1 }
+  ],
+  "works": [
+    { "key": "existentialism-humanism", "title": "Existentialism Is a Humanism", "year": 1946 },
+    { "key": "being-and-nothingness", "title": "Being and Nothingness", "year": 1943 }
+  ],
+  "concepts": [
+    {
+      "concept": "Existence precedes essence",
+      "description": "Man first exists, encounters himself and surges up in the world, and defines himself afterwards; there is no human nature fixed in advance.",
+      "work": "existentialism-humanism",
+      "locator": null,
+      "kind": "concept"
+    },
+    {
+      "concept": "Bad faith",
+      "description": "Self-deception in which one denies one's freedom, as in the café waiter who plays at being a waiter as though it were his fixed essence.",
+      "work": "being-and-nothingness",
+      "locator": "Part One, ch. 2",
+      "kind": "concept"
+    },
+    {
+      "concept": "Condemned to be free",
+      "description": "We did not create ourselves, yet once thrown into the world we are responsible for everything we do.",
+      "work": "existentialism-humanism",
+      "locator": null,
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "responsibility",
+      "statement": "In choosing for ourselves we choose for all humanity, because each choice affirms an image of what a human being ought to be.",
+      "work": "existentialism-humanism",
+      "locator": null,
+      "kind": "documented_position"
+    },
+    {
+      "topic": "excuses",
+      "statement": "There is no determinism to hide behind; passions, circumstances or human nature cannot serve as excuses for our choices.",
+      "work": "existentialism-humanism",
+      "locator": null,
+      "kind": "documented_position"
+    },
+    {
+      "topic": "values",
+      "statement": "No general morality can tell us what to do in concrete situations — illustrated by the student torn between his mother and joining the Free French; he must invent his choice.",
+      "work": "existentialism-humanism",
+      "locator": null,
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "simone-de-beauvoir",
+      "relation": "shares_tradition",
+      "note": "Lifelong intellectual partners in French existentialism."
+    }
+  ],
+  "constraints": []
+}

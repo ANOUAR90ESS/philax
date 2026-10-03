@@ -1,0 +1,92 @@
+{
+  "slug": "friedrich-hayek",
+  "name": "Friedrich A. Hayek",
+  "displayName": "Friedrich Hayek",
+  "type": "economist",
+  "birthYear": 1899,
+  "deathYear": 1992,
+  "era": "20th-century Austria, Britain and United States",
+  "representation": "historical",
+  "domains": ["economics", "political philosophy", "knowledge", "planning", "law"],
+  "worldviewSummary": "Hayek argues that the knowledge needed for economic coordination is dispersed among millions of people as local, often tacit knowledge of particular circumstances. Prices transmit this knowledge in a way no central planner could replicate. Comprehensive planning therefore fails and tends to concentrate coercive power; spontaneous orders like markets and law evolve beyond any single design.",
+  "biography": "Austrian-born economist who taught at the London School of Economics, the University of Chicago and Freiburg. Shared the 1974 Nobel Memorial Prize in Economic Sciences with Gunnar Myrdal.",
+  "perspectives": [
+    { "slug": "market-liberalism", "strength": 3 },
+    { "slug": "critical-rationalism", "strength": 1 }
+  ],
+  "works": [
+    {
+      "key": "use-of-knowledge",
+      "title": "The Use of Knowledge in Society (American Economic Review)",
+      "year": 1945
+    },
+    { "key": "road-to-serfdom", "title": "The Road to Serfdom", "year": 1944 },
+    { "key": "constitution-of-liberty", "title": "The Constitution of Liberty", "year": 1960 }
+  ],
+  "concepts": [
+    {
+      "concept": "Dispersed knowledge",
+      "description": "The economic problem is how to use knowledge that is never given to anyone in its totality, but exists as dispersed bits of incomplete and often contradictory knowledge held by separate individuals.",
+      "work": "use-of-knowledge",
+      "locator": null,
+      "kind": "concept"
+    },
+    {
+      "concept": "Price system as communication",
+      "description": "Prices act as a mechanism for communicating information, letting individuals adjust to changes they know nothing about directly.",
+      "work": "use-of-knowledge",
+      "locator": null,
+      "kind": "concept"
+    },
+    {
+      "concept": "Spontaneous order",
+      "description": "Complex orders such as markets, language and common law arise from human action but not from human design.",
+      "work": "constitution-of-liberty",
+      "locator": "Part I",
+      "kind": "scholarly_interpretation"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "central planning",
+      "statement": "Comprehensive economic planning requires agreement on a complete hierarchy of ends that does not exist, so planners must impose their values, concentrating power and endangering liberty.",
+      "work": "road-to-serfdom",
+      "locator": "ch. V–VI",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "rule of law",
+      "statement": "Government in all its actions should be bound by rules fixed and announced beforehand, making it possible to foresee how authority will use its coercive powers.",
+      "work": "road-to-serfdom",
+      "locator": "ch. VI",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "safety net",
+      "statement": "Hayek accepted that the state may provide a minimum of food, shelter and clothing to all and support social insurance, so long as this does not require directing the economy.",
+      "work": "road-to-serfdom",
+      "locator": "ch. IX",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "limits of reason",
+      "statement": "Civilization rests on more knowledge than any individual or authority can possess, so the case for freedom rests on recognizing our inevitable ignorance.",
+      "work": "constitution-of-liberty",
+      "locator": "ch. 2",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "karl-marx",
+      "relation": "opposes",
+      "note": "Central critic of socialist planning."
+    },
+    {
+      "other": "karl-popper",
+      "relation": "shares_tradition",
+      "note": "Close friends and allies in defending open societies."
+    }
+  ],
+  "constraints": []
+}

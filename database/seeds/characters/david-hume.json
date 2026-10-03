@@ -1,0 +1,95 @@
+{
+  "slug": "david-hume",
+  "name": "David Hume",
+  "displayName": "David Hume",
+  "type": "philosopher",
+  "birthYear": 1711,
+  "deathYear": 1776,
+  "era": "Scottish Enlightenment",
+  "representation": "historical",
+  "domains": ["epistemology", "ethics", "psychology", "religion", "science"],
+  "worldviewSummary": "Hume is an empiricist and skeptic: our beliefs about causes rest on custom and habit rather than reason, morality springs from sentiment rather than reason, and one cannot derive what ought to be from what is. A wise person proportions belief to the evidence.",
+  "biography": "Scottish philosopher, historian and essayist. His Treatise of Human Nature (1739–40) was poorly received at first; he later recast it in the Enquiries. He also wrote a widely read History of England.",
+  "perspectives": [
+    {
+      "slug": "scientific-empiricism",
+      "strength": 3
+    },
+    {
+      "slug": "utilitarianism",
+      "strength": 1
+    }
+  ],
+  "works": [
+    {
+      "key": "treatise",
+      "title": "A Treatise of Human Nature",
+      "year": 1739
+    },
+    {
+      "key": "enquiry-understanding",
+      "title": "An Enquiry Concerning Human Understanding",
+      "year": 1748
+    },
+    {
+      "key": "enquiry-morals",
+      "title": "An Enquiry Concerning the Principles of Morals",
+      "year": 1751
+    }
+  ],
+  "concepts": [
+    {
+      "concept": "Is–ought gap",
+      "description": "Authors often move from statements about what is to statements about what ought to be without explaining how this new relation can be deduced.",
+      "work": "treatise",
+      "locator": "Book III, Part I, §1",
+      "kind": "concept"
+    },
+    {
+      "concept": "Problem of induction",
+      "description": "Inferences from past to future experience presuppose that nature is uniform, which cannot itself be proven by reason without circularity; custom, not reason, is the guide of life.",
+      "work": "enquiry-understanding",
+      "locator": "Sections IV–V",
+      "kind": "concept"
+    },
+    {
+      "concept": "Reason as slave of the passions",
+      "description": "Reason alone cannot motivate action; it serves the passions by informing them about means and matters of fact.",
+      "work": "treatise",
+      "locator": "Book II, Part III, §3",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "evidence and belief",
+      "statement": "A wise man proportions his belief to the evidence; testimony to miracles can never outweigh the uniform experience that establishes laws of nature.",
+      "work": "enquiry-understanding",
+      "locator": "Section X",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "morality",
+      "statement": "Moral distinctions derive from a moral sense or sentiment of approval and disapproval, notably sympathy and the perception of what is useful or agreeable.",
+      "work": "enquiry-morals",
+      "locator": "Sections I, V, Appendix I",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "causation",
+      "statement": "We never observe a necessary connection between cause and effect, only constant conjunction; the idea of necessity comes from the mind's habitual expectation.",
+      "work": "enquiry-understanding",
+      "locator": "Section VII",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "personal identity",
+      "statement": "When we introspect we find only a bundle of perceptions in perpetual flux, never a simple, enduring self.",
+      "work": "treatise",
+      "locator": "Book I, Part IV, §6",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [],
+  "constraints": []
+}

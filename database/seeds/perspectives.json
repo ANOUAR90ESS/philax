@@ -1,0 +1,311 @@
+[
+  {
+    "slug": "virtue-ethics",
+    "label": "Virtue ethics",
+    "description": "Morality centres on character: the stable dispositions (virtues) that make a human life go well, cultivated through habit and practical wisdom.",
+    "assumptions": [
+      "Humans have a characteristic flourishing (eudaimonia)",
+      "Character is formed by habituation",
+      "Practical wisdom cannot be reduced to rules"
+    ],
+    "values": ["flourishing", "excellence", "practical wisdom", "moderation"],
+    "relevantDomains": ["ethics", "education", "politics", "technology", "work"],
+    "contrasts": ["utilitarianism", "deontology", "existentialism"]
+  },
+  {
+    "slug": "utilitarianism",
+    "label": "Utilitarianism",
+    "description": "The right action is the one that produces the best overall consequences, usually understood as the greatest balance of well-being for everyone affected.",
+    "assumptions": [
+      "Well-being can be compared and aggregated across people",
+      "Each person's interests count equally",
+      "Consequences are what ultimately matter morally"
+    ],
+    "values": ["aggregate welfare", "impartiality", "reduction of suffering"],
+    "relevantDomains": ["ethics", "policy", "economics", "technology", "law"],
+    "contrasts": [
+      "deontology",
+      "virtue-ethics",
+      "natural-rights-liberalism",
+      "religious-existentialism"
+    ]
+  },
+  {
+    "slug": "deontology",
+    "label": "Kantian deontology",
+    "description": "Morality is a matter of duty grounded in reason: act only on principles you could will as universal law and treat persons always as ends, never merely as means.",
+    "assumptions": [
+      "Rational agents are bound by the moral law",
+      "Persons have dignity, not a price",
+      "Good outcomes cannot justify using people"
+    ],
+    "values": ["dignity", "autonomy", "duty", "universalizability"],
+    "relevantDomains": ["ethics", "law", "politics", "technology", "medicine"],
+    "contrasts": ["utilitarianism", "genealogical-critique", "epicureanism"]
+  },
+  {
+    "slug": "stoicism",
+    "label": "Stoicism",
+    "description": "A good life consists in virtue and in correctly distinguishing what is up to us (judgements, choices) from what is not, accepting the latter with equanimity.",
+    "assumptions": [
+      "Only virtue is truly good",
+      "Distress comes from judgements, not events",
+      "Nature is rationally ordered"
+    ],
+    "values": ["equanimity", "self-mastery", "virtue", "acceptance"],
+    "relevantDomains": ["ethics", "psychology", "work", "technology"],
+    "contrasts": ["epicureanism", "marxism", "existentialism"]
+  },
+  {
+    "slug": "epicureanism",
+    "label": "Epicureanism",
+    "description": "The goal of life is pleasure understood as tranquillity: freedom from bodily pain and mental disturbance, reached through simple living, friendship and understanding nature.",
+    "assumptions": [
+      "Pleasure is the natural good",
+      "Many desires are unnecessary",
+      "Fear of death and the gods is unfounded"
+    ],
+    "values": ["tranquillity", "friendship", "simplicity", "freedom from fear"],
+    "relevantDomains": ["ethics", "psychology", "consumption", "technology"],
+    "contrasts": ["stoicism", "deontology", "religious-existentialism"]
+  },
+  {
+    "slug": "confucian-ethics",
+    "label": "Confucian role ethics",
+    "description": "Moral life is cultivated within relationships and roles through ritual propriety (li), humaneness (ren) and learning, aiming at harmony in family and society.",
+    "assumptions": [
+      "Persons are constituted by relationships",
+      "Ritual shapes character",
+      "Good government rests on virtue more than law"
+    ],
+    "values": ["humaneness", "propriety", "filial respect", "harmony", "learning"],
+    "relevantDomains": ["ethics", "politics", "education", "family"],
+    "contrasts": ["natural-rights-liberalism", "existentialism", "market-liberalism"]
+  },
+  {
+    "slug": "social-contract-absolutism",
+    "label": "Hobbesian social contract",
+    "description": "Without a common power people live in a war of all against all; rational individuals therefore authorize a strong sovereign to secure peace.",
+    "assumptions": [
+      "Humans are roughly equal and self-interested",
+      "Security is the precondition of every other good",
+      "Authority derives from consent motivated by fear"
+    ],
+    "values": ["security", "peace", "order"],
+    "relevantDomains": ["politics", "law", "security", "technology"],
+    "contrasts": ["natural-rights-liberalism", "civic-republicanism", "market-liberalism"]
+  },
+  {
+    "slug": "natural-rights-liberalism",
+    "label": "Liberal individualism",
+    "description": "Individuals possess rights and a sphere of liberty that government exists to protect; freedom means acting on one's own choices without coercion as long as others are not harmed.",
+    "assumptions": [
+      "Individuals are the primary unit of moral concern",
+      "Legitimate power requires consent and limits",
+      "Freedom is chiefly freedom from interference"
+    ],
+    "values": ["individual liberty", "rights", "toleration", "free expression"],
+    "relevantDomains": ["politics", "law", "ethics", "speech", "technology"],
+    "contrasts": [
+      "marxism",
+      "civic-republicanism",
+      "confucian-ethics",
+      "social-contract-absolutism"
+    ]
+  },
+  {
+    "slug": "civic-republicanism",
+    "label": "Civic republicanism",
+    "description": "Freedom is realized through participation in self-government and the absence of domination; citizens share a common good that politics must express.",
+    "assumptions": [
+      "Political participation is part of a free life",
+      "Dependence on another's will is unfreedom",
+      "A public realm must be actively sustained"
+    ],
+    "values": ["participation", "non-domination", "the common good", "public life"],
+    "relevantDomains": ["politics", "education", "work", "technology"],
+    "contrasts": ["natural-rights-liberalism", "market-liberalism", "social-contract-absolutism"]
+  },
+  {
+    "slug": "egalitarian-liberalism",
+    "label": "Egalitarian liberalism",
+    "description": "A just society secures equal basic liberties and arranges social and economic inequalities so that they benefit the least advantaged.",
+    "assumptions": [
+      "Natural and social luck is morally arbitrary",
+      "Principles of justice are those chosen impartially",
+      "Fair institutions matter more than individual charity"
+    ],
+    "values": ["fairness", "equal liberty", "reciprocity", "priority to the worst off"],
+    "relevantDomains": ["politics", "economics", "education", "law", "health"],
+    "contrasts": ["market-liberalism", "utilitarianism", "marxism"]
+  },
+  {
+    "slug": "market-liberalism",
+    "label": "Market liberalism",
+    "description": "Free exchange, private property and spontaneous order coordinate dispersed knowledge better than central planning; coercive redistribution threatens liberty.",
+    "assumptions": [
+      "Knowledge is dispersed and cannot be centralized",
+      "Voluntary exchange tends to be mutually beneficial",
+      "Concentrated power is the main threat to freedom"
+    ],
+    "values": ["economic freedom", "voluntary exchange", "property", "limited government"],
+    "relevantDomains": ["economics", "politics", "technology", "education", "work"],
+    "contrasts": ["marxism", "egalitarian-liberalism", "civic-republicanism"]
+  },
+  {
+    "slug": "marxism",
+    "label": "Marxist critique",
+    "description": "Social life is shaped by material production and class relations; under capitalism workers are alienated and exploited, and ideas often serve dominant interests.",
+    "assumptions": [
+      "Economic structure shapes institutions and ideas",
+      "History moves through class conflict",
+      "Labour is central to human self-realization"
+    ],
+    "values": ["emancipation", "equality", "human self-realization", "solidarity"],
+    "relevantDomains": ["economics", "work", "politics", "technology", "culture"],
+    "contrasts": ["market-liberalism", "natural-rights-liberalism", "stoicism"]
+  },
+  {
+    "slug": "existentialism",
+    "label": "Existentialism",
+    "description": "Human beings have no fixed essence; we are radically free and responsible for what we make of ourselves, and evading that freedom is bad faith.",
+    "assumptions": [
+      "Existence precedes essence",
+      "Freedom cannot be escaped",
+      "Meaning is created, not given"
+    ],
+    "values": ["authenticity", "freedom", "responsibility"],
+    "relevantDomains": ["ethics", "psychology", "technology", "work", "religion"],
+    "contrasts": ["virtue-ethics", "confucian-ethics", "psychoanalysis", "stoicism"]
+  },
+  {
+    "slug": "religious-existentialism",
+    "label": "Religious existentialism",
+    "description": "The individual stands before God and must choose with passionate inwardness; rational systems, crowds and promises of comfortable happiness cannot replace that personal commitment.",
+    "assumptions": [
+      "Truth for a life is lived subjectively",
+      "Freedom includes the capacity to reject reason's plans",
+      "Faith exceeds what reason can prove"
+    ],
+    "values": ["faith", "inwardness", "freedom", "individual responsibility"],
+    "relevantDomains": ["religion", "ethics", "psychology", "technology", "culture"],
+    "contrasts": ["utilitarianism", "scientific-empiricism", "epicureanism", "marxism"]
+  },
+  {
+    "slug": "genealogical-critique",
+    "label": "Genealogical critique",
+    "description": "Moral values have a history rooted in psychology and power; inherited morality should be questioned by asking what kinds of life it expresses and promotes.",
+    "assumptions": [
+      "Values are human creations with histories",
+      "Moral judgements can mask resentment or power",
+      "Self-overcoming matters more than comfort"
+    ],
+    "values": ["self-overcoming", "honesty", "life-affirmation", "creativity"],
+    "relevantDomains": ["ethics", "religion", "culture", "psychology"],
+    "contrasts": ["deontology", "utilitarianism", "religious-existentialism"]
+  },
+  {
+    "slug": "technological-criticism",
+    "label": "Technological criticism",
+    "description": "Technology is not a neutral tool: it reshapes how we perceive the world, ourselves and our capacities, and can turn everything — including people — into resources to be optimized.",
+    "assumptions": [
+      "Tools change their users",
+      "Efficiency is not a neutral value",
+      "What technology reveals can also conceal"
+    ],
+    "values": ["human capacities", "attention", "meaning", "limits"],
+    "relevantDomains": ["technology", "education", "work", "media", "culture"],
+    "contrasts": ["market-liberalism", "utilitarianism", "scientific-empiricism"]
+  },
+  {
+    "slug": "scientific-empiricism",
+    "label": "Scientific empiricism",
+    "description": "Knowledge claims must answer to experience and evidence; conclusions should be proportioned to the evidence and held open to revision.",
+    "assumptions": [
+      "Experience is the basis of factual knowledge",
+      "Claims should be testable",
+      "Certainty about matters of fact is unavailable"
+    ],
+    "values": ["evidence", "skepticism", "intellectual honesty"],
+    "relevantDomains": ["science", "epistemology", "technology", "medicine", "policy"],
+    "contrasts": ["religious-existentialism", "platonic-rationalism", "paradigm-historicism"]
+  },
+  {
+    "slug": "critical-rationalism",
+    "label": "Critical rationalism",
+    "description": "We learn by bold conjecture and attempted refutation; scientific theories must be falsifiable, and open societies institutionalize criticism.",
+    "assumptions": [
+      "Theories cannot be verified, only corroborated or refuted",
+      "Criticism is the engine of progress",
+      "Utopian planning tends toward closed societies"
+    ],
+    "values": ["falsifiability", "open criticism", "piecemeal reform"],
+    "relevantDomains": ["science", "politics", "epistemology", "technology"],
+    "contrasts": ["paradigm-historicism", "marxism", "platonic-rationalism"]
+  },
+  {
+    "slug": "paradigm-historicism",
+    "label": "Paradigm theory of science",
+    "description": "Science develops through paradigms that structure normal research until anomalies accumulate and revolutions replace them; rival paradigms are not simply compared by neutral rules.",
+    "assumptions": [
+      "Scientific practice is shaped by shared exemplars",
+      "Observation is theory-laden",
+      "Paradigm change is not purely logical"
+    ],
+    "values": ["historical understanding", "community practice", "explanatory fruitfulness"],
+    "relevantDomains": ["science", "epistemology", "technology", "education"],
+    "contrasts": ["critical-rationalism", "scientific-empiricism"]
+  },
+  {
+    "slug": "feminist-philosophy",
+    "label": "Feminist philosophy",
+    "description": "Gendered hierarchies are social constructions sustained by education, institutions and ideas; freedom and reason must be secured for women as fully as for men.",
+    "assumptions": [
+      "Many differences attributed to nature are produced socially",
+      "Dependence and lack of education produce subordination",
+      "Universal claims can hide a particular point of view"
+    ],
+    "values": ["equality", "autonomy", "education", "recognition"],
+    "relevantDomains": ["ethics", "politics", "education", "work", "family"],
+    "contrasts": ["confucian-ethics", "social-contract-absolutism", "psychoanalysis"]
+  },
+  {
+    "slug": "psychoanalysis",
+    "label": "Psychoanalysis",
+    "description": "Much of mental life is unconscious; civilization demands the renunciation and redirection of instinctual drives, which produces both culture and discontent.",
+    "assumptions": [
+      "Unconscious drives shape behaviour",
+      "Civilization requires repression or sublimation of instincts",
+      "Self-understanding requires interpreting hidden motives"
+    ],
+    "values": ["self-knowledge", "realism about human nature", "psychological health"],
+    "relevantDomains": ["psychology", "culture", "religion", "technology"],
+    "contrasts": ["existentialism", "stoicism", "feminist-philosophy"]
+  },
+  {
+    "slug": "capabilities-approach",
+    "label": "Capabilities approach",
+    "description": "Well-being and justice should be assessed by people's real freedoms — what they are actually able to do and be — rather than by income or utility alone.",
+    "assumptions": [
+      "Resources convert into freedoms differently for different people",
+      "Development means expanding substantive freedoms",
+      "Public reasoning should choose priorities"
+    ],
+    "values": ["substantive freedom", "agency", "human development", "public reasoning"],
+    "relevantDomains": ["economics", "development", "policy", "education", "health"],
+    "contrasts": ["utilitarianism", "market-liberalism"]
+  },
+  {
+    "slug": "platonic-rationalism",
+    "label": "Platonic rationalism",
+    "description": "True knowledge grasps unchanging forms beyond appearances; the soul and the city are just when reason rules, and opinion or persuasion is not wisdom.",
+    "assumptions": [
+      "Appearances differ from reality",
+      "Knowledge differs from mere opinion",
+      "Those who know should guide those who do not"
+    ],
+    "values": ["truth", "justice", "wisdom", "order of the soul"],
+    "relevantDomains": ["epistemology", "politics", "education", "ethics", "technology"],
+    "contrasts": ["scientific-empiricism", "natural-rights-liberalism", "genealogical-critique"]
+  }
+]

@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "pnpm --parallel --filter @philax/api --filter @philax/web dev",
-    "build": "pnpm -r --filter ./apps/* build",
+    "build": "pnpm --filter \"@philax/api\" --filter \"@philax/web\" build",
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
@@ -22,7 +22,8 @@
     "eval": "pnpm --filter @philax/tests eval",
     "db:migrate": "pnpm --filter @philax/database migrate",
     "db:seed": "pnpm --filter @philax/database seed",
-    "db:reset-test": "pnpm --filter @philax/database reset-test"
+    "db:reset-test": "pnpm --filter @philax/database reset-test",
+    "knowledge:index": "pnpm --filter @philax/knowledge index"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",

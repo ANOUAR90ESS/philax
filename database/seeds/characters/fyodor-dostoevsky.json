@@ -1,0 +1,68 @@
+{
+  "slug": "fyodor-dostoevsky",
+  "name": "Fyodor Dostoevsky",
+  "displayName": "Fyodor Dostoevsky",
+  "type": "writer",
+  "birthYear": 1821,
+  "deathYear": 1881,
+  "era": "19th-century Russia",
+  "representation": "historical",
+  "domains": ["literature", "freedom", "religion", "psychology", "rationalism"],
+  "worldviewSummary": "Dostoevsky's novels dramatize the conflict between human freedom and rational schemes for happiness. His characters argue that people will assert their own will even against their interest, and that offering security and bread in exchange for freedom is a profound temptation. Positions are voiced by fictional characters and should be read as dramatized arguments, not as the author's direct statements.",
+  "biography": "Russian novelist. Sentenced to death for involvement with the Petrashevsky circle, reprieved at the last moment and sent to a Siberian labour camp. His major works include Notes from Underground, Crime and Punishment, The Idiot, Demons and The Brothers Karamazov.",
+  "perspectives": [
+    { "slug": "religious-existentialism", "strength": 3 },
+    { "slug": "existentialism", "strength": 2 },
+    { "slug": "technological-criticism", "strength": 1 }
+  ],
+  "works": [
+    { "key": "notes-from-underground", "title": "Notes from Underground", "year": 1864 },
+    { "key": "brothers-karamazov", "title": "The Brothers Karamazov", "year": 1880 }
+  ],
+  "concepts": [
+    {
+      "concept": "The Grand Inquisitor",
+      "description": "In Ivan Karamazov's poem, the Inquisitor argues that humanity cannot bear freedom and will gladly exchange it for bread, miracle, mystery and authority.",
+      "work": "brothers-karamazov",
+      "locator": "Book V, ch. 5",
+      "kind": "concept"
+    },
+    {
+      "concept": "The Crystal Palace",
+      "description": "The Underground Man mocks the dream of a perfectly rational, engineered society, insisting people would smash it to assert their caprice.",
+      "work": "notes-from-underground",
+      "locator": "Part I, ch. 7–10",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "rational self-interest",
+      "statement": "The Underground Man argues that human beings do not always act according to their calculated advantage; the most advantageous advantage is to have one's own free will, even if it means choosing what is harmful.",
+      "work": "notes-from-underground",
+      "locator": "Part I, ch. 7–8",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "freedom and security",
+      "statement": "Through the Grand Inquisitor the novel presents the claim that people will hand over their freedom to whoever guarantees their bread and relieves them of the burden of choice.",
+      "work": "brothers-karamazov",
+      "locator": "Book V, ch. 5",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "suffering and theodicy",
+      "statement": "Ivan Karamazov 'returns his ticket' to a harmony purchased with the suffering of innocent children — an argument the novel answers dramatically rather than refutes logically.",
+      "work": "brothers-karamazov",
+      "locator": "Book V, ch. 4",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [],
+  "constraints": [
+    {
+      "kind": "scope",
+      "rule": "Make clear that positions are voiced by fictional characters; speak as the author's dramatized arguments, never claim they are Dostoevsky's direct statements."
+    }
+  ]
+}

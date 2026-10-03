@@ -87,8 +87,7 @@ redaction. Layering: `routes → controllers → services (modules) → reposito
 **Context.** §17, §36, §55: no business module may call a vendor directly;
 fast/strong/premium tiers; retries, timeouts, provider fallback.
 
-**Decision.** `packages/ai` defines `LLMProvider` (one per vendor, implemented
-over `fetch` against the public REST APIs — no vendor SDKs) and `LLMGateway`,
+**Decision.** `packages/ai` defines `LLMProvider` (one per vendor) and `LLMGateway`,
 which resolves a _tier_ to an ordered list of `provider:model` targets from
 configuration, applies timeout + exponential-backoff retry per target and falls
 back to the next target on retryable failure. Structured output goes through
@@ -96,6 +95,13 @@ back to the next target on retryable failure. Structured output goes through
 validation errors → validate again → otherwise throw. Every call emits a
 telemetry record (provider, model, prompt version, latency, tokens, estimated
 cost, validation status).
+
+Provider implementations: Anthropic uses the official `@anthropic-ai/sdk`
+(SDK retries disabled — the gateway owns retry policy; refusals surface as
+`stop_reason: "refusal"` and are mapped to a fallback-eligible error; sampling
+parameters are not sent because current Claude models reject them). OpenAI and
+Google use their public REST APIs over `fetch` to avoid two more SDKs. Vendor
+code is confined to `packages/ai/src/providers` (lint-enforced).
 
 **Consequences.** Adding a vendor = one provider file. Tests inject a scripted
 provider through the same interface; production code contains no fake provider.
@@ -210,3 +216,14 @@ integrated in MVP (no SDK); the hook point is the Fastify error handler.
 live in `tests/support`. They implement the production interfaces and are wired
 in by the integration/E2E harness via the API composition root
 (`buildApp({ overrides })`). Production configuration has no way to select them.
+
+---
+
+## ADR-014 — Knowledge chunks are retired, never deleted, on re-seed
+
+**Context.** Debates cite chunks by id. Editing seed text must not silently
+change or erase what an existing debate cited.
+
+**Decision.** Seed chunk ids are name-based (UUIDv5 layout over source + content).
+Changed text produces a new chunk; the old one gets `retired_at` and is excluded
+from retrieval but still resolvable for existing citations (migration 0002).

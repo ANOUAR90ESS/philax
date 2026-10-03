@@ -7,8 +7,13 @@ const httpUrl = z
   .url({ protocol: /^https?$/, hostname: z.regexes.domain })
   .max(2048)
   .refine((value) => {
-    const u = new URL(value);
-    return !u.username && !u.password;
+    // Zod runs refinements even when earlier checks failed, so parsing must be guarded.
+    try {
+      const u = new URL(value);
+      return !u.username && !u.password;
+    } catch {
+      return false;
+    }
   }, 'URLs with credentials are not allowed');
 
 export const UserInputSchema = z.discriminatedUnion('type', [

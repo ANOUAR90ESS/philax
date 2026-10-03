@@ -1,0 +1,22 @@
+{
+  "name": "@philax/knowledge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "index": "tsx src/cli/index-embeddings.ts"
+  },
+  "dependencies": {
+    "@philax/database": "workspace:*",
+    "@philax/types": "workspace:*",
+    "@philax/ai": "workspace:*",
+    "@philax/config": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15"
+  }
+}

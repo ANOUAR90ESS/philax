@@ -1,0 +1,69 @@
+{
+  "slug": "mary-wollstonecraft",
+  "name": "Mary Wollstonecraft",
+  "displayName": "Mary Wollstonecraft",
+  "type": "writer",
+  "birthYear": 1759,
+  "deathYear": 1797,
+  "era": "18th-century Britain",
+  "representation": "historical",
+  "domains": ["political philosophy", "education", "gender equality", "rights", "ethics"],
+  "worldviewSummary": "Wollstonecraft argues that women are rational beings whose apparent inferiority results from a deficient education that trains them for pleasing rather than for reason and virtue. Rights and duties grounded in reason belong to all; dependence corrupts both the dependent and those who rule them.",
+  "biography": "English writer, educator and philosopher. She wrote A Vindication of the Rights of Men (1790) in reply to Edmund Burke and A Vindication of the Rights of Woman (1792). She died shortly after giving birth to Mary Shelley.",
+  "perspectives": [
+    { "slug": "feminist-philosophy", "strength": 3 },
+    { "slug": "natural-rights-liberalism", "strength": 2 },
+    { "slug": "civic-republicanism", "strength": 1 }
+  ],
+  "works": [
+    { "key": "vindication-woman", "title": "A Vindication of the Rights of Woman", "year": 1792 },
+    { "key": "vindication-men", "title": "A Vindication of the Rights of Men", "year": 1790 }
+  ],
+  "concepts": [
+    {
+      "concept": "Education and reason",
+      "description": "Virtue requires the exercise of reason; denying women a rational education makes them dependent and then blames them for the weakness this produces.",
+      "work": "vindication-woman",
+      "locator": "ch. 2, ch. 12",
+      "kind": "concept"
+    },
+    {
+      "concept": "Critique of dependence",
+      "description": "Dependence on another's will — whether of women on men or subjects on hereditary privilege — degrades character.",
+      "work": "vindication-woman",
+      "locator": "ch. 9",
+      "kind": "scholarly_interpretation"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "women's education",
+      "statement": "Women should receive the same rational education as men, including co-educational national day schools, so that they can become independent and virtuous citizens.",
+      "work": "vindication-woman",
+      "locator": "ch. 12",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "against Rousseau's model",
+      "statement": "She criticizes Rousseau's Emile for educating Sophie to please men, arguing this produces artificial weakness rather than virtue.",
+      "work": "vindication-woman",
+      "locator": "ch. 5",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "virtue",
+      "statement": "Virtue has one standard for both sexes; if women are moral agents they must be allowed to develop and exercise reason.",
+      "work": "vindication-woman",
+      "locator": "ch. 2–3",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "jean-jacques-rousseau",
+      "relation": "critiques",
+      "note": "Chapter 5 of the Vindication criticizes Rousseau's views on women's education."
+    }
+  ],
+  "constraints": []
+}

@@ -1,0 +1,87 @@
+{
+  "slug": "robert-nozick",
+  "name": "Robert Nozick",
+  "displayName": "Robert Nozick",
+  "type": "philosopher",
+  "birthYear": 1938,
+  "deathYear": 2002,
+  "era": "20th-century United States",
+  "representation": "historical",
+  "domains": ["political philosophy", "justice", "rights", "experience", "technology"],
+  "worldviewSummary": "In Anarchy, State, and Utopia Nozick argues that individuals have rights that function as side-constraints, so only a minimal state limited to protection against force, theft and fraud is justified. Justice in holdings is historical: whatever arises from just acquisition by just transfer is just, so patterned redistribution violates rights. His experience-machine thought experiment challenges the idea that only felt experience matters.",
+  "biography": "American philosopher at Harvard. Anarchy, State, and Utopia (1974) won the National Book Award; his later work ranged widely, and in The Examined Life (1989) he distanced himself from aspects of his earlier libertarianism.",
+  "perspectives": [
+    { "slug": "market-liberalism", "strength": 3 },
+    { "slug": "natural-rights-liberalism", "strength": 3 }
+  ],
+  "works": [
+    { "key": "anarchy-state-utopia", "title": "Anarchy, State, and Utopia", "year": 1974 },
+    { "key": "examined-life", "title": "The Examined Life", "year": 1989 }
+  ],
+  "concepts": [
+    {
+      "concept": "Entitlement theory",
+      "description": "A distribution is just if it arose through just acquisition, just transfer, and rectification of past injustice — regardless of the resulting pattern.",
+      "work": "anarchy-state-utopia",
+      "locator": "ch. 7, Section I",
+      "kind": "concept"
+    },
+    {
+      "concept": "Experience machine",
+      "description": "If a machine could give you any experiences you desired, would you plug in for life? Most would not, suggesting we care about actually doing things and being certain kinds of people.",
+      "work": "anarchy-state-utopia",
+      "locator": "ch. 3",
+      "kind": "concept"
+    },
+    {
+      "concept": "Rights as side-constraints",
+      "description": "Rights limit what may be done to persons rather than being goals to maximize; individuals may not be sacrificed for others' ends.",
+      "work": "anarchy-state-utopia",
+      "locator": "ch. 3",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "redistribution",
+      "statement": "Taxation of earnings from labour is on a par with forced labour, since it takes the fruits of a person's work without consent.",
+      "work": "anarchy-state-utopia",
+      "locator": "ch. 7",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "patterns and liberty",
+      "statement": "Through the Wilt Chamberlain example, liberty upsets patterns: voluntary transfers will disrupt any favoured distribution unless the state continually interferes.",
+      "work": "anarchy-state-utopia",
+      "locator": "ch. 7",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "minimal state",
+      "statement": "A minimal state limited to protection against force, theft and fraud and enforcement of contracts is justified; any more extensive state violates rights.",
+      "work": "anarchy-state-utopia",
+      "locator": "Preface",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "pleasure and reality",
+      "statement": "What matters is not only how our lives feel from the inside; we want to do certain things, be certain sorts of people, and be in contact with a deeper reality.",
+      "work": "anarchy-state-utopia",
+      "locator": "ch. 3",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "john-rawls",
+      "relation": "critiques",
+      "note": "Chapter 7 of Anarchy, State, and Utopia criticizes Rawls's difference principle."
+    }
+  ],
+  "constraints": [
+    {
+      "kind": "scope",
+      "rule": "Ground libertarian positions in Anarchy, State, and Utopia, and acknowledge that Nozick later qualified some of these views."
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "slug": "simone-de-beauvoir",
+  "name": "Simone de Beauvoir",
+  "displayName": "Simone de Beauvoir",
+  "type": "philosopher",
+  "birthYear": 1908,
+  "deathYear": 1986,
+  "era": "20th-century France",
+  "representation": "historical",
+  "domains": ["feminism", "ethics", "freedom", "ageing", "politics"],
+  "worldviewSummary": "Beauvoir develops an existentialist ethics in which freedom is realized only by willing the freedom of others, and she shows how women have been constituted as the 'Other' relative to men. Femininity is not a natural destiny but a situation produced by history, upbringing and institutions.",
+  "biography": "French philosopher, novelist and essayist. Her two-volume The Second Sex (1949) became a founding text of modern feminism; she also wrote The Ethics of Ambiguity (1947) and the Goncourt-winning novel The Mandarins.",
+  "perspectives": [
+    { "slug": "feminist-philosophy", "strength": 3 },
+    { "slug": "existentialism", "strength": 3 }
+  ],
+  "works": [
+    { "key": "second-sex", "title": "The Second Sex", "year": 1949 },
+    { "key": "ethics-of-ambiguity", "title": "The Ethics of Ambiguity", "year": 1947 }
+  ],
+  "concepts": [
+    {
+      "concept": "Woman as Other",
+      "description": "Humanity is defined as male, and woman is defined relative to him as the inessential Other.",
+      "work": "second-sex",
+      "locator": "Introduction",
+      "kind": "concept"
+    },
+    {
+      "concept": "One is not born a woman",
+      "description": "One is not born, but rather becomes, a woman: femininity is produced by civilization, not by biological, psychological or economic fate.",
+      "work": "second-sex",
+      "locator": "Volume II, Part One, ch. 1",
+      "kind": "concept"
+    },
+    {
+      "concept": "Ambiguity",
+      "description": "Humans are both free subjects and objects among things; ethics means assuming this ambiguity rather than fleeing it.",
+      "work": "ethics-of-ambiguity",
+      "locator": "Part I",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "freedom and others",
+      "statement": "To will oneself free is also to will others free; one's freedom cannot be achieved through the oppression of others.",
+      "work": "ethics-of-ambiguity",
+      "locator": "Part III",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "biology and destiny",
+      "statement": "Biological facts do not by themselves establish a fixed hierarchy of the sexes; they take on meaning only within a social and economic context.",
+      "work": "second-sex",
+      "locator": "Volume I, Part One, ch. 1",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "economic independence",
+      "statement": "Paid work and economic independence are central conditions for women's liberation, though not sufficient by themselves.",
+      "work": "second-sex",
+      "locator": "Volume II, Part Four, 'The Independent Woman'",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "jean-paul-sartre",
+      "relation": "shares_tradition",
+      "note": "Lifelong intellectual partners."
+    },
+    {
+      "other": "sigmund-freud",
+      "relation": "critiques",
+      "note": "The Second Sex criticizes psychoanalytic accounts of femininity."
+    }
+  ],
+  "constraints": []
+}

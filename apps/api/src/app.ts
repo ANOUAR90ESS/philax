@@ -1,0 +1,63 @@
+import Fastify, { type FastifyInstance } from 'fastify';
+import type { Container } from './container';
+import { AuthController } from './controllers/auth.controller';
+import { CharactersController } from './controllers/characters.controller';
+import { DebatesController } from './controllers/debates.controller';
+import { registerAuth } from './plugins/auth';
+import { registerErrorHandler } from './plugins/error-handler';
+import { registerSecurity } from './plugins/security';
+import { authRoutes } from './routes/auth.routes';
+import { characterRoutes, debateRoutes } from './routes/debates.routes';
+import { healthRoutes } from './routes/health.routes';
+
+export interface BuildAppOptions {
+  logger?: boolean;
+}
+
+export async function buildApp(
+  container: Container,
+  opts: BuildAppOptions = {},
+): Promise<FastifyInstance> {
+  const { env } = container;
+  const app = Fastify({
+    logger:
+      opts.logger === false
+        ? false
+        : {
+            level: env.LOG_LEVEL,
+            // Never log credentials, cookies or request bodies.
+            redact: {
+              paths: [
+                'req.headers.cookie',
+                'req.headers.authorization',
+                'res.headers["set-cookie"]',
+                '*.password',
+                '*.apiKey',
+              ],
+              censor: '[redacted]',
+            },
+          },
+    bodyLimit: 256 * 1024,
+    // Trust X-Forwarded-For only from the configured number of proxy hops (0 = none); rate limits key on IP.
+    trustProxy:
+      env.TRUST_PROXY_HOPS > 0
+        ? (_address: string, hop: number) => hop < env.TRUST_PROXY_HOPS
+        : false,
+    genReqId: () => crypto.randomUUID(),
+  });
+
+  registerErrorHandler(app);
+  await registerSecurity(app, {
+    corsOrigins: env.CORS_ORIGINS,
+    globalRateLimit: env.NODE_ENV === 'test' ? 10_000 : 300,
+  });
+  registerAuth(app, container.auth);
+
+  const secureCookies = env.NODE_ENV === 'production';
+  healthRoutes(app, container.db);
+  authRoutes(app, new AuthController(container.auth, secureCookies, container.analytics));
+  debateRoutes(app, new DebatesController(container.debates));
+  characterRoutes(app, new CharactersController(container.characters));
+
+  return app;
+}

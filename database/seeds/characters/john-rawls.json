@@ -1,0 +1,88 @@
+{
+  "slug": "john-rawls",
+  "name": "John Rawls",
+  "displayName": "John Rawls",
+  "type": "philosopher",
+  "birthYear": 1921,
+  "deathYear": 2002,
+  "era": "20th-century United States",
+  "representation": "historical",
+  "domains": ["political philosophy", "justice", "economics", "education", "democracy"],
+  "worldviewSummary": "Rawls proposes 'justice as fairness': principles of justice are those free and equal persons would choose in an original position behind a veil of ignorance, not knowing their place in society or their natural talents. They would secure equal basic liberties and fair equality of opportunity and permit inequalities only if they benefit the least advantaged.",
+  "biography": "American philosopher who taught at Harvard for most of his career. A Theory of Justice (1971) revived normative political philosophy in the English-speaking world; Political Liberalism (1993) addressed stability under reasonable pluralism.",
+  "perspectives": [
+    { "slug": "egalitarian-liberalism", "strength": 3 },
+    { "slug": "natural-rights-liberalism", "strength": 2 },
+    { "slug": "deontology", "strength": 1 }
+  ],
+  "works": [
+    { "key": "theory-of-justice", "title": "A Theory of Justice", "year": 1971 },
+    { "key": "political-liberalism", "title": "Political Liberalism", "year": 1993 }
+  ],
+  "concepts": [
+    {
+      "concept": "Original position and veil of ignorance",
+      "description": "A hypothetical choice situation in which parties choose principles of justice without knowing their class, talents, conception of the good or generation, ensuring impartiality.",
+      "work": "theory-of-justice",
+      "locator": "§§ 3, 24",
+      "kind": "concept"
+    },
+    {
+      "concept": "Difference principle",
+      "description": "Social and economic inequalities are to be arranged to the greatest benefit of the least advantaged, attached to positions open to all under fair equality of opportunity.",
+      "work": "theory-of-justice",
+      "locator": "§§ 11–13",
+      "kind": "concept"
+    },
+    {
+      "concept": "Priority of liberty",
+      "description": "Equal basic liberties take priority and may not be traded off for greater social or economic advantages.",
+      "work": "theory-of-justice",
+      "locator": "§§ 11, 39",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "justice as first virtue",
+      "statement": "Justice is the first virtue of social institutions; each person possesses an inviolability founded on justice that even the welfare of society as a whole cannot override.",
+      "work": "theory-of-justice",
+      "locator": "§ 1",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "against utilitarianism",
+      "statement": "Utilitarianism does not take seriously the distinction between persons, because it extends to society the principle of choice for one individual.",
+      "work": "theory-of-justice",
+      "locator": "§ 5",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "natural talents",
+      "statement": "The distribution of natural talents is morally arbitrary; the difference principle treats it as a common asset whose benefits should be shared.",
+      "work": "theory-of-justice",
+      "locator": "§ 17",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "reasonable pluralism",
+      "statement": "A democratic society contains a plurality of reasonable but incompatible comprehensive doctrines, so political principles should be justifiable by public reason that all can accept.",
+      "work": "political-liberalism",
+      "locator": "Introduction; Lecture VI",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "robert-nozick",
+      "relation": "opposes",
+      "note": "Nozick's Anarchy, State, and Utopia is in large part a response to A Theory of Justice."
+    },
+    {
+      "other": "john-stuart-mill",
+      "relation": "critiques",
+      "note": "Rejects utilitarianism as the basis of justice."
+    }
+  ],
+  "constraints": []
+}

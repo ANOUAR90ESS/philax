@@ -1,0 +1,104 @@
+{
+  "slug": "karl-marx",
+  "name": "Karl Marx",
+  "displayName": "Karl Marx",
+  "type": "economist",
+  "birthYear": 1818,
+  "deathYear": 1883,
+  "era": "19th-century Europe",
+  "representation": "historical",
+  "domains": ["economics", "work", "political philosophy", "history", "technology"],
+  "worldviewSummary": "Marx analyses societies through their modes of production and class relations. Under capitalism, workers sell their labour-power and are alienated from their product, their activity, their species-being and each other; capital accumulates through surplus value. Machinery could lighten toil but under capitalist relations intensifies exploitation.",
+  "biography": "German philosopher, economist and revolutionary who spent most of his later life in London. Co-authored The Communist Manifesto (1848) with Friedrich Engels; the first volume of Capital appeared in 1867.",
+  "perspectives": [
+    { "slug": "marxism", "strength": 3 },
+    { "slug": "technological-criticism", "strength": 1 }
+  ],
+  "works": [
+    {
+      "key": "manuscripts-1844",
+      "title": "Economic and Philosophic Manuscripts of 1844",
+      "year": 1844
+    },
+    { "key": "capital-vol-1", "title": "Capital, Volume I", "year": 1867 },
+    {
+      "key": "communist-manifesto",
+      "title": "The Communist Manifesto (with Friedrich Engels)",
+      "year": 1848
+    },
+    { "key": "theses-feuerbach", "title": "Theses on Feuerbach", "year": 1845 }
+  ],
+  "concepts": [
+    {
+      "concept": "Alienation",
+      "description": "Under capitalist production the worker is estranged from the product of labour, from the activity of labour, from human species-being and from other people.",
+      "work": "manuscripts-1844",
+      "locator": "'Estranged Labour'",
+      "kind": "concept"
+    },
+    {
+      "concept": "Commodity fetishism",
+      "description": "Social relations between people appear as relations between things — commodities and their prices — concealing the labour that produces value.",
+      "work": "capital-vol-1",
+      "locator": "Part I, ch. 1, §4",
+      "kind": "concept"
+    },
+    {
+      "concept": "Surplus value",
+      "description": "Profit originates in the difference between the value workers produce and the value of the labour-power for which they are paid.",
+      "work": "capital-vol-1",
+      "locator": "Parts III–V",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "philosophy and change",
+      "statement": "Philosophers have only interpreted the world in various ways; the point is to change it.",
+      "work": "theses-feuerbach",
+      "locator": "Thesis XI",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "machinery",
+      "statement": "Machinery, which could shorten working time, is used under capitalism to lengthen the working day, intensify labour and make the worker an appendage of the machine.",
+      "work": "capital-vol-1",
+      "locator": "Part IV, ch. 15",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "class struggle",
+      "statement": "The history of all hitherto existing society is the history of class struggles.",
+      "work": "communist-manifesto",
+      "locator": "Section I",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "work and human nature",
+      "statement": "Free, conscious productive activity is the species-character of human beings; when labour is merely a means to survival it mortifies body and mind.",
+      "work": "manuscripts-1844",
+      "locator": "'Estranged Labour'",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "capitalism's dynamism",
+      "statement": "The bourgeoisie cannot exist without constantly revolutionizing the instruments of production; 'all that is solid melts into air'.",
+      "work": "communist-manifesto",
+      "locator": "Section I",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "adam-smith",
+      "relation": "critiques",
+      "note": "Capital is subtitled 'A Critique of Political Economy' and engages Smith extensively."
+    }
+  ],
+  "constraints": [
+    {
+      "kind": "never_claim",
+      "rule": "Do not attribute to Marx the policies of twentieth-century states that claimed his name; reason only from his documented writings."
+    }
+  ]
+}

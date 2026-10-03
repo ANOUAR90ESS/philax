@@ -1,0 +1,100 @@
+{
+  "slug": "jean-jacques-rousseau",
+  "name": "Jean-Jacques Rousseau",
+  "displayName": "Jean-Jacques Rousseau",
+  "type": "philosopher",
+  "birthYear": 1712,
+  "deathYear": 1778,
+  "era": "18th-century Enlightenment",
+  "representation": "historical",
+  "domains": ["political philosophy", "education", "inequality", "culture", "freedom"],
+  "worldviewSummary": "Rousseau argues that social development, property and dependence corrupted natural human goodness and produced inequality and amour-propre (a competitive self-love dependent on others' opinion). Legitimate political order requires a social contract in which citizens obey only the general will they themselves make, achieving moral freedom.",
+  "biography": "Genevan-born writer and philosopher active in France. His Discourse on the Arts and Sciences (1750) won the Dijon Academy prize; the Social Contract and Emile (both 1762) were condemned and burned in Paris and Geneva.",
+  "perspectives": [
+    { "slug": "civic-republicanism", "strength": 3 },
+    { "slug": "technological-criticism", "strength": 1 },
+    { "slug": "egalitarian-liberalism", "strength": 1 }
+  ],
+  "works": [
+    { "key": "social-contract", "title": "The Social Contract", "year": 1762 },
+    {
+      "key": "discourse-inequality",
+      "title": "Discourse on the Origin and Foundations of Inequality among Men",
+      "year": 1755
+    },
+    {
+      "key": "discourse-arts-sciences",
+      "title": "Discourse on the Arts and Sciences",
+      "year": 1750
+    },
+    { "key": "emile", "title": "Emile, or On Education", "year": 1762 }
+  ],
+  "concepts": [
+    {
+      "concept": "General will",
+      "description": "The will of the body politic directed at the common good, distinct from the sum of private wills; laws are legitimate when they express it.",
+      "work": "social-contract",
+      "locator": "Book II, ch. 1–4",
+      "kind": "concept"
+    },
+    {
+      "concept": "Amour-propre",
+      "description": "A relative, socially generated self-love that depends on comparison with and esteem from others, a source of vanity and inequality.",
+      "work": "discourse-inequality",
+      "locator": "Note XV and Part II",
+      "kind": "scholarly_interpretation"
+    },
+    {
+      "concept": "Moral freedom",
+      "description": "Obedience to a law one prescribes to oneself is freedom, whereas the impulse of appetite alone is slavery.",
+      "work": "social-contract",
+      "locator": "Book I, ch. 8",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "freedom and society",
+      "statement": "Man is born free, and everywhere he is in chains; the task is to find a form of association under which each, uniting with all, still obeys only himself.",
+      "work": "social-contract",
+      "locator": "Book I, ch. 1 and 6",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "progress of arts and sciences",
+      "statement": "The progress of the arts and sciences has not purified morals but has accompanied luxury, idleness and the corruption of civic virtue.",
+      "work": "discourse-arts-sciences",
+      "locator": null,
+      "kind": "documented_position"
+    },
+    {
+      "topic": "inequality and property",
+      "statement": "The first person who enclosed land and said 'this is mine', and found people simple enough to believe it, was the founder of civil society — and of the crimes, wars and miseries inequality brought.",
+      "work": "discourse-inequality",
+      "locator": "Part II",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "education",
+      "statement": "Education should follow the child's natural development, learning first from things and experience rather than from books and authority.",
+      "work": "emile",
+      "locator": "Books I–III",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "representation",
+      "statement": "Sovereignty cannot be represented; a people that gives itself representatives is no longer free in the full sense.",
+      "work": "social-contract",
+      "locator": "Book III, ch. 15",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "john-locke",
+      "relation": "critiques",
+      "note": "Criticizes property-centred accounts of civil society (scholarly comparison)."
+    }
+  ],
+  "constraints": []
+}

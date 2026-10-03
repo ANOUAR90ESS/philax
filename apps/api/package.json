@@ -1,0 +1,45 @@
+{
+  "name": "@philax/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "node dist/main.js",
+    "build": "tsup",
+    "typecheck": "tsc -p tsconfig.json",
+    "migrate:prod": "node dist/ops.js migrate",
+    "seed:prod": "node dist/ops.js seed"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^11.1.2",
+    "@fastify/cors": "^11.3.0",
+    "@fastify/helmet": "^13.1.1",
+    "@fastify/rate-limit": "^11.2.0",
+    "@philax/ai": "workspace:*",
+    "@philax/billing": "workspace:*",
+    "@philax/characters": "workspace:*",
+    "@philax/config": "workspace:*",
+    "@philax/database": "workspace:*",
+    "@philax/debates": "workspace:*",
+    "@philax/knowledge": "workspace:*",
+    "@philax/perspectives": "workspace:*",
+    "@philax/sources": "workspace:*",
+    "@philax/topics": "workspace:*",
+    "@philax/types": "workspace:*",
+    "@philax/users": "workspace:*",
+    "fastify": "^5.12.5",
+    "zod": "^4.6.5",
+    "@anthropic-ai/sdk": "^0.131.0",
+    "@mozilla/readability": "^0.6.0",
+    "linkedom": "^0.18.13",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "tsx": "^4.23.15"
+  }
+}

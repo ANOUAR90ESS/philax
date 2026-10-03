@@ -1,0 +1,92 @@
+{
+  "slug": "hannah-arendt",
+  "name": "Hannah Arendt",
+  "displayName": "Hannah Arendt",
+  "type": "thinker",
+  "birthYear": 1906,
+  "deathYear": 1975,
+  "era": "20th-century Germany and United States",
+  "representation": "historical",
+  "domains": ["political theory", "work", "totalitarianism", "responsibility", "technology"],
+  "worldviewSummary": "Arendt distinguishes labor (sustaining biological life), work (fabricating a durable world) and action (initiating something new among plural equals through speech). Modern society tends to reduce all activity to labor and consumption. Her analysis of Eichmann introduced the 'banality of evil': great wrongs committed through thoughtlessness rather than demonic motives.",
+  "biography": "German-born Jewish political theorist who fled Nazi Germany, was interned in France, and emigrated to the United States in 1941. Author of The Origins of Totalitarianism (1951), The Human Condition (1958) and Eichmann in Jerusalem (1963). She rejected the label 'philosopher', preferring 'political theorist'.",
+  "perspectives": [
+    { "slug": "civic-republicanism", "strength": 3 },
+    { "slug": "technological-criticism", "strength": 2 }
+  ],
+  "works": [
+    { "key": "human-condition", "title": "The Human Condition", "year": 1958 },
+    {
+      "key": "eichmann-in-jerusalem",
+      "title": "Eichmann in Jerusalem: A Report on the Banality of Evil",
+      "year": 1963
+    },
+    { "key": "origins-totalitarianism", "title": "The Origins of Totalitarianism", "year": 1951 }
+  ],
+  "concepts": [
+    {
+      "concept": "Labor, work and action",
+      "description": "The vita activa comprises labor (the cyclical maintenance of life), work (the making of durable things) and action (beginning something new in the plural public realm).",
+      "work": "human-condition",
+      "locator": "ch. I, III–V",
+      "kind": "concept"
+    },
+    {
+      "concept": "Banality of evil",
+      "description": "Eichmann appeared not monstrous but thoughtless — terrifyingly normal, speaking in clichés, unable to think from another's standpoint.",
+      "work": "eichmann-in-jerusalem",
+      "locator": "Epilogue and Postscript",
+      "kind": "concept"
+    },
+    {
+      "concept": "Natality",
+      "description": "Because each person is a new beginning, human beings are capable of action that starts something unprecedented.",
+      "work": "human-condition",
+      "locator": "ch. V",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "automation and work",
+      "statement": "The prospect of automation threatens a society of laborers freed from labor who no longer know the higher activities for whose sake that freedom would be worth winning.",
+      "work": "human-condition",
+      "locator": "Prologue",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "thinking and responsibility",
+      "statement": "Thoughtlessness — the failure to stop and think about what one is doing — can enable participation in great crimes without wicked intent.",
+      "work": "eichmann-in-jerusalem",
+      "locator": "Postscript",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "public realm",
+      "statement": "Freedom is experienced in action among equals in a shared public world; its loss leaves people isolated, which totalitarianism exploits.",
+      "work": "origins-totalitarianism",
+      "locator": "ch. 13 ('Ideology and Terror')",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "science and technology",
+      "statement": "Technical capabilities may outstrip our capacity to think and speak about what we are doing, so such questions must be political, not left to experts.",
+      "work": "human-condition",
+      "locator": "Prologue",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "martin-heidegger",
+      "relation": "critiques",
+      "note": "Diverged from her former teacher philosophically and politically."
+    },
+    {
+      "other": "karl-marx",
+      "relation": "critiques",
+      "note": "The Human Condition criticizes Marx's elevation of labor."
+    }
+  ],
+  "constraints": []
+}

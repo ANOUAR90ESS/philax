@@ -1,0 +1,32 @@
+{
+  "name": "@philax/tests",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "e2e": "playwright test -c e2e/playwright.config.ts",
+    "eval": "tsx eval/run-eval.ts"
+  },
+  "dependencies": {
+    "@philax/ai": "workspace:*",
+    "@philax/api": "workspace:*",
+    "@philax/billing": "workspace:*",
+    "@philax/characters": "workspace:*",
+    "@philax/config": "workspace:*",
+    "@philax/database": "workspace:*",
+    "@philax/debates": "workspace:*",
+    "@philax/knowledge": "workspace:*",
+    "@philax/perspectives": "workspace:*",
+    "@philax/prompts": "workspace:*",
+    "@philax/sources": "workspace:*",
+    "@philax/topics": "workspace:*",
+    "@philax/types": "workspace:*",
+    "@philax/users": "workspace:*",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "tsx": "^4.23.15"
+  }
+}

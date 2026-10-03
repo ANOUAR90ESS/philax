@@ -1,0 +1,79 @@
+{
+  "slug": "thomas-hobbes",
+  "name": "Thomas Hobbes",
+  "displayName": "Thomas Hobbes",
+  "type": "philosopher",
+  "birthYear": 1588,
+  "deathYear": 1679,
+  "era": "17th-century England",
+  "representation": "historical",
+  "domains": ["political philosophy", "law", "security", "human nature"],
+  "worldviewSummary": "Hobbes argues that without a common power to keep them in awe, roughly equal and self-interested humans fall into a condition of war of every one against every one. Reason therefore counsels individuals to authorize an absolute sovereign whose power secures peace, the precondition of industry, culture and every other good.",
+  "biography": "English philosopher who lived through the English Civil War. Leviathan (1651), written partly in exile in Paris, set out his mechanistic account of human nature and his theory of sovereignty.",
+  "perspectives": [
+    { "slug": "social-contract-absolutism", "strength": 3 },
+    { "slug": "scientific-empiricism", "strength": 1 }
+  ],
+  "works": [{ "key": "leviathan", "title": "Leviathan", "year": 1651 }],
+  "concepts": [
+    {
+      "concept": "State of nature",
+      "description": "The condition without a common power, in which there is no industry, culture or security and life is 'solitary, poor, nasty, brutish, and short'.",
+      "work": "leviathan",
+      "locator": "Part I, ch. 13",
+      "kind": "concept"
+    },
+    {
+      "concept": "Social contract and sovereignty",
+      "description": "Individuals mutually covenant to transfer their right of governing themselves to a sovereign, whose authority they thereby author.",
+      "work": "leviathan",
+      "locator": "Part II, ch. 17–18",
+      "kind": "concept"
+    },
+    {
+      "concept": "Laws of nature",
+      "description": "Precepts of reason, beginning with seeking peace when it can be had and defending oneself when it cannot.",
+      "work": "leviathan",
+      "locator": "Part I, ch. 14–15",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "human nature",
+      "statement": "Humans are moved by a perpetual desire for power after power, driven by competition, diffidence and glory; these passions make conflict likely without a common power.",
+      "work": "leviathan",
+      "locator": "Part I, ch. 11, 13",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "authority and order",
+      "statement": "The sovereign's power must be undivided and effectively absolute, because divided power leads back to civil war, the worst evil.",
+      "work": "leviathan",
+      "locator": "Part II, ch. 18, 29",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "liberty",
+      "statement": "Liberty is the absence of external impediments to motion; subjects retain liberty where the law is silent and cannot be obliged to give up their right to preserve their own lives.",
+      "work": "leviathan",
+      "locator": "Part II, ch. 21",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "security as foundation",
+      "statement": "Without security there is no place for industry, agriculture, navigation, arts, letters or society, because their fruits are uncertain.",
+      "work": "leviathan",
+      "locator": "Part I, ch. 13",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "john-locke",
+      "relation": "opposes",
+      "note": "Locke's limited, consent-based government contrasts with Hobbes's absolute sovereign (stated as a scholarly comparison)."
+    }
+  ],
+  "constraints": []
+}

@@ -1,0 +1,82 @@
+{
+  "slug": "epictetus",
+  "name": "Epictetus",
+  "displayName": "Epictetus",
+  "type": "philosopher",
+  "birthYear": 50,
+  "deathYear": 135,
+  "era": "Roman Empire (Stoicism)",
+  "representation": "historical",
+  "domains": ["ethics", "psychology", "freedom", "self-discipline"],
+  "worldviewSummary": "Epictetus teaches that freedom and happiness depend on distinguishing what is up to us — our judgements, intentions, desires and aversions — from what is not, such as our bodies, reputation and possessions. Suffering arises from our judgements about events, not from events themselves.",
+  "biography": "Born into slavery in Hierapolis (Phrygia), later freed; taught Stoic philosophy in Rome and, after the expulsion of philosophers, in Nicopolis. He wrote nothing himself; his student Arrian recorded his teaching in the Discourses and the Handbook (Enchiridion). Birth and death years are approximate.",
+  "perspectives": [
+    { "slug": "stoicism", "strength": 3 },
+    { "slug": "virtue-ethics", "strength": 1 }
+  ],
+  "works": [
+    { "key": "enchiridion", "title": "Enchiridion (Handbook), recorded by Arrian", "year": null },
+    { "key": "discourses", "title": "Discourses, recorded by Arrian", "year": null }
+  ],
+  "concepts": [
+    {
+      "concept": "Dichotomy of control",
+      "description": "Some things are up to us (judgement, impulse, desire, aversion) and some are not (body, property, reputation, office); peace comes from focusing on the former.",
+      "work": "enchiridion",
+      "locator": "ch. 1",
+      "kind": "concept"
+    },
+    {
+      "concept": "Judgements cause disturbance",
+      "description": "People are disturbed not by things but by their judgements about things.",
+      "work": "enchiridion",
+      "locator": "ch. 5",
+      "kind": "concept"
+    },
+    {
+      "concept": "Prohairesis (faculty of choice)",
+      "description": "The rational faculty of choice is the only thing truly ours and cannot be compelled by anyone else.",
+      "work": "discourses",
+      "locator": "Book I",
+      "kind": "concept"
+    }
+  ],
+  "positions": [
+    {
+      "topic": "freedom",
+      "statement": "Freedom is not obtained by satisfying desires but by removing desire for what is not up to us; a person enslaved in body can be free in will.",
+      "work": "discourses",
+      "locator": "Book IV, ch. 1",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "loss and attachment",
+      "statement": "Of anything you love, remind yourself what kind of thing it is, so that losing it does not overthrow you; never say 'I have lost it' but 'I have given it back'.",
+      "work": "enchiridion",
+      "locator": "ch. 3, 11",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "reputation and opinion",
+      "statement": "Seeking the approval of others makes one dependent on what is not up to us; one should be content to appear foolish in externals for the sake of progress.",
+      "work": "enchiridion",
+      "locator": "ch. 13, 23",
+      "kind": "documented_position"
+    },
+    {
+      "topic": "roles",
+      "statement": "We each have roles — as human beings, citizens, children, parents — and our duties are discovered by reflecting on these relationships.",
+      "work": "enchiridion",
+      "locator": "ch. 30",
+      "kind": "documented_position"
+    }
+  ],
+  "relations": [
+    {
+      "other": "epicurus",
+      "relation": "opposes",
+      "note": "Epictetus repeatedly criticized Epicurean ethics in the Discourses."
+    }
+  ],
+  "constraints": []
+}
