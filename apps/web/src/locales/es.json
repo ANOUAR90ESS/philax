@@ -163,6 +163,39 @@
     "start": "Comenzar el debate",
     "yourTurnHint": "Puedes añadir tu opinión en cualquier momento o concluir el debate."
   },
+  "stage": {
+    "label": "Escenario del debate",
+    "speaking": "Habla ahora:",
+    "preparing": "Prepara su respuesta:",
+    "idle": "El escenario está en silencio. Las nuevas intervenciones se presentan aquí con voz y subtítulos.",
+    "portraitLabel": "Retrato de {{name}} (reconstrucción por IA)",
+    "noAvatar": "{{name}}: aún sin retrato verificado",
+    "disclosure": "Reconstrucción por IA. El retrato y la voz de {{name}} son generados; no son imágenes ni grabaciones históricas.",
+    "mute": "Silenciar voz",
+    "unmute": "Activar voz",
+    "skip": "Saltar",
+    "listen": "Escuchar",
+    "listenTo": "Escuchar a {{name}}",
+    "voiceIssue": {
+      "no_compatible_voice": "Este dispositivo no tiene una voz acorde con {{name}} en este idioma; solo subtítulos.",
+      "no_language_voice": "{{name}} aún no tiene voz para este idioma; solo subtítulos.",
+      "no_profile": "{{name}} aún no tiene una voz verificada; solo subtítulos.",
+      "no_provider": "El servicio de voz de {{name}} no está disponible; solo subtítulos.",
+      "not_configured": "El servicio de voz de {{name}} no está configurado; solo subtítulos.",
+      "provider_error": "No se pudo reproducir la voz de {{name}}; solo subtítulos."
+    },
+    "states": {
+      "IDLE": "En espera",
+      "LISTENING": "Escucha",
+      "THINKING": "Piensa",
+      "SPEAKING": "Habla",
+      "CHALLENGING": "Objeta",
+      "RESPONDING": "Responde",
+      "AGREEING": "Coincide",
+      "DISAGREEING": "Discrepa",
+      "CONSIDERING": "Reflexiona"
+    }
+  },
   "sources": {
     "title": "Fuentes",
     "cited": "Fuentes citadas",

@@ -36,12 +36,14 @@ export default defineConfig({
       timeout: 60_000,
     },
     {
-      command: 'pnpm --filter @philax/web exec vite --port 5174 --strictPort',
+      // Production build + preview: what users get, and no dev-server dependency re-optimization reloads.
+      command:
+        'pnpm --filter @philax/web exec vite build && pnpm --filter @philax/web exec vite preview --port 5174 --strictPort',
       cwd: '../..',
       url: 'http://localhost:5174',
       env: { VITE_API_URL: 'http://localhost:4100' },
       reuseExistingServer: false,
-      timeout: 60_000,
+      timeout: 120_000,
     },
   ],
 });

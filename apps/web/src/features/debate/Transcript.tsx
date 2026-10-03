@@ -9,9 +9,10 @@ interface Props {
   draft: LiveDraft | null;
   liveRound: DebateRound | null;
   onSourceOpen?: () => void;
+  onListen?: (message: DebateMessage) => void;
 }
 
-export function Transcript({ debate, draft, liveRound, onSourceOpen }: Props) {
+export function Transcript({ debate, draft, liveRound, onSourceOpen, onListen }: Props) {
   const { t } = useTranslation();
   const participants = new Map<string, DebateParticipant>(
     debate.participants.map((p) => [p.character.id, p]),
@@ -56,6 +57,7 @@ export function Transcript({ debate, draft, liveRound, onSourceOpen }: Props) {
                 participants={participants}
                 messages={messages}
                 onSourceOpen={onSourceOpen}
+                onListen={onListen}
                 lang={debate.language}
               />
             ))}

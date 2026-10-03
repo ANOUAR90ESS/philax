@@ -11,6 +11,8 @@ async function registerAndStart(page: Page, topic: string) {
     .fill(`e2e-${Date.now()}-${Math.random().toString(16).slice(2)}@test.dev`);
   await page.getByLabel('Password').fill('a-long-password');
   await page.getByRole('button', { name: 'Create account' }).click();
+  // Registration returns to the home page with the draft restored.
+  await expect(page).toHaveURL(/\/$/);
   await expect(page.getByRole('textbox', { name: 'Paste a link or write an idea' })).toHaveValue(
     topic,
   );
@@ -39,6 +41,24 @@ test('core scenario: topic → characters → rounds → user joins → synthesi
   await page.getByRole('button', { name: 'Begin the debate' }).click();
   await expect(page.getByRole('heading', { name: /Opening positions/ })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Next round' })).toBeVisible({ timeout: 30_000 });
+
+  // The cast appears on the stage; each turn is presented with the speaker in focus,
+  // subtitles, an AI-reconstruction notice and the others listening.
+  const stage = page.getByRole('region', { name: 'Debate stage' });
+  await expect(stage.getByRole('listitem')).toHaveCount(await participants.count());
+  await expect(stage.getByText('Now speaking:')).toBeVisible({ timeout: 30_000 });
+  await expect(
+    stage.getByRole('img', { name: /^Portrait of .+ \(AI reconstruction\)$/ }),
+  ).toBeVisible();
+  await expect(stage.getByText(/they are not historical images or recordings/)).toBeVisible();
+  await expect(stage.getByText('Listening').first()).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
+  await stage.getByRole('button', { name: 'Skip' }).click();
+
   const firstMessage = page.getByRole('article').first();
   await expect(firstMessage.getByText(/Sources cited/)).toBeVisible();
   const marker = firstMessage.getByRole('link', { name: /^Source E\d+$/ }).first();

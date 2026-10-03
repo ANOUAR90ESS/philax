@@ -1,6 +1,8 @@
 import type { DebateParticipant } from '@philax/types';
 import { seatClass } from '@philax/ui';
 import { useTranslation } from 'react-i18next';
+import { CharacterAvatar } from '../stage/CharacterAvatar';
+import { useCharacterPortrait } from '../stage/useCharacterPortrait';
 
 export function initials(name: string): string {
   return name
@@ -17,7 +19,15 @@ export function lifespan(birth: number | null, death: number | null): string {
   return `${birth !== null ? y(birth) : '?'}–${y(death)}`;
 }
 
-export function Avatar({ name, seat }: { name: string; seat: number }) {
+/** The character's portrait when a validated one exists, otherwise their initials. */
+export function Avatar({ name, seat, slug }: { name: string; seat: number; slug?: string }) {
+  const portrait = useCharacterPortrait(slug);
+  if (portrait)
+    return (
+      <span className={`avatar avatar--portrait ${seatClass(seat)}`} aria-hidden="true">
+        <CharacterAvatar {...portrait} state="IDLE" viseme="rest" animated={false} />
+      </span>
+    );
   return (
     <span className={`avatar ${seatClass(seat)}`} aria-hidden="true">
       {initials(name)}
@@ -33,7 +43,7 @@ export function ParticipantCard({ participant }: { participant: DebateParticipan
   return (
     <li className={`participant ${seatClass(participant.seat)}`}>
       <div className="participant__head">
-        <Avatar name={c.displayName} seat={participant.seat} />
+        <Avatar name={c.displayName} seat={participant.seat} slug={c.slug} />
         <div>
           <h3 className="participant__name">{c.displayName}</h3>
           <p className="px-m0 px-small px-muted">
