@@ -417,3 +417,22 @@ describe('challenge my idea', () => {
     expect(invited.rounds.map((r) => r.phase)).toEqual(['OPENING', 'CHALLENGE', 'RESPONSE']);
   });
 });
+
+describe('cost control', () => {
+  it('bounds prompt size per call and routes cheap checks to the fast tier', async () => {
+    const { app, llm } = await createHarness(db);
+    const cookie = await register(app);
+    const { id } = await createDebate(app, cookie);
+    for (let i = 0; i < 8; i++) await advance(app, cookie, id);
+    const sizes = llm.provider.calls.map(
+      (c) => c.system.length + c.messages.reduce((a, m) => a + m.content.length, 0),
+    );
+    // ~4 chars/token: keeps every call well under ~15k input tokens even late in a debate.
+    expect(Math.max(...sizes)).toBeLessThan(60_000);
+    const byModel = (k: string) => new Set(llm.callsOf(k).map((c) => c.model));
+    expect(byModel('consistency')).toEqual(new Set(['fast']));
+    expect(byModel('objections')).toEqual(new Set(['fast']));
+    expect(byModel('synthesis')).toEqual(new Set(['premium']));
+    expect(byModel('topic')).toEqual(new Set(['strong']));
+  });
+});
