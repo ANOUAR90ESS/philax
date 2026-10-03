@@ -1,0 +1,247 @@
+{
+  "app": {
+    "name": "Philax",
+    "tagline": "Examine ideas through structured disagreement.",
+    "skipToContent": "Skip to main content",
+    "footer": "Debates are AI reconstructions grounded in documented works. No one is declared the winner — you decide.",
+    "privacyLink": "Privacy"
+  },
+  "nav": {
+    "primary": "Primary",
+    "home": "Examine",
+    "challenge": "Challenge my idea",
+    "myDebates": "My debates",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "account": "Account"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "es": "Español",
+    "ar": "العربية"
+  },
+  "home": {
+    "heading": "What do you want to examine?",
+    "inputLabel": "Paste a link or write an idea",
+    "placeholder": "e.g. Will artificial intelligence make people less creative?",
+    "hint": "A question, a claim, a passage of text, or a link to an article.",
+    "start": "Start debate",
+    "examplesTitle": "Or try one of these",
+    "examples": [
+      "Does technology make people more free?",
+      "Should university education be free?",
+      "Is it ever right to break the law?"
+    ],
+    "howTitle": "How it works",
+    "how": [
+      "We analyse your input into claims, assumptions and open questions.",
+      "We find perspectives that genuinely disagree — and thinkers who documented them.",
+      "They debate over several rounds, citing sources. You can step in at any time."
+    ],
+    "detectedUrl": "Link detected — we will read the article and debate its claims."
+  },
+  "challenge": {
+    "heading": "Challenge my idea",
+    "intro": "State an idea you hold. We will build the strongest case for it, the strongest case against it, an alternative framing, and surface its hidden assumptions.",
+    "label": "My idea",
+    "placeholder": "e.g. Remote work is always better.",
+    "start": "Challenge it"
+  },
+  "auth": {
+    "signInTitle": "Sign in",
+    "registerTitle": "Create an account",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 10 characters.",
+    "displayName": "Name (optional)",
+    "submitSignIn": "Sign in",
+    "submitRegister": "Create account",
+    "toRegister": "New here? Create an account",
+    "toSignIn": "Already have an account? Sign in",
+    "required": "Sign in to start and save debates."
+  },
+  "pipeline": {
+    "title": "Preparing the debate",
+    "steps": {
+      "extract": "Reading the input",
+      "analyze": "Identifying claims, assumptions and questions",
+      "perspectives": "Discovering conflicting perspectives",
+      "characters": "Selecting thinkers and retrieving evidence",
+      "plan": "Planning the lines of disagreement"
+    },
+    "slow": "This can take up to a minute."
+  },
+  "debate": {
+    "topic": "Topic",
+    "participants": "Participants",
+    "round": "Round {{number}}",
+    "roundOf": "Round {{number}} of {{total}}",
+    "transcript": "Debate transcript",
+    "analysis": "Analysis of the input",
+    "claims": "Claims and assumptions",
+    "questions": "Questions at stake",
+    "tensions": "Where disagreement is expected",
+    "axes": "Lines of disagreement",
+    "next": "Next round",
+    "generating": "Generating…",
+    "speaking": "{{name}} is speaking…",
+    "revising": "Revising this response for consistency with the sources…",
+    "toSynthesis": "Conclude: show the synthesis",
+    "completed": "This debate is complete.",
+    "why": "Why this thinker",
+    "perspective": "Perspective",
+    "argument": "Argument structure",
+    "premises": "Premises",
+    "conclusion": "Conclusion",
+    "assumptions": "Assumptions",
+    "objections": "Objections addressed",
+    "repliesTo": "Replying to {{name}}",
+    "you": "You",
+    "save": "Save debate",
+    "saved": "Saved",
+    "unsave": "Remove from saved",
+    "delete": "Delete debate",
+    "deleteConfirm": "Delete this debate permanently? This cannot be undone.",
+    "notice": {
+      "historical": "Simulated reconstruction based on documented works and positions. These are not actual statements by {{name}}.",
+      "contemporary": "A reconstruction based on publicly documented statements and works of {{name}}. Not a statement by them.",
+      "general": "All speeches are AI reconstructions grounded in documented ideas. Sources are listed with each turn."
+    },
+    "phases": {
+      "DEBATE_CREATED": "Created",
+      "TOPIC_ANALYZED": "Topic analysed",
+      "CHARACTERS_SELECTED": "Thinkers selected",
+      "DEBATE_PLANNED": "Ready to begin",
+      "OPENING": "Opening positions",
+      "CHALLENGE": "Direct challenges",
+      "RESPONSE": "Responses",
+      "CROSS_EXAMINATION": "Cross-examination",
+      "DEEP_DISAGREEMENT": "Deep disagreement",
+      "OPEN_QUESTION": "The open question",
+      "USER_EXCHANGE": "Your contribution",
+      "USER_CHALLENGE": "Your turn",
+      "SYNTHESIS": "Synthesis",
+      "COMPLETED": "Completed",
+      "FAILED": "Could not be prepared"
+    },
+    "moves": {
+      "assert": "States a position",
+      "challenge": "Challenges",
+      "respond": "Responds",
+      "question": "Asks",
+      "answer": "Answers",
+      "concede": "Concedes a point",
+      "reframe": "Reframes"
+    },
+    "roles": {
+      "debater": "Debater",
+      "supporter": "Strongest support",
+      "opponent": "Strongest opposition",
+      "alternative": "Alternative framing"
+    },
+    "join": {
+      "title": "Enter the debate",
+      "intro": "State your position or challenge a participant. They will respond — and they will not simply agree with you.",
+      "label": "Your position",
+      "placeholder": "I think…",
+      "send": "Add to the debate",
+      "invite": "The participants have reached the open question. What do you think?"
+    },
+    "challengeFraming": {
+      "title": "Examining your idea",
+      "hidden": "Hidden assumptions",
+      "strongest": "Strongest objection"
+    }
+  },
+  "sources": {
+    "title": "Sources",
+    "cited": "Sources cited",
+    "none": "No sources were cited in this turn.",
+    "paraphrase": "Paraphrase of documented material — not a direct quotation.",
+    "locator": "Location: {{locator}}",
+    "open": "Open source",
+    "noUrl": "Bibliographic reference (no verified link yet)",
+    "types": {
+      "primary": "Primary source",
+      "secondary": "Secondary source",
+      "academic": "Academic source",
+      "article": "Article",
+      "book": "Book",
+      "user-provided": "Your input"
+    },
+    "kinds": {
+      "biographical_fact": "Biographical fact",
+      "documented_position": "Documented position",
+      "concept": "Concept",
+      "scholarly_interpretation": "Scholarly interpretation",
+      "interpretation": "Interpretation",
+      "user_content": "From your input"
+    }
+  },
+  "synthesis": {
+    "title": "Synthesis",
+    "noWinner": "There is no winner. This summary maps the disagreement so you can form your own view.",
+    "agree": "What they agree on",
+    "disagree": "What they disagree on",
+    "why": "Why they disagree",
+    "assumptions": "Different underlying assumptions",
+    "keyArguments": "Key arguments",
+    "unresolved": "Unresolved questions",
+    "strongest": "The strongest unresolved question",
+    "userPosition": "Your position",
+    "sources": "Sources used",
+    "whatDoYouThink": "What do you think?",
+    "axes": {
+      "assumptions": "Assumptions",
+      "definitions": "Definitions",
+      "values": "Values",
+      "evidence": "Evidence",
+      "priorities": "Priorities",
+      "schools": "Schools of thought"
+    }
+  },
+  "profile": {
+    "title": "My debates",
+    "saved": "Saved debates",
+    "all": "Recent debates",
+    "empty": "No debates yet.",
+    "open": "Open",
+    "account": "Account",
+    "deleteAccount": "Delete my account and all data",
+    "deleteAccountConfirm": "This permanently deletes your account, debates, inputs and saved items. Continue?"
+  },
+  "privacy": {
+    "title": "Privacy",
+    "body": [
+      "What we store: your email, a hashed password, your debates (input text or link, extracted article text, analysis and generated turns) and usage counters used to enforce daily limits.",
+      "Why: to run and show your debates, let you return to saved debates, and protect the service from abuse.",
+      "How long: until you delete the debate or your account. Sessions expire after 30 days. Operational logs exclude your content.",
+      "Deletion: you can delete any debate, or your whole account and all associated data, from “My debates”. Deletion is immediate and permanent.",
+      "AI providers: to generate debates, relevant parts of your input are sent to the configured AI provider. API keys stay on our servers."
+    ]
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "reference": "Reference: {{id}}",
+    "retry": "Try again",
+    "notFound": "We could not find that page.",
+    "codes": {
+      "NETWORK": "We could not reach the server. Check your connection and try again.",
+      "VALIDATION_FAILED": "Please check your input and try again.",
+      "UNAUTHENTICATED": "Please sign in to continue.",
+      "FORBIDDEN": "You do not have access to this.",
+      "NOT_FOUND": "We could not find that.",
+      "CONFLICT": "That conflicts with existing data.",
+      "RATE_LIMITED": "Too many requests. Please wait a moment.",
+      "QUOTA_EXCEEDED": "You have reached today’s limit for this action.",
+      "EXTRACTION_FAILED": "We could not read that page. Try pasting the text instead.",
+      "URL_NOT_ALLOWED": "That link cannot be fetched. Use a public http(s) web page.",
+      "AI_UNAVAILABLE": "The AI service is unavailable right now. Please try again shortly.",
+      "AI_OUTPUT_INVALID": "We could not produce a reliable result. Please try again.",
+      "NO_SUITABLE_CHARACTERS": "We could not find enough well-documented, genuinely different perspectives for this input.",
+      "INVALID_STATE": "That action is not available at this stage of the debate.",
+      "INTERNAL": "Something went wrong on our side. Please try again."
+    }
+  }
+}

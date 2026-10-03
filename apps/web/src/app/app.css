@@ -1,0 +1,229 @@
+/* Application layout. Mobile-first; logical properties for RTL. */
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: 0.5rem;
+  inset-block-start: -3rem;
+  background: var(--px-ink);
+  color: var(--px-bg);
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--px-radius);
+  z-index: 10;
+}
+.skip-link:focus {
+  inset-block-start: 0.5rem;
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  padding: 0.75rem 1rem;
+  border-block-end: 1px solid var(--px-line);
+  background: var(--px-surface);
+}
+.brand {
+  font-family: var(--px-font-read);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--px-ink);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  order: 3;
+  flex-basis: 100%;
+}
+.site-nav a {
+  color: var(--px-ink-soft);
+  text-decoration: none;
+  padding: 0.45rem 0.7rem;
+  border-radius: var(--px-radius);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.site-nav a:hover {
+  color: var(--px-ink);
+  background: var(--px-surface-2);
+}
+.site-nav a[aria-current='page'] {
+  color: var(--px-ink);
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 var(--px-accent);
+}
+.site-header__end {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.site-header__end a.px-btn {
+  text-decoration: none;
+}
+.lang-switcher__select {
+  font: inherit;
+  color: var(--px-ink);
+  background: var(--px-surface);
+  border: 1px solid var(--px-line);
+  border-radius: var(--px-radius);
+  min-height: 44px;
+  padding-inline: 0.6rem;
+}
+
+.site-main {
+  flex: 1;
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: 1.5rem 1rem 3rem;
+}
+.site-main:focus {
+  outline: none;
+}
+
+.site-footer {
+  border-block-start: 1px solid var(--px-line);
+  padding: 1rem;
+  color: var(--px-ink-soft);
+  font-size: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  justify-content: space-between;
+}
+.site-footer p {
+  margin: 0;
+  max-width: var(--px-measure);
+}
+
+a {
+  color: var(--px-accent);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--px-font-read);
+  line-height: 1.2;
+  margin: 0;
+}
+h1 {
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+}
+h2 {
+  font-size: 1.3rem;
+}
+h3 {
+  font-size: 1.1rem;
+}
+
+.stack {
+  display: grid;
+  gap: 1rem;
+}
+.stack-lg {
+  display: grid;
+  gap: 2.5rem;
+}
+.narrow {
+  max-width: 36rem;
+  margin-inline: auto;
+}
+.prose {
+  max-width: var(--px-measure);
+}
+.prose p {
+  font-family: var(--px-font-read);
+  font-size: 1.08rem;
+}
+.lede {
+  font-family: var(--px-font-read);
+  font-size: 1.12rem;
+  color: var(--px-ink-soft);
+  margin: 0;
+}
+.px-muted {
+  color: var(--px-ink-soft);
+}
+.px-small {
+  font-size: 0.88rem;
+}
+.px-m0 {
+  margin: 0;
+}
+.section-title {
+  font-size: 1rem;
+  font-family: var(--px-font-ui);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--px-ink-soft);
+}
+
+/* Home */
+.hero {
+  max-width: 44rem;
+  margin-inline: auto;
+  padding-block: 1.5rem 0;
+}
+.hero__title {
+  font-size: clamp(1.9rem, 5vw, 2.8rem);
+}
+.home > section:not(.hero) {
+  max-width: 44rem;
+  margin-inline: auto;
+  width: 100%;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chip {
+  font: inherit;
+  font-family: var(--px-font-read);
+  text-align: start;
+  background: var(--px-surface);
+  color: var(--px-ink);
+  border: 1px solid var(--px-line);
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  min-height: 44px;
+  cursor: pointer;
+}
+.chip:hover {
+  border-color: var(--px-ink-soft);
+}
+.how {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+  display: grid;
+  gap: 0.4rem;
+  color: var(--px-ink-soft);
+}
+
+@media (min-width: 48rem) {
+  .site-header {
+    padding-inline: 1.5rem;
+    flex-wrap: nowrap;
+  }
+  .site-nav {
+    order: 0;
+    flex-basis: auto;
+  }
+  .site-main {
+    padding: 2.5rem 1.5rem 4rem;
+  }
+}
