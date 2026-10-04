@@ -2,7 +2,7 @@ import { writeFile } from 'node:fs/promises';
 import { CHARACTER_STYLES, PRESENTATIONS, type Presentation } from '@philax/media';
 import { isMediaProviderError } from './errors';
 import type { ElevenLabsVoiceProvider } from './providers/elevenlabs';
-import type { AssetAssignment, MediaProfileRepository } from './repository';
+import type { AssetAssignment, AvatarVendor, MediaProfileRepository } from './repository';
 import type { CharacterMediaService } from './service';
 
 export interface MediaCommandDeps {
@@ -16,7 +16,8 @@ const USAGE = `usage:
   media:sync                                   write identity briefs for every character
   media:configure <slug> [--presentation male|female|androgynous] [--voice <id>] [--voice-presentation male|female|androgynous]
                   [--voice-ar <id>] [--voice-es <id>] [--voice-en <id>]
-                  [--live-avatar <id>] [--avatar <look id>] [--avatar-presentation male|female|androgynous]
+                  [--live-avatar <id>] [--avatar <look id>] [--avatar-provider heygen|joggai]
+                  [--avatar-presentation male|female|androgynous]
   media:verify                                 check every character against the live providers (read-only)
   media:design-voice <slug>                    design candidate voices with ElevenLabs (spends credits)
   media:design-voice <slug> --save <generated voice id>`;
@@ -39,6 +40,12 @@ function presentation(value: string | undefined): Presentation | undefined {
   if (!(PRESENTATIONS as readonly string[]).includes(value) || value === 'unknown')
     throw new Error(`Invalid presentation "${value}".`);
   return value as Presentation;
+}
+
+function avatarVendor(value: string | undefined): AvatarVendor {
+  if (value !== 'heygen' && value !== 'joggai')
+    throw new Error(`Invalid avatar provider "${value}".`);
+  return value;
 }
 
 /** Operator commands for character media (run via `node dist/ops.js media:<command>`). */
@@ -67,6 +74,9 @@ export async function runMediaCommand(
         ...(f.has('voice') ? { voiceId: f.get('voice') } : {}),
         ...(f.has('live-avatar') ? { liveAvatarId: f.get('live-avatar') } : {}),
         ...(f.has('avatar') ? { avatarId: f.get('avatar') } : {}),
+        ...(f.has('avatar-provider')
+          ? { avatarProvider: avatarVendor(f.get('avatar-provider')) }
+          : {}),
         ...(f.has('voice-presentation')
           ? { voicePresentation: presentation(f.get('voice-presentation')) }
           : {}),

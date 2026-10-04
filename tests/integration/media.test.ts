@@ -92,7 +92,7 @@ describe('media API', () => {
     const res = await app.inject({ method: 'GET', url: '/api/media/status', headers: { cookie } });
     expect(res.json().status).toEqual({
       voice: { provider: 'elevenlabs', configured: false },
-      avatar: { provider: 'heygen', mode: 'live', configured: false },
+      avatar: { mode: 'live', configured: false, presentation: 'framed' },
     } satisfies MediaStatus);
     expect(res.body).not.toMatch(/api[_-]?key/i);
   });

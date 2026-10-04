@@ -35,6 +35,8 @@ export interface PrepareAvatarInput {
   /** Visual description: presentation, age, era, period dress, likeness notes. */
   description: string;
   presentation: Presentation;
+  /** Roughly how old the character appears, when the identity gives it. */
+  approximateAge?: number | null;
 }
 
 export interface PreparedAvatar {
@@ -45,8 +47,10 @@ export interface PreparedAvatar {
 }
 
 export interface AvatarGateway {
-  readonly provider: 'heygen';
+  readonly provider: 'heygen' | 'joggai';
   readonly canPrepare: boolean;
+  /** Whether the provider can create an avatar of this presentation (all, when absent). */
+  supports?(presentation: Presentation): boolean;
   prepareCharacterAvatar(input: PrepareAvatarInput): Promise<PreparedAvatar>;
 }
 

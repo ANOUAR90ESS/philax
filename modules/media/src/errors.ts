@@ -1,4 +1,4 @@
-export type MediaProviderName = 'elevenlabs' | 'heygen' | 'liveavatar';
+export type MediaProviderName = 'elevenlabs' | 'heygen' | 'joggai' | 'liveavatar';
 
 export const MEDIA_FAILURES = [
   'not_configured',

@@ -8,6 +8,7 @@ import {
   CharacterMediaService,
   ElevenLabsVoiceProvider,
   HeyGenVideoAvatarProvider,
+  JoggAIVideoAvatarProvider,
   LiveAvatarProvider,
   MediaProfileRepository,
   runMediaCommand,
@@ -47,7 +48,9 @@ try {
       env.MEDIA_AVATAR_MODE === 'live'
         ? new LiveAvatarProvider({ apiKey: env.LIVEAVATAR_API_KEY })
         : env.MEDIA_AVATAR_MODE === 'video'
-          ? new HeyGenVideoAvatarProvider({ apiKey: env.HEYGEN_API_KEY })
+          ? env.MEDIA_VIDEO_AVATAR_PROVIDER === 'joggai'
+            ? new JoggAIVideoAvatarProvider({ apiKey: env.JOGGAI_API_KEY })
+            : new HeyGenVideoAvatarProvider({ apiKey: env.HEYGEN_API_KEY })
           : null;
     const service = new CharacterMediaService({
       repository,

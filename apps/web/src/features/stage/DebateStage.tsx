@@ -53,6 +53,13 @@ function Portrait({
 
 const SPEEDS: VoiceSpeed[] = ['slow', 'normal', 'fast'];
 
+/** Safari (WebKit) plays WebM without its alpha channel, so a cut-out speaker needs a frame there. */
+function rendersVideoAlpha(): boolean {
+  if (typeof navigator === 'undefined') return true;
+  const ua = navigator.userAgent;
+  return !(/Safari\//.test(ua) && !/(Chrome|Chromium|CriOS|FxiOS|Edg|Android)\//.test(ua));
+}
+
 /**
  * The debate as one shared scene, like a recorded podcast: the whole cast sits
  * together on a designed set, the current speaker is lit and in focus (provider
@@ -77,6 +84,11 @@ export function DebateStage({ debate, draft, stage }: Props) {
     (current.mode === 'live' || current.mode === 'video') &&
     current.phase !== 'loading' &&
     current.error === null;
+  // A transparent rendered speaker stands in the set; otherwise the video is framed over the seat.
+  const cutout =
+    current?.mode === 'video' &&
+    snapshot.status?.avatar.presentation === 'cutout' &&
+    rendersVideoAlpha();
 
   if (!debate.participants.length) return null;
 
@@ -135,11 +147,12 @@ export function DebateStage({ debate, draft, stage }: Props) {
         </ul>
         <div className="scene__table" aria-hidden="true" />
 
-        {/* Provider avatar surface (real-time or rendered), framed over the speaker's seat;
+        {/* Provider avatar surface (real-time or rendered), framed over the speaker's seat or,
+            when the speaker is rendered without a background, standing in the set;
             always mounted so playback can attach. */}
         <video
           ref={attachVideo}
-          className="scene__video"
+          className={`scene__video ${cutout ? 'is-cutout' : ''}`}
           hidden={!showVideo}
           playsInline
           aria-label={focus ? t('stage.avatarLabel', { name }) : undefined}

@@ -44,6 +44,10 @@ export const EnvSchema = z.object({
   ELEVENLABS_MODEL_ID: z.string().default('eleven_multilingual_v2'),
   /** HeyGen API (avatar video segments). */
   HEYGEN_API_KEY: optionalString,
+  /** JoggAI API (rendered avatar video with a transparent background). */
+  JOGGAI_API_KEY: optionalString,
+  /** Which provider renders avatar video when MEDIA_AVATAR_MODE=video. */
+  MEDIA_VIDEO_AVATAR_PROVIDER: z.enum(['heygen', 'joggai']).default('heygen'),
   /** HeyGen LiveAvatar (real-time avatars) has its own key. */
   LIVEAVATAR_API_KEY: optionalString,
   /** live: real-time LiveAvatar sessions; video: rendered HeyGen segments; off: voice and portraits only. */
