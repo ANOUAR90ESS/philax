@@ -673,6 +673,7 @@ h3 {
   min-block-size: 20rem;
   display: grid;
   grid-template-rows: minmax(13rem, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   color: var(--set-ink);
   background: #1a1a1a;
 }
@@ -715,6 +716,7 @@ h3 {
 }
 .scene__cast {
   grid-row: 1;
+  grid-column: 1;
   display: grid;
   align-items: end;
   list-style: none;
@@ -808,10 +810,20 @@ h3 {
 [dir='rtl'] .scene__video {
   translate: 50% 0;
 }
+/* Stands in the seat row, centred on the speaker's own seat (transparent edges may leave
+   the set), behind the cast so the speaker's nameplate stays readable. */
 .scene__video.is-cutout {
-  --frame: min(62%, 36rem);
-  inset-block-start: auto;
-  inset-block-end: 0;
+  position: relative;
+  z-index: 2;
+  grid-row: 1;
+  grid-column: 1;
+  align-self: end;
+  justify-self: start;
+  inset: auto;
+  margin-inline-start: var(--focus-x);
+  inline-size: auto;
+  block-size: min(100%, 24rem);
+  aspect-ratio: 16 / 9;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -1055,6 +1067,9 @@ h3 {
   }
   .scene__cast {
     padding-inline: 0.25rem;
+  }
+  .scene__video.is-cutout {
+    block-size: min(100%, 14rem);
   }
   .scene__nameplate {
     font-size: 0.68rem;
