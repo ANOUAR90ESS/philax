@@ -225,7 +225,14 @@
       "normal": "Normal",
       "fast": "Faster"
     },
-    "replay": "Replay"
+    "replay": "Replay",
+    "scene": "Scene",
+    "scenes": {
+      "studio": "Podcast studio",
+      "library": "Library",
+      "agora": "Ancient agora",
+      "hall": "Debate hall"
+    }
   },
   "sources": {
     "title": "Sources",

@@ -229,6 +229,25 @@ describe('DebateStage', () => {
     expect(stage.querySelectorAll('svg.portrait')).toHaveLength(3);
   });
 
+  it('seats the whole cast in one set chosen for the debate, which the viewer can change', async () => {
+    const { deps } = setup(
+      NOT_CONFIGURED,
+      castViews(unavailable('provider_not_configured'), unavailable('provider_not_configured')),
+    );
+    renderStage(debate([]), deps);
+    await act(() => vi.advanceTimersByTimeAsync(10));
+    const stage = stageRegion();
+    const scene = stage.querySelector('.scene');
+    // A 19th-century cast is staged in the library.
+    expect(scene).toHaveAttribute('data-scene', 'library');
+    expect(within(stage).getAllByRole('listitem')).toHaveLength(participants.length);
+
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    await user.selectOptions(within(stage).getByLabelText('Scene'), 'Podcast studio');
+    expect(scene).toHaveAttribute('data-scene', 'studio');
+    expect(window.localStorage.getItem(`philax.stage.scene.${debate([]).id}`)).toBe('studio');
+  });
+
   it('without providers, presents a turn as captions and says why, without calling any provider', async () => {
     const { deps, api } = setup(
       NOT_CONFIGURED,
