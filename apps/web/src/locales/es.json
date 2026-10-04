@@ -225,7 +225,14 @@
       "normal": "Normal",
       "fast": "Más rápida"
     },
-    "replay": "Repetir"
+    "replay": "Repetir",
+    "scene": "Escenario",
+    "scenes": {
+      "studio": "Estudio de pódcast",
+      "library": "Biblioteca",
+      "agora": "Ágora antigua",
+      "hall": "Sala de debate"
+    }
   },
   "sources": {
     "title": "Fuentes",

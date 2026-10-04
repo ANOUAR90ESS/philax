@@ -92,6 +92,8 @@ export interface AvatarProvider {
   readonly configured: boolean;
   /** Audio format `speak` needs. */
   readonly audioFormat: AudioFormat;
+  /** Rendered video has a transparent background (the speaker can be placed into a scene). */
+  readonly transparent?: boolean;
   createSession(input: AvatarSessionInput): Promise<AvatarSession>;
   speak(input: AvatarSpeakInput): Promise<AvatarSpeakResult>;
   stopSession(sessionId: string): Promise<void>;

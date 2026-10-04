@@ -214,8 +214,10 @@ export class MediaOrchestrator {
       view.avatar.status === 'unavailable' &&
       view.avatar.reason === 'not_configured' &&
       this.o.media.avatarMode === 'video' &&
-      !row.avatarId &&
-      this.o.avatars.canPrepare
+      // None yet, or only one made by another video provider.
+      (!row.avatarId || row.avatarProvider !== this.o.avatars.provider) &&
+      this.o.avatars.canPrepare &&
+      this.o.avatars.supports?.(identity.identity.presentation) !== false
     )
       tasks.push(
         this.once(character, 'avatar', () =>
@@ -284,7 +286,7 @@ export class MediaOrchestrator {
       gender: string | null;
     }>,
   ): Promise<SideOutcome> {
-    if (!(await this.o.repository.claim(character.id, side)))
+    if (!(await this.o.repository.claim(character.id, side, this.o.avatars.provider)))
       return this.waitForOther(character, side);
     try {
       let result;
@@ -298,7 +300,7 @@ export class MediaOrchestrator {
       const gender = normalizeGender(result.gender);
       if (gender && gender !== presentation)
         throw new MediaProviderError(
-          side === 'voice' ? 'elevenlabs' : 'heygen',
+          side === 'voice' ? 'elevenlabs' : this.o.avatars.provider,
           'identity_mismatch',
           `prepared ${side} is ${gender}; character is ${presentation}`,
         );
@@ -358,9 +360,14 @@ export class MediaOrchestrator {
         name: `Philax · ${character.slug}`,
         description: this.avatarDescription(character, row, presentation, brief),
         presentation,
+        approximateAge: this.approximateAge(character, brief),
       });
       return {
-        assign: { [prepared.slot]: prepared.avatarId, avatarPresentation: presentation },
+        assign: {
+          [prepared.slot]: prepared.avatarId,
+          ...(prepared.slot === 'avatarId' ? { avatarProvider: this.o.avatars.provider } : {}),
+          avatarPresentation: presentation,
+        },
         gender: prepared.gender,
       };
     });

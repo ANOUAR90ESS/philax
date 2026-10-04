@@ -6,6 +6,7 @@ everywhere they appear. Nothing here imitates a recording of the real person.
 
 ```
 HeyGen      = avatar (real-time LiveAvatar, or rendered video segments)
+JoggAI      = avatar, alternative for rendered video (transparent background)
 ElevenLabs  = voice (TTS with per-character timing for subtitles and sync)
 Debate Engine = what is said (unchanged; media only reads stored turns)
 Character profile = who it is (identity brief + configured assets)
@@ -116,12 +117,27 @@ failures, Retry. The turn stays readable as captions.
 
 Chosen per turn from the user's controls and what is available:
 
-| Mode    | When                                         | How                                                                                     |
-| ------- | -------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `live`  | avatar on, `MEDIA_AVATAR_MODE=live`          | LiveAvatar LITE session; the API streams ElevenLabs PCM 24 kHz over the session socket  |
-| `video` | avatar on, `MEDIA_AVATAR_MODE=video`         | voice plays immediately; a HeyGen v3 segment is rendered from the same audio for replay |
-| `audio` | avatar off (or unavailable), voice on        | ElevenLabs MP3 with character timing                                                    |
-| `text`  | voice muted and avatar off, or nothing works | captions on a reading-speed clock; no provider call at all                              |
+| Mode    | When                                         | How                                                                                               |
+| ------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `live`  | avatar on, `MEDIA_AVATAR_MODE=live`          | LiveAvatar LITE session; the API streams ElevenLabs PCM 24 kHz over the session socket            |
+| `video` | avatar on, `MEDIA_AVATAR_MODE=video`         | voice plays immediately; a HeyGen v3 or JoggAI segment is rendered from the same audio for replay |
+| `audio` | avatar off (or unavailable), voice on        | ElevenLabs MP3 with character timing                                                              |
+| `text`  | voice muted and avatar off, or nothing works | captions on a reading-speed clock; no provider call at all                                        |
+
+### Rendered video provider
+
+`MEDIA_VIDEO_AVATAR_PROVIDER` (`heygen` by default, or `joggai`) picks who
+renders video segments; JoggAI needs `JOGGAI_API_KEY`. JoggAI renders with
+`screen_style: 3` (WebM with alpha), so `GET /api/media/status` reports
+`avatar.presentation: "cutout"` and the stage stands the speaker in the set
+instead of framing the video. Safari plays WebM without its alpha channel, so it
+keeps the framed presentation. The browser never learns which provider is used.
+
+`avatar_provider` records which provider made `avatar_id`. When the configured
+provider changes, a character's avatar from the other provider is not used:
+it is prepared again (the old id stays in `asset_history`). JoggAI creates
+avatars as photo avatars (`male` or `female` only; other presentations are not
+prepared and need an operator-configured avatar).
 
 Subtitles come from ElevenLabs character alignment. In `live` mode they start on
 the avatar's `agent.speak_started` event, so captions follow the mouth.
@@ -140,7 +156,7 @@ delivery settings + exact text (no secrets in the key; it is a hash).
 `age_profile`, `voice_style`, `visual_notes`, `language_configuration`
 (`{"languages": [...], "voices": {"ar": "<voice id>"}}`), timestamps; migration
 `0004` adds `status`, `avatar_status`, `voice_status`, `version` and
-`asset_history`. Identity
+`asset_history`; migration `0005` allows `avatar_provider = 'joggai'`. Identity
 columns are synced from the briefs; asset ids are set by an operator.
 
 ## Setting up a character
@@ -154,6 +170,7 @@ pnpm media media:design-voice hannah-arendt --save <generated voice id>
 # or: pnpm media media:configure hannah-arendt --voice <voice id> --voice-presentation female
 # Avatar: create the avatar in HeyGen/LiveAvatar from period references (AI reconstruction), then:
 pnpm media media:configure hannah-arendt --live-avatar <liveavatar id> --avatar <heygen look id> --avatar-presentation female
+# JoggAI: --avatar public:<id> | custom:<id> --avatar-provider joggai
 pnpm media media:verify                     # read-only check against the live providers
 ```
 
@@ -164,7 +181,7 @@ selected; this spends provider credits once per character.
 Per-language voices of the same character: `--voice-ar <id>`, `--voice-es <id>`.
 The character never changes with the language.
 
-Without keys the app runs normally and shows **Provider status: NOT CONFIGURED**.
+Without keys the app runs normally; operators see the provider status with `media:verify`.
 
 ## Provider APIs used
 
@@ -176,6 +193,12 @@ Without keys the app runs normally and shows **Provider status: NOT CONFIGURED**
   `agent.speak_ended`, `agent.speak_interrupted`, `error`.
 - HeyGen v3: `POST /v3/assets`, `POST /v3/videos`, `GET /v3/videos/{id}`,
   `GET /v3/avatars/looks/{id}`, `POST /v3/avatars` (type `prompt`).
+- JoggAI (`x-api-key`, responses `{code, msg, data}`): `POST /v2/upload/asset` then
+  `PUT` to the signed URL, `POST /v2/create_video_from_avatar` (voice type `audio`,
+  `screen_style: 3`), `GET /v2/avatar_video/{id}`, `GET /v2/voices`,
+  `POST /v2/photo_avatar/photo/generate`, `GET /v2/photo_avatar/photo`,
+  `POST /v2/photo_avatar/add_motion`, `GET /v2/photo_avatar`. Costs: about 1 credit
+  per 2 minutes of video, 3 credits per avatar animation (Motion 2.0 Pro).
 
 Provider errors are classified (invalid key, quota, rate limit with Retry-After,
 timeout, unavailable, invalid asset, generation failure). Mocks of these

@@ -18,6 +18,8 @@ import {
   ElevenLabsVoiceGateway,
   ElevenLabsVoiceProvider,
   HeyGenAvatarGateway,
+  JoggAIAvatarGateway,
+  JoggAIVideoAvatarProvider,
   HeyGenVideoAvatarProvider,
   LiveAvatarProvider,
   MediaOrchestrator,
@@ -79,8 +81,16 @@ function avatarProvider(env: Env): AvatarProvider | null {
   if (env.MEDIA_AVATAR_MODE === 'live')
     return new LiveAvatarProvider({ apiKey: env.LIVEAVATAR_API_KEY });
   if (env.MEDIA_AVATAR_MODE === 'video')
-    return new HeyGenVideoAvatarProvider({ apiKey: env.HEYGEN_API_KEY });
+    return env.MEDIA_VIDEO_AVATAR_PROVIDER === 'joggai'
+      ? new JoggAIVideoAvatarProvider({ apiKey: env.JOGGAI_API_KEY })
+      : new HeyGenVideoAvatarProvider({ apiKey: env.HEYGEN_API_KEY });
   return null;
+}
+
+function videoAvatarGateway(env: Env): AvatarGateway {
+  return env.MEDIA_VIDEO_AVATAR_PROVIDER === 'joggai'
+    ? new JoggAIAvatarGateway({ apiKey: env.JOGGAI_API_KEY, enabled: env.MEDIA_AUTO_PREPARE })
+    : new HeyGenAvatarGateway({ apiKey: env.HEYGEN_API_KEY, enabled: env.MEDIA_AUTO_PREPARE });
 }
 
 export function createContainer(env: Env, overrides: ContainerOverrides = {}): Container {
@@ -137,7 +147,7 @@ export function createContainer(env: Env, overrides: ContainerOverrides = {}): C
     avatars:
       overrides.avatarGateway ??
       (env.MEDIA_AVATAR_MODE === 'video'
-        ? new HeyGenAvatarGateway({ apiKey: env.HEYGEN_API_KEY, enabled: env.MEDIA_AUTO_PREPARE })
+        ? videoAvatarGateway(env)
         : // LiveAvatar has no API for creating avatars: real-time avatars are configured by an operator.
           unavailableAvatarGateway()),
     // Internal states are for operators only (never sent to users); no provider ids or secrets.

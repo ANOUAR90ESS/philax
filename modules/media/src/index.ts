@@ -34,6 +34,12 @@ export {
   HeyGenVideoAvatarProvider,
   type HeyGenVideoOptions,
 } from './providers/heygen-video';
+export {
+  JoggAIAvatarGateway,
+  JoggAIVideoAvatarProvider,
+  parseJoggAvatarId,
+  type JoggAIOptions,
+} from './providers/joggai';
 export { runMediaCommand } from './cli';
 export * from './gateways';
 export {

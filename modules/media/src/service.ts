@@ -35,7 +35,7 @@ import type {
 } from './ports';
 import { toMediaConfig, type MediaProfileRepository, type MediaProfileRow } from './repository';
 
-const AVATAR_PROVIDERS = ['heygen'] as const;
+const AVATAR_PROVIDERS = ['heygen', 'joggai'] as const;
 const VOICE_PROVIDERS = ['elevenlabs'] as const;
 
 /** Delivery for characters without a brief in the style catalog. */
@@ -195,9 +195,9 @@ export class CharacterMediaService {
     return {
       voice: { provider: 'elevenlabs', configured: this.opts.voice.configured },
       avatar: {
-        provider: 'heygen',
         mode: this.avatarMode,
         configured: this.opts.avatar?.configured ?? false,
+        presentation: this.opts.avatar?.transparent ? 'cutout' : 'framed',
       },
     };
   }
@@ -287,11 +287,14 @@ export class CharacterMediaService {
     let avatar: MediaAvailability = ready;
     const voiceId = config ? (config.voice.languageVoices[lang] ?? config.voice.voiceId) : null;
     const avatarProvider = this.opts.avatar;
+    // A rendered-video avatar belongs to one provider: another provider's id is not used.
     const avatarId = !config
       ? null
       : avatarProvider?.kind === 'live'
         ? config.avatar.liveAvatarId
-        : config.avatar.avatarId;
+        : config.avatar.provider === avatarProvider?.name
+          ? config.avatar.avatarId
+          : null;
 
     if (!config) {
       voice = unavailable('not_configured');

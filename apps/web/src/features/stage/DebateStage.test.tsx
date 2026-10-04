@@ -94,11 +94,11 @@ function debate(messages: DebateMessage[], cast = participants): DebateView {
 
 const NOT_CONFIGURED: MediaStatus = {
   voice: { provider: 'elevenlabs', configured: false },
-  avatar: { provider: 'heygen', mode: 'live', configured: false },
+  avatar: { mode: 'live', configured: false, presentation: 'framed' },
 };
 const CONFIGURED: MediaStatus = {
   voice: { provider: 'elevenlabs', configured: true },
-  avatar: { provider: 'heygen', mode: 'live', configured: true },
+  avatar: { mode: 'live', configured: true, presentation: 'framed' },
 };
 
 const unavailable = (reason: 'provider_not_configured' | 'not_configured') =>
@@ -227,6 +227,25 @@ describe('DebateStage', () => {
     expect(within(stage).getAllByText('Waiting')).toHaveLength(3);
     expect(within(stage).queryByText(/provider|configured/i)).toBeNull();
     expect(stage.querySelectorAll('svg.portrait')).toHaveLength(3);
+  });
+
+  it('seats the whole cast in one set chosen for the debate, which the viewer can change', async () => {
+    const { deps } = setup(
+      NOT_CONFIGURED,
+      castViews(unavailable('provider_not_configured'), unavailable('provider_not_configured')),
+    );
+    renderStage(debate([]), deps);
+    await act(() => vi.advanceTimersByTimeAsync(10));
+    const stage = stageRegion();
+    const scene = stage.querySelector('.scene');
+    // A 19th-century cast is staged in the library.
+    expect(scene).toHaveAttribute('data-scene', 'library');
+    expect(within(stage).getAllByRole('listitem')).toHaveLength(participants.length);
+
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    await user.selectOptions(within(stage).getByLabelText('Scene'), 'Podcast studio');
+    expect(scene).toHaveAttribute('data-scene', 'studio');
+    expect(window.localStorage.getItem(`philax.stage.scene.${debate([]).id}`)).toBe('studio');
   });
 
   it('without providers, presents a turn as captions and says why, without calling any provider', async () => {
@@ -368,6 +387,39 @@ describe('DebateStage', () => {
     act(() => emit({ type: 'speak_ended' }));
     await act(() => vi.advanceTimersByTimeAsync(500));
     expect(screen.getByText(/stage is quiet/)).toBeInTheDocument();
+  });
+
+  it('stands a speaker rendered without a background in the set, and frames it where alpha video is unsupported', async () => {
+    const CUTOUT: MediaStatus = {
+      voice: { provider: 'elevenlabs', configured: true },
+      avatar: { mode: 'video', configured: true, presentation: 'cutout' },
+    };
+    const turn = message(messageId(1), ids.arendt, 'Thinking matters. Action begins.');
+    const videoSurface = () => stageRegion().querySelector('video');
+
+    const { deps, api } = setup(CUTOUT, castViews({ status: 'ready' }, { status: 'ready' }));
+    api.renderVideo.mockReturnValue(new Promise(() => undefined));
+    const { update, unmount } = renderStage(debate([]), deps);
+    await act(() => vi.advanceTimersByTimeAsync(10));
+    update(debate([turn]));
+    await act(() => vi.advanceTimersByTimeAsync(50));
+    expect(videoSurface()).toHaveClass('scene__video', 'is-cutout');
+    unmount();
+
+    const safari = vi
+      .spyOn(navigator, 'userAgent', 'get')
+      .mockReturnValue(
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15',
+      );
+    const framed = setup(CUTOUT, castViews({ status: 'ready' }, { status: 'ready' }));
+    framed.api.renderVideo.mockReturnValue(new Promise(() => undefined));
+    const again = renderStage(debate([]), framed.deps);
+    await act(() => vi.advanceTimersByTimeAsync(10));
+    again.update(debate([turn]));
+    await act(() => vi.advanceTimersByTimeAsync(50));
+    expect(videoSurface()).toHaveClass('scene__video');
+    expect(videoSurface()).not.toHaveClass('is-cutout');
+    safari.mockRestore();
   });
 
   it('replays an earlier turn on request but not automatically', async () => {
