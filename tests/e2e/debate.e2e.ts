@@ -6,11 +6,16 @@ async function registerAndStart(page: Page, topic: string) {
   await page.getByRole('button', { name: 'Start debate' }).click();
   // Not signed in: redirected to sign-in, draft preserved across registration.
   await page.getByRole('link', { name: 'New here? Create an account' }).click();
+  // Fill the registration form only once it has replaced the sign-in form.
+  await expect(page.getByRole('heading', { level: 1, name: 'Create an account' })).toBeVisible();
   await page
     .getByLabel('Email')
     .fill(`e2e-${Date.now()}-${Math.random().toString(16).slice(2)}@test.dev`);
   await page.getByLabel('Password').fill('a-long-password');
+  const registered = page.waitForResponse((r) => r.url().endsWith('/api/auth/register'));
   await page.getByRole('button', { name: 'Create account' }).click();
+  const response = await registered;
+  expect(response.ok(), `register: ${response.status()} ${await response.text()}`).toBe(true);
   // Registration returns to the home page with the draft restored.
   await expect(page).toHaveURL(/\/$/);
   await expect(page.getByRole('textbox', { name: 'Paste a link or write an idea' })).toHaveValue(
