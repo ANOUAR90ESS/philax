@@ -52,8 +52,8 @@ test('core scenario: topic → characters → rounds → user joins → synthesi
   ).toBeVisible();
   await expect(stage.getByText(/they are not historical images or recordings/)).toBeVisible();
   await expect(stage.getByText('Listening').first()).toBeVisible();
-  // No provider keys in this environment: the app says so instead of faking an avatar or voice.
-  await expect(stage.getByText('Provider status: NOT CONFIGURED')).toBeVisible();
+  // No provider keys in this environment: no avatar or voice is faked, and providers are never named.
+  await expect(stage.getByText(/provider|configured/i)).toHaveCount(0);
   await expect(stage.getByText(/^Voice unavailable: /)).toBeVisible();
   await expect(stage.locator('video')).toBeHidden();
   expect(

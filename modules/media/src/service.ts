@@ -146,12 +146,13 @@ export function mediaUnavailable(
   cause?: unknown,
 ): AppError {
   const what = kind === 'voice' ? 'Voice' : 'Avatar';
+  // User-facing: never names a provider or its setup.
   const message =
-    reason === 'provider_not_configured'
-      ? `${what} provider not configured.`
-      : reason === 'not_configured' || reason === 'identity_mismatch'
-        ? `${what} unavailable for this character.`
-        : `${what} unavailable right now. Please retry.`;
+    reason === 'provider_not_configured' ||
+    reason === 'not_configured' ||
+    reason === 'identity_mismatch'
+      ? `${what} unavailable for this character.`
+      : `${what} unavailable right now. Please retry.`;
   const details: MediaUnavailableDetails = { kind, reason, retryAfterMs };
   return new AppError('MEDIA_UNAVAILABLE', message, { details, cause });
 }

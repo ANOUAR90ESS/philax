@@ -214,7 +214,7 @@ beforeEach(() => {
 afterEach(() => vi.useRealTimers());
 
 describe('DebateStage', () => {
-  it('shows the cast and says when the providers are not configured', async () => {
+  it('shows the cast without any provider status', async () => {
     const { deps } = setup(
       NOT_CONFIGURED,
       castViews(unavailable('provider_not_configured'), unavailable('provider_not_configured')),
@@ -225,7 +225,7 @@ describe('DebateStage', () => {
     for (const p of participants)
       expect(within(stage).getByText(p.character.displayName)).toBeInTheDocument();
     expect(within(stage).getAllByText('Waiting')).toHaveLength(3);
-    expect(within(stage).getByText('Provider status: NOT CONFIGURED')).toBeInTheDocument();
+    expect(within(stage).queryByText(/provider|configured/i)).toBeNull();
     expect(stage.querySelectorAll('svg.portrait')).toHaveLength(3);
   });
 
@@ -249,10 +249,10 @@ describe('DebateStage', () => {
     expect(within(stage).getByText('Speaking')).toBeInTheDocument();
     expect(within(stage).getAllByText('Listening')).toHaveLength(2);
     expect(
-      within(stage).getByText('Voice unavailable: provider not configured.'),
+      within(stage).getByText('Voice unavailable: this participant has none.'),
     ).toBeInTheDocument();
     expect(
-      within(stage).getByText('Avatar unavailable: provider not configured.'),
+      within(stage).getByText('Avatar unavailable: this participant has none.'),
     ).toBeInTheDocument();
     expect(api.speech).not.toHaveBeenCalled();
     expect(api.openSession).not.toHaveBeenCalled();
