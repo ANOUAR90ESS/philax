@@ -1,11 +1,13 @@
 import { captionAt, type AvatarState } from '@philax/media';
 import type { DebateParticipant, DebateView, VoiceSpeed } from '@philax/types';
 import { Button, seatClass } from '@philax/ui';
-import { Fragment } from 'react';
+import { Fragment, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { LiveDraft } from '../../hooks/useDebate';
 import { initials } from '../characters/ParticipantCard';
 import { CharacterAvatar } from './CharacterAvatar';
+import { SceneBackdrop } from './SceneBackdrop';
+import { SCENES, useScene, type Scene } from './scenes';
 import type { MediaIssue } from './playback';
 import { characterPortrait } from './useCharacterPortrait';
 import type { StageController } from './useStage';
@@ -52,9 +54,10 @@ function Portrait({
 const SPEEDS: VoiceSpeed[] = ['slow', 'normal', 'fast'];
 
 /**
- * The debate as a scene: the whole cast is visible, the current speaker is in
- * focus (provider avatar, voice and subtitles, as the user chooses and the
- * character's configuration allows) and the others listen.
+ * The debate as one shared scene, like a recorded podcast: the whole cast sits
+ * together on a designed set, the current speaker is lit and in focus (provider
+ * avatar, voice and subtitles, as the user chooses and the character's
+ * configuration allows) and the others listen and react from their seats.
  */
 export function DebateStage({ debate, draft, stage }: Props) {
   const { t } = useTranslation();
@@ -63,9 +66,12 @@ export function DebateStage({ debate, draft, stage }: Props) {
   const focusId = current?.characterId ?? draft?.characterId ?? null;
   const focus = debate.participants.find((p) => p.character.id === focusId);
   const name = focus?.character.displayName ?? '';
-  const state = focus ? (states[focus.character.id] ?? 'IDLE') : 'IDLE';
   const caption = current ? captionAt(current.segments, current.positionMs) : null;
   const segment = caption ? current?.segments[caption.segment] : undefined;
+  const [scene, chooseScene] = useScene(debate);
+  const focusIndex = debate.participants.findIndex((p) => p.character.id === focusId);
+  // Centre of the speaker's seat, as a share of the set's width (seats are equal columns).
+  const focusX = focusIndex < 0 ? 50 : ((focusIndex + 0.5) / debate.participants.length) * 100;
   const showVideo =
     current !== null &&
     (current.mode === 'live' || current.mode === 'video') &&
@@ -90,54 +96,83 @@ export function DebateStage({ debate, draft, stage }: Props) {
         </p>
       ) : null}
 
-      <ul className="stage__cast" role="list">
-        {debate.participants.map((p) => {
-          const s = states[p.character.id] ?? 'IDLE';
-          const active = p.character.id === focusId;
-          return (
-            <li
-              key={p.character.id}
-              className={`stage__seat ${seatClass(p.seat)} ${active ? 'is-active' : ''}`}
-              aria-current={active ? 'true' : undefined}
-            >
-              <Portrait participant={p} state={s} large={false} />
-              <span className="stage__seat-name">{p.character.displayName}</span>
-              <span className="stage__seat-state">{t(`stage.states.${s}`)}</span>
-            </li>
-          );
-        })}
-      </ul>
+      <div
+        className={`scene ${focus ? seatClass(focus.seat) : ''}`}
+        data-scene={scene}
+        style={{ '--focus-x': `${focusX}%` } as CSSProperties}
+      >
+        <SceneBackdrop scene={scene} />
+        <div className="scene__spotlight" hidden={focusIndex < 0} />
+        <ul
+          className="scene__cast"
+          role="list"
+          style={{ gridTemplateColumns: `repeat(${debate.participants.length}, minmax(0, 1fr))` }}
+        >
+          {debate.participants.map((p) => {
+            const s = states[p.character.id] ?? 'IDLE';
+            const active = p.character.id === focusId;
+            return (
+              <li
+                key={p.character.id}
+                className={`scene__seat ${seatClass(p.seat)} ${active ? 'is-active' : ''} ${
+                  active && showVideo ? 'is-on-video' : ''
+                }`}
+                aria-current={active ? 'true' : undefined}
+              >
+                <Portrait
+                  participant={p}
+                  state={s}
+                  large
+                  label={active ? t('stage.portraitLabel', { name }) : undefined}
+                />
+                <span className="scene__nameplate">
+                  <span className="scene__seat-name">{p.character.displayName}</span>
+                  <span className="scene__seat-state">{t(`stage.states.${s}`)}</span>
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="scene__table" aria-hidden="true" />
 
-      <div className={`stage__focus ${focus ? seatClass(focus.seat) : ''}`}>
-        {focus ? (
-          <p className="stage__now">
-            {current ? t('stage.speaking') : t('stage.preparing')} <strong>{name}</strong>
-            <span className="stage__role">
-              {' · '}
-              {focus.perspective.label}
-              {focus.role !== 'debater' ? ` · ${t(`debate.roles.${focus.role}`)}` : ''}
-            </span>
-          </p>
-        ) : (
-          <p className="stage__idle px-muted">{t('stage.idle')}</p>
-        )}
-
-        {/* Provider avatar surface (real-time or rendered); always mounted so playback can attach. */}
+        {/* Provider avatar surface (real-time or rendered), framed over the speaker's seat;
+            always mounted so playback can attach. */}
         <video
           ref={attachVideo}
-          className="stage__video"
+          className="scene__video"
           hidden={!showVideo}
           playsInline
           aria-label={focus ? t('stage.avatarLabel', { name }) : undefined}
         />
-        {focus && !showVideo ? (
-          <Portrait
-            participant={focus}
-            state={state}
-            large
-            label={t('stage.portraitLabel', { name })}
-          />
-        ) : null}
+
+        <div className="scene__lower-third">
+          {focus ? (
+            <p className="stage__now">
+              {current ? t('stage.speaking') : t('stage.preparing')} <strong>{name}</strong>
+              <span className="stage__role">
+                {' · '}
+                {focus.perspective.label}
+                {focus.role !== 'debater' ? ` · ${t(`debate.roles.${focus.role}`)}` : ''}
+              </span>
+            </p>
+          ) : (
+            <p className="stage__idle">{t('stage.idle')}</p>
+          )}
+          {prefs.captions && segment ? (
+            <p className="stage__subtitles" dir="auto" lang={debate.language} aria-hidden="true">
+              {segment.words.map((w, i) => (
+                <Fragment key={`${segment.index}-${w.start}`}>
+                  <span className={i === caption?.word ? 'stage__word is-current' : 'stage__word'}>
+                    {w.text}
+                  </span>{' '}
+                </Fragment>
+              ))}
+            </p>
+          ) : null}
+        </div>
+      </div>
+
+      <div className={`stage__focus ${focus ? seatClass(focus.seat) : ''}`}>
         {focus ? (
           <p className="stage__disclosure px-small">{t('stage.disclosure', { name })}</p>
         ) : null}
@@ -146,18 +181,6 @@ export function DebateStage({ debate, draft, stage }: Props) {
             {current.mode === 'live' || current.mode === 'video'
               ? t('stage.loadingAvatar')
               : t('stage.loadingVoice')}
-          </p>
-        ) : null}
-
-        {prefs.captions && segment ? (
-          <p className="stage__subtitles" dir="auto" lang={debate.language} aria-hidden="true">
-            {segment.words.map((w, i) => (
-              <Fragment key={`${segment.index}-${w.start}`}>
-                <span className={i === caption?.word ? 'stage__word is-current' : 'stage__word'}>
-                  {w.text}
-                </span>{' '}
-              </Fragment>
-            ))}
           </p>
         ) : null}
 
@@ -221,6 +244,16 @@ export function DebateStage({ debate, draft, stage }: Props) {
               {SPEEDS.map((s) => (
                 <option key={s} value={s}>
                   {t(`stage.speeds.${s}`)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="stage__speed">
+            <span>{t('stage.scene')}</span>
+            <select value={scene} onChange={(e) => chooseScene(e.target.value as Scene)}>
+              {SCENES.map((s) => (
+                <option key={s} value={s}>
+                  {t(`stage.scenes.${s}`)}
                 </option>
               ))}
             </select>
