@@ -59,7 +59,7 @@ const SPEEDS: VoiceSpeed[] = ['slow', 'normal', 'fast'];
 export function DebateStage({ debate, draft, stage }: Props) {
   const { t } = useTranslation();
   const { snapshot, states, player, attachVideo } = stage;
-  const { current, prefs, status } = snapshot;
+  const { current, prefs } = snapshot;
   const focusId = current?.characterId ?? draft?.characterId ?? null;
   const focus = debate.participants.find((p) => p.character.id === focusId);
   const name = focus?.character.displayName ?? '';
@@ -71,9 +71,6 @@ export function DebateStage({ debate, draft, stage }: Props) {
     (current.mode === 'live' || current.mode === 'video') &&
     current.phase !== 'loading' &&
     current.error === null;
-  const notConfigured =
-    status !== null &&
-    (!status.voice.configured || (status.avatar.mode !== 'off' && !status.avatar.configured));
 
   if (!debate.participants.length) return null;
 
@@ -84,25 +81,7 @@ export function DebateStage({ debate, draft, stage }: Props) {
 
   return (
     <section className="stage" aria-label={t('stage.label')}>
-      {status ? (
-        <p className="stage__provider px-small px-muted" role="status">
-          {notConfigured ? t('stage.providerNotConfigured') : t('stage.providerReady')}
-          {notConfigured ? (
-            <span className="stage__provider-detail">
-              {' · '}
-              {t('stage.providerDetail', {
-                voice: status.voice.configured ? t('stage.configured') : t('stage.notConfigured'),
-                avatar:
-                  status.avatar.mode === 'off'
-                    ? t('stage.off')
-                    : status.avatar.configured
-                      ? t('stage.configured')
-                      : t('stage.notConfigured'),
-              })}
-            </span>
-          ) : null}
-        </p>
-      ) : stage.mediaError ? (
+      {stage.mediaError ? (
         <p className="stage__provider px-small px-muted" role="status">
           {t('stage.mediaStatusFailed')}{' '}
           <Button variant="ghost" onClick={stage.reloadMedia}>
