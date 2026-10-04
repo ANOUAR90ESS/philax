@@ -5,7 +5,9 @@ import {
   subtitleSegments,
   validateConfigReuse,
   validateMediaConfig,
+  type CharacterIdentity,
   type CharacterMediaConfig,
+  type CharacterStyle,
   type IdentityIssue,
 } from '@philax/media';
 import {
@@ -29,11 +31,15 @@ import type {
   AvatarSession,
   VoiceProvider,
   VoiceResult,
+  VoiceSettings,
 } from './ports';
 import { toMediaConfig, type MediaProfileRepository, type MediaProfileRow } from './repository';
 
 const AVATAR_PROVIDERS = ['heygen'] as const;
 const VOICE_PROVIDERS = ['elevenlabs'] as const;
+
+/** Delivery for characters without a brief in the style catalog. */
+const DEFAULT_VOICE_SETTINGS: VoiceSettings = { speed: 1, stability: 0.5, style: 0.3 };
 
 const SPEED_FACTOR: Record<VoiceSpeed, number> = { slow: 0.85, normal: 1, fast: 1.15 };
 
@@ -195,6 +201,47 @@ export class CharacterMediaService {
     };
   }
 
+  /**
+   * The identity a character's media is checked against: its brief in the
+   * style catalog, or — for characters added later without one — the
+   * presentation recorded in its media profile. Never inferred from a name.
+   */
+  briefFor(
+    slug: string,
+    row: MediaProfileRow | null,
+  ):
+    | {
+        status: 'ready';
+        identity: CharacterIdentity;
+        settings: VoiceSettings;
+        style: CharacterStyle | null;
+      }
+    | { status: 'unavailable'; reason: MediaUnavailableReason } {
+    const brief = this.styles.resolve(slug);
+    if (brief.status === 'ready')
+      return {
+        status: 'ready',
+        identity: brief.identity,
+        settings: brief.style.voiceSettings,
+        style: brief.style,
+      };
+    if (brief.reason === 'invalid_profile')
+      return { status: 'unavailable', reason: 'identity_mismatch' };
+    if (!row || row.presentation === 'unknown')
+      return { status: 'unavailable', reason: 'not_configured' };
+    return {
+      status: 'ready',
+      identity: {
+        characterSlug: slug,
+        presentation: row.presentation,
+        presentationBasis: 'Recorded in the character media profile.',
+        likeness: 'conjectural',
+      },
+      settings: DEFAULT_VOICE_SETTINGS,
+      style: null,
+    };
+  }
+
   private async assetFacts(
     key: string,
     lookup: () => Promise<AssetFacts | null>,
@@ -213,7 +260,8 @@ export class CharacterMediaService {
    */
   async resolve(character: MediaCharacter, language: string): Promise<Resolved> {
     const lang = language.split('-')[0]?.toLowerCase() ?? language;
-    const brief = this.styles.resolve(character.slug);
+    const row = await this.opts.repository.get(character.id);
+    const brief = this.briefFor(character.slug, row);
     const base = {
       config: null,
       voiceId: null,
@@ -227,14 +275,13 @@ export class CharacterMediaService {
         ...base,
         view: {
           characterId: character.id,
-          voice: unavailable('identity_mismatch'),
-          avatar: unavailable('identity_mismatch'),
+          voice: unavailable(brief.reason),
+          avatar: unavailable(brief.reason),
         },
       };
 
-    const row = await this.opts.repository.get(character.id);
     const config = row ? toMediaConfig(row) : null;
-    const settings = brief.style.voiceSettings;
+    const settings = brief.settings;
     let voice: MediaAvailability = ready;
     let avatar: MediaAvailability = ready;
     const voiceId = config ? (config.voice.languageVoices[lang] ?? config.voice.voiceId) : null;

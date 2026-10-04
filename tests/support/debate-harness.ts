@@ -1,7 +1,12 @@
 import { buildApp, createContainer } from '@philax/api';
 import type { PoolDb } from '@philax/database';
 import type { DebateStreamEvent } from '@philax/types';
-import type { AvatarProvider, VoiceProvider } from '@philax/media-service';
+import type {
+  AvatarGateway,
+  AvatarProvider,
+  VoiceGateway,
+  VoiceProvider,
+} from '@philax/media-service';
 import type { ContentExtractor } from '@philax/sources';
 import { testEnv } from './env';
 import { FixtureLLM, type FixtureOptions } from './fixture-llm';
@@ -16,6 +21,9 @@ export async function createHarness(
     extractor?: ContentExtractor;
     voice?: VoiceProvider;
     avatar?: AvatarProvider | null;
+    voiceGateway?: VoiceGateway;
+    avatarGateway?: AvatarGateway;
+    env?: Record<string, string>;
   } = {},
 ) {
   const llm = new FixtureLLM(opts);
@@ -24,6 +32,7 @@ export async function createHarness(
       LLM_TIER_FAST: 'fixture:fast',
       LLM_TIER_STRONG: 'fixture:strong',
       LLM_TIER_PREMIUM: 'fixture:premium',
+      ...opts.env,
     }),
     {
       db,
@@ -32,6 +41,8 @@ export async function createHarness(
       extractor: opts.extractor,
       voice: opts.voice,
       avatar: opts.avatar,
+      voiceGateway: opts.voiceGateway,
+      avatarGateway: opts.avatarGateway,
     },
   );
   const app = await buildApp(container, { logger: false });

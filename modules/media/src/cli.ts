@@ -14,7 +14,7 @@ export interface MediaCommandDeps {
 
 const USAGE = `usage:
   media:sync                                   write identity briefs for every character
-  media:configure <slug> [--voice <id>] [--voice-presentation male|female|androgynous]
+  media:configure <slug> [--presentation male|female|androgynous] [--voice <id>] [--voice-presentation male|female|androgynous]
                   [--voice-ar <id>] [--voice-es <id>] [--voice-en <id>]
                   [--live-avatar <id>] [--avatar <look id>] [--avatar-presentation male|female|androgynous]
   media:verify                                 check every character against the live providers (read-only)
@@ -75,6 +75,11 @@ export async function runMediaCommand(
           : {}),
         ...(Object.keys(languageVoices).length ? { languageVoices } : {}),
       };
+      const recorded = presentation(f.get('presentation'));
+      if (recorded && !(await repository.setPresentation(slug, recorded))) {
+        log(`[media] no media profile for ${slug}; run media:sync first`);
+        return 1;
+      }
       let row;
       try {
         row = await repository.assign(slug, assignment);

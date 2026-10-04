@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { MediaProviderError } from '../errors';
 import type { FetchLike } from '../http';
-import { ElevenLabsVoiceProvider } from './elevenlabs';
-import { HeyGenVideoAvatarProvider } from './heygen-video';
+import { ElevenLabsVoiceGateway, ElevenLabsVoiceProvider } from './elevenlabs';
+import { HeyGenAvatarGateway, HeyGenVideoAvatarProvider } from './heygen-video';
 import { LiveAvatarProvider, type SocketLike } from './liveavatar';
 
 // Mocked transports: automated tests only.
@@ -332,5 +332,95 @@ describe('HeyGenVideoAvatarProvider (v3)', () => {
       fetch: fetchMock(json({ data: { name: 'Look', gender: 'male' } })).fn,
     });
     expect(await provider.describeAvatar('look-1')).toEqual({ name: 'Look', gender: 'male' });
+  });
+});
+
+describe('preparation gateways', () => {
+  it('designs, saves and checks a character voice with ElevenLabs', async () => {
+    const { fn, calls } = fetchMock(
+      json({ previews: [{ generated_voice_id: 'gen-1', audio_base_64: 'AA==' }] }),
+      json({ voice_id: 'voice-9' }),
+      json({ name: 'Philax · karl-marx', labels: { gender: 'male' } }),
+    );
+    const gateway = new ElevenLabsVoiceGateway(
+      new ElevenLabsVoiceProvider({ apiKey: 'k', modelId: 'm', fetch: fn }),
+    );
+    expect(gateway.canPrepare).toBe(true);
+    const voice = await gateway.prepareCharacterVoice({
+      characterSlug: 'karl-marx',
+      name: 'Philax · karl-marx',
+      description: 'A mature male speaker, forceful and sardonic.',
+      presentation: 'male',
+    });
+    expect(voice).toEqual({ voiceId: 'voice-9', gender: 'male' });
+    expect(calls.map((c) => c.url)).toEqual([
+      'https://api.elevenlabs.io/v1/text-to-voice/design',
+      'https://api.elevenlabs.io/v1/text-to-voice',
+      'https://api.elevenlabs.io/v1/voices/voice-9',
+    ]);
+    expect(JSON.parse(String(calls[1]?.init?.body))).toMatchObject({
+      generated_voice_id: 'gen-1',
+      labels: { gender: 'male' },
+    });
+  });
+
+  it('cannot prepare voices without a key or when disabled', () => {
+    expect(
+      new ElevenLabsVoiceGateway(new ElevenLabsVoiceProvider({ apiKey: undefined, modelId: 'm' }))
+        .canPrepare,
+    ).toBe(false);
+    expect(
+      new ElevenLabsVoiceGateway(new ElevenLabsVoiceProvider({ apiKey: 'k', modelId: 'm' }), false)
+        .canPrepare,
+    ).toBe(false);
+  });
+
+  it('generates a HeyGen avatar look from a prompt and waits until it is ready', async () => {
+    const { fn, calls } = fetchMock(
+      json({
+        data: { avatar_item: { id: 'look-1', status: 'processing' }, avatar_group: { id: 'g' } },
+      }),
+      json({ data: { id: 'look-1', status: 'processing', gender: null } }),
+      json({ data: { id: 'look-1', status: 'completed', gender: 'female' } }),
+    );
+    const gateway = new HeyGenAvatarGateway({
+      apiKey: 'hg',
+      fetch: fn,
+      sleep: () => Promise.resolve(),
+    });
+    const avatar = await gateway.prepareCharacterAvatar({
+      characterSlug: 'hannah-arendt',
+      name: 'Philax · hannah-arendt',
+      description: 'Photorealistic portrait of a female thinker around 60 years old.',
+      presentation: 'female',
+    });
+    expect(avatar).toEqual({ avatarId: 'look-1', slot: 'avatarId', gender: 'female' });
+    expect(calls[0]?.url).toBe('https://api.heygen.com/v3/avatars');
+    expect(JSON.parse(String(calls[0]?.init?.body))).toMatchObject({
+      type: 'prompt',
+      name: 'Philax · hannah-arendt',
+    });
+    expect(calls[2]?.url).toBe('https://api.heygen.com/v3/avatars/looks/look-1');
+  });
+
+  it('reports a failed avatar generation', async () => {
+    const { fn } = fetchMock(
+      json({ data: { avatar_item: { id: 'look-1' } } }),
+      json({ data: { id: 'look-1', status: 'failed' } }),
+    );
+    const gateway = new HeyGenAvatarGateway({
+      apiKey: 'hg',
+      fetch: fn,
+      sleep: () => Promise.resolve(),
+    });
+    const err = await failure(
+      gateway.prepareCharacterAvatar({
+        characterSlug: 'x',
+        name: 'x',
+        description: 'x',
+        presentation: 'male',
+      }),
+    );
+    expect(err.code).toBe('generation_failed');
   });
 });

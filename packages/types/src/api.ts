@@ -28,6 +28,7 @@ export const ERROR_CODES = [
   'NO_SUITABLE_CHARACTERS',
   'INVALID_STATE',
   'MEDIA_UNAVAILABLE',
+  'PARTICIPANTS_NOT_READY',
   'INTERNAL',
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];

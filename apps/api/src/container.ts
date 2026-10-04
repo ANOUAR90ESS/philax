@@ -15,11 +15,17 @@ import { AiCallRepository, DebateService, PgAdvisoryLock } from '@philax/debates
 import { RetrievalService } from '@philax/knowledge';
 import {
   CharacterMediaService,
+  ElevenLabsVoiceGateway,
   ElevenLabsVoiceProvider,
+  HeyGenAvatarGateway,
   HeyGenVideoAvatarProvider,
   LiveAvatarProvider,
+  MediaOrchestrator,
   MediaProfileRepository,
+  unavailableAvatarGateway,
+  type AvatarGateway,
   type AvatarProvider,
+  type VoiceGateway,
   type VoiceProvider,
 } from '@philax/media-service';
 import {
@@ -65,6 +71,8 @@ export interface ContainerOverrides {
   /** Media providers; tests substitute these (mocks are for automated tests only). */
   voice?: VoiceProvider;
   avatar?: AvatarProvider | null;
+  voiceGateway?: VoiceGateway;
+  avatarGateway?: AvatarGateway;
 }
 
 function avatarProvider(env: Env): AvatarProvider | null {
@@ -108,6 +116,39 @@ export function createContainer(env: Env, overrides: ContainerOverrides = {}): C
       : new ReadabilityExtractor());
   const usage = new UsageService(db);
 
+  const mediaProfiles = new MediaProfileRepository(db);
+  const elevenlabs = new ElevenLabsVoiceProvider({
+    apiKey: env.ELEVENLABS_API_KEY,
+    modelId: env.ELEVENLABS_MODEL_ID,
+  });
+  const media = new CharacterMediaService({
+    repository: mediaProfiles,
+    voice: overrides.voice ?? elevenlabs,
+    avatar: overrides.avatar !== undefined ? overrides.avatar : avatarProvider(env),
+    voiceModel: env.ELEVENLABS_MODEL_ID,
+    maxLiveSessions: env.MEDIA_MAX_LIVE_SESSIONS,
+  });
+  // Prepares each selected participant's avatar and voice before a debate starts.
+  const orchestrator = new MediaOrchestrator({
+    repository: mediaProfiles,
+    media,
+    voices:
+      overrides.voiceGateway ?? new ElevenLabsVoiceGateway(elevenlabs, env.MEDIA_AUTO_PREPARE),
+    avatars:
+      overrides.avatarGateway ??
+      (env.MEDIA_AVATAR_MODE === 'video'
+        ? new HeyGenAvatarGateway({ apiKey: env.HEYGEN_API_KEY, enabled: env.MEDIA_AUTO_PREPARE })
+        : // LiveAvatar has no API for creating avatars: real-time avatars are configured by an operator.
+          unavailableAvatarGateway()),
+    // Internal states are for operators only (never sent to users); no provider ids or secrets.
+    onState: (characterId, state, detail) => {
+      if (state === 'MEDIA_FAILED' && env.LOG_LEVEL !== 'silent')
+        console.warn(`[media] ${characterId} ${state}${detail ? ` ${detail}` : ''}`);
+      else if (env.LOG_LEVEL === 'debug' || env.LOG_LEVEL === 'trace')
+        console.info(`[media] ${characterId} ${state}${detail ? ` ${detail}` : ''}`);
+    },
+  });
+
   const debates = new DebateService({
     db,
     gateway,
@@ -115,20 +156,8 @@ export function createContainer(env: Env, overrides: ContainerOverrides = {}): C
     inputs: new InputService(db, extractor),
     usage,
     lock: new PgAdvisoryLock(db),
+    participants: orchestrator,
     track: (userId, event, props) => analytics.capture(userId, event as AnalyticsEvent, props),
-  });
-
-  const media = new CharacterMediaService({
-    repository: new MediaProfileRepository(db),
-    voice:
-      overrides.voice ??
-      new ElevenLabsVoiceProvider({
-        apiKey: env.ELEVENLABS_API_KEY,
-        modelId: env.ELEVENLABS_MODEL_ID,
-      }),
-    avatar: overrides.avatar !== undefined ? overrides.avatar : avatarProvider(env),
-    voiceModel: env.ELEVENLABS_MODEL_ID,
-    maxLiveSessions: env.MEDIA_MAX_LIVE_SESSIONS,
   });
 
   return {

@@ -23,14 +23,28 @@ export interface MediaProfileRow {
   voiceStyle: Record<string, unknown>;
   visualNotes: string;
   languageConfiguration: { languages?: string[]; voices?: Record<string, string> };
+  /** Overall preparation status of the character's media. */
+  status: ProfileStatus;
+  avatarStatus: SideStatus | null;
+  voiceStatus: SideStatus | null;
+  /** Increases whenever an asset changes; replaced assets are kept in `asset_history`. */
+  version: number;
   updatedAt: string;
 }
+
+export type ProfileStatus = 'not_ready' | 'preparing' | 'ready' | 'failed';
+export type SideStatus = 'ready' | 'pending' | 'failed';
+export type MediaSide = 'avatar' | 'voice';
 
 const COLUMNS = `m.character_id AS "characterId", c.slug, m.avatar_provider AS "avatarProvider",
   m.avatar_id AS "avatarId", m.live_avatar_id AS "liveAvatarId", m.avatar_presentation AS "avatarPresentation",
   m.voice_provider AS "voiceProvider", m.voice_id AS "voiceId", m.voice_presentation AS "voicePresentation",
   m.presentation, m.age_profile AS "ageProfile", m.voice_style AS "voiceStyle", m.visual_notes AS "visualNotes",
-  m.language_configuration AS "languageConfiguration", m.updated_at AS "updatedAt"`;
+  m.language_configuration AS "languageConfiguration", m.status, m.avatar_status AS "avatarStatus",
+  m.voice_status AS "voiceStatus", m.version, m.updated_at AS "updatedAt"`;
+
+/** A side that has been pending this long is considered abandoned (e.g. the server restarted). */
+const STALE_PENDING = '15 minutes';
 
 /** The configuration validation reads; missing presentations stay `unknown` (never assumed). */
 export function toMediaConfig(row: MediaProfileRow): CharacterMediaConfig {
@@ -125,41 +139,171 @@ export class MediaProfileRepository {
     });
   }
 
-  /** Assigns provider assets to a character (by slug). Uniqueness is enforced by the database. */
+  /**
+   * Assigns provider assets to a character (by slug). Uniqueness is enforced by
+   * the database. When an asset id changes, the profile version increases and
+   * the replaced ids are kept in the profile's history.
+   */
   async assign(slug: string, a: AssetAssignment): Promise<MediaProfileRow | null> {
-    const { rowCount } = await this.db.query(
-      `UPDATE character_media_profiles m SET
-         avatar_id = CASE WHEN $2::boolean THEN $3 ELSE m.avatar_id END,
-         live_avatar_id = CASE WHEN $4::boolean THEN $5 ELSE m.live_avatar_id END,
-         avatar_presentation = CASE WHEN $6::boolean THEN $7 ELSE m.avatar_presentation END,
-         voice_id = CASE WHEN $8::boolean THEN $9 ELSE m.voice_id END,
-         voice_presentation = CASE WHEN $10::boolean THEN $11 ELSE m.voice_presentation END,
-         language_configuration = CASE WHEN $12::boolean
-           THEN jsonb_set(m.language_configuration, '{voices}', $13::jsonb)
-           ELSE m.language_configuration END,
+    const id = await this.db.transaction(async (tx) => {
+      // Locked so that concurrent assignments (avatar and voice prepared in parallel) do not overwrite each other.
+      const { rows } = await tx.query<MediaProfileRow>(
+        `SELECT ${COLUMNS} FROM character_media_profiles m JOIN characters c ON c.id = m.character_id
+         WHERE c.slug = $1 FOR UPDATE OF m`,
+        [slug],
+      );
+      const current = rows[0];
+      if (!current) return null;
+      await this.write(tx, current, a);
+      return current.characterId;
+    });
+    return id ? this.get(id) : null;
+  }
+
+  private async write(tx: Db, current: MediaProfileRow, a: AssetAssignment): Promise<void> {
+    const next = {
+      avatarId: a.avatarId !== undefined ? a.avatarId : current.avatarId,
+      liveAvatarId: a.liveAvatarId !== undefined ? a.liveAvatarId : current.liveAvatarId,
+      avatarPresentation:
+        a.avatarPresentation !== undefined ? a.avatarPresentation : current.avatarPresentation,
+      voiceId: a.voiceId !== undefined ? a.voiceId : current.voiceId,
+      voicePresentation:
+        a.voicePresentation !== undefined ? a.voicePresentation : current.voicePresentation,
+      voices:
+        a.languageVoices !== undefined
+          ? a.languageVoices
+          : (current.languageConfiguration.voices ?? {}),
+    };
+    const changed =
+      next.avatarId !== current.avatarId ||
+      next.liveAvatarId !== current.liveAvatarId ||
+      next.voiceId !== current.voiceId ||
+      JSON.stringify(next.voices) !== JSON.stringify(current.languageConfiguration.voices ?? {});
+    // A side's status changes only when this assignment touches that side.
+    const avatarTouched = a.avatarId !== undefined || a.liveAvatarId !== undefined;
+    const voiceTouched = a.voiceId !== undefined;
+    const avatarStatus = avatarTouched
+      ? next.avatarId || next.liveAvatarId
+        ? 'ready'
+        : null
+      : current.avatarStatus;
+    const voiceStatus = voiceTouched ? (next.voiceId ? 'ready' : null) : current.voiceStatus;
+    await tx.query(
+      `UPDATE character_media_profiles SET
+         avatar_id = $2, live_avatar_id = $3, avatar_presentation = $4,
+         voice_id = $5, voice_presentation = $6,
+         language_configuration = jsonb_set(language_configuration, '{voices}', $7::jsonb),
+         avatar_status = $8, voice_status = $9,
+         avatar_pending_at = CASE WHEN $8::text = 'pending' THEN avatar_pending_at END,
+         voice_pending_at = CASE WHEN $9::text = 'pending' THEN voice_pending_at END,
+         status = CASE
+           WHEN $8::text = 'ready' AND $9::text = 'ready' THEN 'ready'
+           WHEN $8::text = 'failed' OR $9::text = 'failed' THEN 'failed'
+           WHEN $8::text = 'pending' OR $9::text = 'pending' THEN 'preparing'
+           ELSE 'not_ready' END,
+         version = version + CASE WHEN $10::boolean THEN 1 ELSE 0 END,
+         asset_history = CASE WHEN $10::boolean THEN asset_history || $11::jsonb ELSE asset_history END,
          updated_at = now()
-       FROM characters c WHERE c.id = m.character_id AND c.slug = $1`,
+       WHERE character_id = $1`,
       [
-        slug,
-        a.avatarId !== undefined,
-        a.avatarId ?? null,
-        a.liveAvatarId !== undefined,
-        a.liveAvatarId ?? null,
-        a.avatarPresentation !== undefined,
-        a.avatarPresentation ?? null,
-        a.voiceId !== undefined,
-        a.voiceId ?? null,
-        a.voicePresentation !== undefined,
-        a.voicePresentation ?? null,
-        a.languageVoices !== undefined,
-        JSON.stringify(a.languageVoices ?? {}),
+        current.characterId,
+        next.avatarId,
+        next.liveAvatarId,
+        next.avatarPresentation,
+        next.voiceId,
+        next.voicePresentation,
+        JSON.stringify(next.voices),
+        avatarStatus,
+        voiceStatus,
+        changed,
+        JSON.stringify([
+          {
+            version: current.version,
+            avatarId: current.avatarId,
+            liveAvatarId: current.liveAvatarId,
+            voiceId: current.voiceId,
+            voices: current.languageConfiguration.voices ?? {},
+            replacedAt: new Date().toISOString(),
+          },
+        ]),
       ],
     );
-    if (!rowCount) return null;
-    const { rows } = await this.db.query<{ id: string }>(
-      'SELECT id FROM characters WHERE slug = $1',
+  }
+
+  async getBySlug(slug: string): Promise<MediaProfileRow | null> {
+    const { rows } = await this.db.query<MediaProfileRow>(
+      `SELECT ${COLUMNS} FROM character_media_profiles m JOIN characters c ON c.id = m.character_id
+       WHERE c.slug = $1`,
       [slug],
     );
-    return rows[0] ? this.get(rows[0].id) : null;
+    return rows[0] ?? null;
+  }
+
+  /**
+   * Creates a character's profile when it has none (a character selected for
+   * the first time). The identity comes from its brief when one exists;
+   * otherwise it stays `unknown` until recorded, and nothing is provisioned.
+   */
+  async ensure(
+    characterId: string,
+    identity: { presentation: Presentation; ageProfile: string | null; visualNotes: string },
+  ): Promise<MediaProfileRow | null> {
+    await this.db.query(
+      `INSERT INTO character_media_profiles
+         (character_id, presentation, age_profile, visual_notes, language_configuration)
+       VALUES ($1, $2, $3, $4, jsonb_build_object('languages', $5::jsonb, 'voices', '{}'::jsonb))
+       ON CONFLICT (character_id) DO NOTHING`,
+      [
+        characterId,
+        identity.presentation,
+        identity.ageProfile,
+        identity.visualNotes,
+        JSON.stringify(MEDIA_LANGUAGES),
+      ],
+    );
+    return this.get(characterId);
+  }
+
+  /** Records the documented presentation of a character that has no identity brief in code. */
+  async setPresentation(slug: string, presentation: Presentation): Promise<boolean> {
+    const { rowCount } = await this.db.query(
+      `UPDATE character_media_profiles m SET presentation = $2, updated_at = now()
+       FROM characters c WHERE c.id = m.character_id AND c.slug = $1`,
+      [slug, presentation],
+    );
+    return rowCount > 0;
+  }
+
+  /**
+   * Claims the preparation of one side for this process. Returns false when the
+   * side already has an asset or another preparation is in progress.
+   */
+  async claim(characterId: string, side: MediaSide): Promise<boolean> {
+    const id = side === 'avatar' ? 'avatar_id' : 'voice_id';
+    const { rowCount } = await this.db.query(
+      `UPDATE character_media_profiles SET ${side}_status = 'pending', ${side}_pending_at = now(),
+         status = 'preparing', updated_at = now()
+       WHERE character_id = $1 AND ${id} IS NULL
+         AND (${side}_status IS DISTINCT FROM 'pending' OR ${side}_pending_at < now() - interval '${STALE_PENDING}')`,
+      [characterId],
+    );
+    return rowCount > 0;
+  }
+
+  /** Marks a claimed side as failed (no asset is recorded). */
+  async fail(characterId: string, side: MediaSide): Promise<void> {
+    await this.db.query(
+      `UPDATE character_media_profiles SET ${side}_status = 'failed', ${side}_pending_at = NULL,
+         status = 'failed', updated_at = now()
+       WHERE character_id = $1`,
+      [characterId],
+    );
+  }
+
+  async setStatus(characterId: string, status: ProfileStatus): Promise<void> {
+    await this.db.query(
+      `UPDATE character_media_profiles SET status = $2, updated_at = now() WHERE character_id = $1`,
+      [characterId, status],
+    );
   }
 }

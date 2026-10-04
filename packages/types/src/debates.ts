@@ -186,6 +186,7 @@ export const PREPARATION_STEPS = [
   'perspectives',
   'characters',
   'plan',
+  'participants',
 ] as const;
 export type PreparationStep = (typeof PREPARATION_STEPS)[number];
 

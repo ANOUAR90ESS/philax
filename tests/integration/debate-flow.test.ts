@@ -76,6 +76,8 @@ describe('debate creation and preparation', () => {
       'characters:completed',
       'plan:started',
       'plan:completed',
+      'participants:started',
+      'participants:completed',
     ]);
     const view = lastState(r.events);
     expect(view.phase).toBe('DEBATE_PLANNED');

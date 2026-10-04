@@ -32,6 +32,8 @@ export interface DebateServiceDeps {
   usage: UsageService;
   lock: DebateLock;
   turnOptions?: TurnGeneratorOptions;
+  /** Runs after the debate is planned and before it starts. */
+  participants?: ParticipantPreparer;
   /** Product analytics hook (event names only; no content). */
   track?: (
     userId: string,
@@ -41,6 +43,29 @@ export interface DebateServiceDeps {
 }
 
 type Emit = (e: DebateStreamEvent) => void;
+
+/** A selected participant handed to participant preparation. */
+export interface PreparableParticipant {
+  id: string;
+  slug: string;
+  displayName: string;
+  era: string;
+  birthYear: number | null;
+  deathYear: number | null;
+}
+
+/**
+ * Prepares the selected participants (e.g. their avatars and voices) before
+ * the debate starts. Must be idempotent: it runs again before the first round
+ * if an earlier attempt failed. Throws an AppError when a participant cannot
+ * be prepared.
+ */
+export interface ParticipantPreparer {
+  prepareParticipants(
+    input: { debateId: string; language: string; characters: PreparableParticipant[] },
+    signal?: AbortSignal,
+  ): Promise<unknown>;
+}
 
 /**
  * Application service for debates: authorization, quotas and orchestration of
@@ -141,10 +166,15 @@ export class DebateService {
         const action = nextAction(debate.mode, debate.phase, limits.maxRounds);
         if (action.kind === 'prepare') {
           await this.preparation.prepare(debate, user.id, emit);
+          if (debate.phase === 'DEBATE_PLANNED')
+            await this.prepareParticipants(user, id, emit, signal);
           this.d.track?.(user.id, 'topic_analyzed');
           this.d.track?.(user.id, 'character_selected');
           this.d.track?.(user.id, 'debate_started', { mode: debate.mode });
         } else if (action.kind === 'round') {
+          // The debate starts only with every participant prepared.
+          if (debate.phase === 'DEBATE_PLANNED')
+            await this.prepareParticipants(user, id, emit, signal);
           const ctx = await loadContext(this.repos, debate);
           await this.rounds.generateRound(ctx, action.phase, limits.maxRounds, emit, signal);
           await this.d.usage.record(user.id, 'round_generated', id);
@@ -162,6 +192,34 @@ export class DebateService {
       }
       emit({ type: 'state', debate: await this.view(user, id) });
     });
+  }
+
+  private async prepareParticipants(
+    user: UserView,
+    id: string,
+    emit: Emit,
+    signal?: AbortSignal,
+  ): Promise<void> {
+    const preparer = this.d.participants;
+    if (!preparer) return;
+    const view = await this.view(user, id);
+    emit({ type: 'step', step: 'participants', status: 'started' });
+    await preparer.prepareParticipants(
+      {
+        debateId: id,
+        language: view.language,
+        characters: view.participants.map((p) => ({
+          id: p.character.id,
+          slug: p.character.slug,
+          displayName: p.character.displayName,
+          era: p.character.era,
+          birthYear: p.character.birthYear,
+          deathYear: p.character.deathYear,
+        })),
+      },
+      signal,
+    );
+    emit({ type: 'step', step: 'participants', status: 'completed' });
   }
 
   async assertCanPostMessage(user: UserView, id: string): Promise<void> {
