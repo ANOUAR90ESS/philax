@@ -82,16 +82,18 @@ const videoAvatar: AvatarProvider = {
 
 function avatarGateway(
   gender = (p: string) => p,
+  provider: 'heygen' | 'joggai' = 'heygen',
 ): AvatarGateway & { prepare: ReturnType<typeof vi.fn> } {
   let n = 0;
-  const prepare = vi.fn((input: { characterSlug: string; presentation: string }) =>
-    Promise.resolve({
-      avatarId: `look-${input.characterSlug}-${++n}`,
-      slot: 'avatarId' as const,
-      gender: gender(input.presentation),
-    }),
+  const prepare = vi.fn(
+    (input: { characterSlug: string; presentation: string; approximateAge?: number | null }) =>
+      Promise.resolve({
+        avatarId: `${provider}-${input.characterSlug}-${++n}`,
+        slot: 'avatarId' as const,
+        gender: gender(input.presentation),
+      }),
   );
-  return { provider: 'heygen', canPrepare: true, prepareCharacterAvatar: prepare, prepare };
+  return { provider, canPrepare: true, prepareCharacterAvatar: prepare, prepare };
 }
 
 function orchestrator(opts: {
@@ -228,6 +230,55 @@ describe('MediaOrchestrator', () => {
       avatarStatus: 'ready',
       status: 'ready',
     });
+  });
+
+  it('prepares a new avatar when video moves to another provider, keeping the old one on record', async () => {
+    const voice = voiceWorld();
+    const arendt = await character('hannah-arendt');
+    await orchestrator({
+      voice,
+      avatar: videoAvatar,
+      avatars: avatarGateway(),
+    }).prepareParticipants({ debateId: 'd', language: 'en', characters: [arendt] });
+    expect(await repository.get(arendt.id)).toMatchObject({ avatarProvider: 'heygen' });
+
+    const jogg = avatarGateway(undefined, 'joggai');
+    const o = orchestrator({ voice, avatar: { ...videoAvatar, name: 'joggai' }, avatars: jogg });
+    const [outcome] = await o.prepareParticipants({
+      debateId: 'd2',
+      language: 'en',
+      characters: [arendt],
+    });
+    expect(outcome?.avatar).toEqual({ status: 'ready', prepared: true });
+    expect(jogg.prepare.mock.calls[0]?.[0]).toMatchObject({
+      presentation: 'female',
+      approximateAge: expect.any(Number),
+    });
+    const row = await repository.get(arendt.id);
+    expect(row).toMatchObject({ avatarProvider: 'joggai', avatarId: 'joggai-hannah-arendt-1' });
+    const { rows } = await db.query<{ asset_history: { avatarId?: string }[] }>(
+      `SELECT asset_history FROM character_media_profiles WHERE character_id = $1`,
+      [arendt.id],
+    );
+    expect(rows[0]?.asset_history.at(-1)?.avatarId).toBe('heygen-hannah-arendt-1');
+
+    // Already prepared for this provider: reused, not made again.
+    await o.prepareParticipants({ debateId: 'd3', language: 'en', characters: [arendt] });
+    expect(jogg.prepare).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not ask a provider for an avatar it cannot make', async () => {
+    const voice = voiceWorld();
+    const jogg = { ...avatarGateway(undefined, 'joggai'), supports: () => false };
+    const o = orchestrator({ voice, avatar: { ...videoAvatar, name: 'joggai' }, avatars: jogg });
+    const arendt = await character('hannah-arendt');
+    const [outcome] = await o.prepareParticipants({
+      debateId: 'd',
+      language: 'en',
+      characters: [arendt],
+    });
+    expect(jogg.prepare).not.toHaveBeenCalled();
+    expect(outcome?.avatar).toEqual({ status: 'unavailable', reason: 'not_configured' });
   });
 
   it('rejects an avatar the provider reports with another gender', async () => {

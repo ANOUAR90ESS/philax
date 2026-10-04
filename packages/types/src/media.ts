@@ -34,7 +34,11 @@ export type AvatarMode = 'live' | 'video' | 'off';
 
 export interface MediaStatus {
   voice: { provider: 'elevenlabs'; configured: boolean };
-  avatar: { provider: 'heygen'; mode: AvatarMode; configured: boolean };
+  /**
+   * `cutout`: rendered avatar video has a transparent background, so the
+   * speaker can be placed into the scene; `framed`: it is shown in a frame.
+   */
+  avatar: { mode: AvatarMode; configured: boolean; presentation: 'framed' | 'cutout' };
 }
 
 export interface CharacterMediaView {

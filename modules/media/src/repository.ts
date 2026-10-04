@@ -65,7 +65,11 @@ export function toMediaConfig(row: MediaProfileRow): CharacterMediaConfig {
   };
 }
 
+export type AvatarVendor = 'heygen' | 'joggai';
+
 export interface AssetAssignment {
+  /** Provider of `avatarId` (the rendered-video avatar). */
+  avatarProvider?: AvatarVendor;
   avatarId?: string | null;
   liveAvatarId?: string | null;
   avatarPresentation?: Presentation | null;
@@ -162,6 +166,7 @@ export class MediaProfileRepository {
 
   private async write(tx: Db, current: MediaProfileRow, a: AssetAssignment): Promise<void> {
     const next = {
+      avatarProvider: a.avatarProvider ?? current.avatarProvider,
       avatarId: a.avatarId !== undefined ? a.avatarId : current.avatarId,
       liveAvatarId: a.liveAvatarId !== undefined ? a.liveAvatarId : current.liveAvatarId,
       avatarPresentation:
@@ -175,6 +180,7 @@ export class MediaProfileRepository {
           : (current.languageConfiguration.voices ?? {}),
     };
     const changed =
+      next.avatarProvider !== current.avatarProvider ||
       next.avatarId !== current.avatarId ||
       next.liveAvatarId !== current.liveAvatarId ||
       next.voiceId !== current.voiceId ||
@@ -191,7 +197,7 @@ export class MediaProfileRepository {
     await tx.query(
       `UPDATE character_media_profiles SET
          avatar_id = $2, live_avatar_id = $3, avatar_presentation = $4,
-         voice_id = $5, voice_presentation = $6,
+         voice_id = $5, voice_presentation = $6, avatar_provider = $12,
          language_configuration = jsonb_set(language_configuration, '{voices}', $7::jsonb),
          avatar_status = $8, voice_status = $9,
          avatar_pending_at = CASE WHEN $8::text = 'pending' THEN avatar_pending_at END,
@@ -219,6 +225,7 @@ export class MediaProfileRepository {
         JSON.stringify([
           {
             version: current.version,
+            avatarProvider: current.avatarProvider,
             avatarId: current.avatarId,
             liveAvatarId: current.liveAvatarId,
             voiceId: current.voiceId,
@@ -226,6 +233,7 @@ export class MediaProfileRepository {
             replacedAt: new Date().toISOString(),
           },
         ]),
+        next.avatarProvider,
       ],
     );
   }
@@ -278,14 +286,22 @@ export class MediaProfileRepository {
    * Claims the preparation of one side for this process. Returns false when the
    * side already has an asset or another preparation is in progress.
    */
-  async claim(characterId: string, side: MediaSide): Promise<boolean> {
-    const id = side === 'avatar' ? 'avatar_id' : 'voice_id';
+  async claim(
+    characterId: string,
+    side: MediaSide,
+    avatarProvider?: AvatarVendor,
+  ): Promise<boolean> {
+    // An avatar is missing when there is none, or only one from another video provider.
+    const missing =
+      side === 'avatar'
+        ? `(avatar_id IS NULL OR avatar_provider IS DISTINCT FROM $2)`
+        : `voice_id IS NULL`;
     const { rowCount } = await this.db.query(
       `UPDATE character_media_profiles SET ${side}_status = 'pending', ${side}_pending_at = now(),
          status = 'preparing', updated_at = now()
-       WHERE character_id = $1 AND ${id} IS NULL
+       WHERE character_id = $1 AND ${missing}
          AND (${side}_status IS DISTINCT FROM 'pending' OR ${side}_pending_at < now() - interval '${STALE_PENDING}')`,
-      [characterId],
+      side === 'avatar' ? [characterId, avatarProvider ?? 'heygen'] : [characterId],
     );
     return rowCount > 0;
   }
